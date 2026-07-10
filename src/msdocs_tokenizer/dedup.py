@@ -35,8 +35,14 @@ def find_exact_duplicates(items: list[tuple[str, str]]) -> dict[str, list[str]]:
     return {h: ids for h, ids in by_hash.items() if len(ids) > 1}
 
 
+# Near-duplicate MinHash caps the text it shingles: near-duplicate documents
+# share their content, so the leading portion is sufficient to detect them and
+# this bounds cost on very large (e.g. WikiText) articles.
+MINHASH_MAX_CHARS = 6000
+
+
 def _shingles(text: str, k: int = 5) -> set[bytes]:
-    t = canonical_for_hash(text)
+    t = canonical_for_hash(text)[:MINHASH_MAX_CHARS]
     if len(t) <= k:
         return {t.encode("utf-8")} if t else set()
     return {t[i : i + k].encode("utf-8") for i in range(len(t) - k + 1)}
@@ -125,3 +131,25 @@ def find_near_duplicates(
             root_to_cid[root] = len(root_to_cid)
         clusters[_id] = root_to_cid[root]
     return NearDupResult(threshold=threshold, clusters=clusters, pairs=pairs)
+
+
+def flag_eval_near_train(
+    train_items: list[tuple[str, str]],
+    eval_items: list[tuple[str, str]],
+    threshold: float = 0.8,
+    num_perm: int = 128,
+    k: int = 5,
+) -> set[str]:
+    """Return eval ids that are near-duplicates of ANY training doc (plan.md §11).
+
+    Cross-corpus leakage control: build an LSH over the training pool and query
+    each evaluation document; flagged eval items must be removed from evaluation.
+    """
+    lsh = MinHashLSH(threshold=threshold, num_perm=num_perm)
+    for _id, text in train_items:
+        lsh.insert(_id, _minhash(text, num_perm, k))
+    flagged: set[str] = set()
+    for _id, text in eval_items:
+        if lsh.query(_minhash(text, num_perm, k)):
+            flagged.add(_id)
+    return flagged

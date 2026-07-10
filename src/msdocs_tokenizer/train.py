@@ -132,6 +132,13 @@ def train_tokenizer(
         git_commit=git_commit(),
         created_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         seed=config.GLOBAL_SEED,
+        distributable=(training_corpus == "azure"),
+        distribution_note=(
+            "Trained only on CC-BY-4.0 Azure documentation; redistributable WITH attribution."
+            if training_corpus == "azure" else
+            "Trained on WikiText (CC-BY-SA, unclear redistribution) — LOCAL-USE-ONLY, do not "
+            "redistribute the tokenizer.json artifact pending legal review (licenses/RESTRICTIONS.md)."
+        ),
     )
     # Persist provenance next to the artifact and in the tracked index.
     atomic_write_json(out_dir / "provenance.json", prov.model_dump())

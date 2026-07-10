@@ -2,13 +2,13 @@
   "azure_bytes": 16777216,
   "content_utf8_bytes": 33554432,
   "corpus": "mixed",
-  "file_utf8_bytes": 33559577,
+  "file_utf8_bytes": 33559601,
   "general_bytes": 16777216,
-  "n_documents": 2573,
-  "n_selected": 2573,
+  "n_documents": 2585,
+  "n_selected": 2585,
   "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/mixed.corpus.txt",
-  "profile": "pilot",
-  "sha256": "0f4640ee18439c410a8ca04374dc5a5dd056159a767393cb727ce767df864d6f",
+  "profile": "full",
+  "sha256": "fbcaeefc8cbf52cd68fc351695d4599167e224d5440ef24c14e529a38da9040a",
   "target_bytes": 33554432,
-  "training_manifest_sha256": "a5ea661104f95766a3944decd60527e3f80aa6179a77a6243539e60fde51a2a5"
+  "training_manifest_sha256": "f4cce99d5850c32737cdce4823e40e1d0fe02f62113203211c1ea80914cd523b"
 }

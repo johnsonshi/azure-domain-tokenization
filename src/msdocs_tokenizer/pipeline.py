@@ -203,8 +203,16 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
 
         # Build training pools
         azure_train_docs = [d for d in azure_docs if asg.doc_to_split[d.document_id] == "azure_train"]
+
+        # General: exact dedup BEFORE the train/eval split so no identical
+        # WikiText content lands on both sides (red-team blocker 1). Near-dup
+        # bridging within general is handled by the cross-corpus eval filter below.
         general_all = processed.get("general_english", [])
+        general_all, gen_exact_stats = corpus.exact_dedup(general_all)
+        gen_near_stats = {"removed_near": 0, "note": "general near-dup handled by cross-corpus eval filter"}
         general_train, _general_eval = _hash_split(general_all, seed, eval_frac=0.15)
+        # Guard: no exact content hash shared across general train/eval
+        _assert_no_content_leak(general_train, _general_eval, "general")
 
         azure_pairs = [(d.document_id, d.semantic_full) for d in azure_train_docs]
         general_pairs = [(d.document_id, d.semantic_full) for d in general_train]
@@ -234,8 +242,14 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
                 mixed_texts.append(b_texts[i])
         info["mixed"] = corpus.build_corpus_file(mixed_texts, config.SPLITS / "mixed.corpus.txt")
 
-        # Build + persist the frozen evaluation document set (plan.md §14)
-        _build_eval_docs(processed, azure_docs, asg, _general_eval, repo_to_category)
+        # Training pool used for cross-corpus near-dup eval filtering (plan.md §11)
+        train_pool = ([(d.document_id, d.semantic_full) for d in azure_train_docs]
+                      + [(d.document_id, d.semantic_full) for d in general_train])
+
+        # Build + persist the frozen evaluation document set (plan.md §14),
+        # removing eval items that are near-duplicates of any training doc.
+        cc_removed = _build_eval_docs(processed, azure_docs, asg, _general_eval,
+                                      repo_to_category, train_pool, near_thr)
 
         # Cross-repo dedup + overlap audit (plan.md §11)
         _write_dedup_audit(processed, azure_docs, near, near_thr)
@@ -265,11 +279,14 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
         summary = {
             "profile": profile, "seed": seed, "target_bytes": target_bytes,
             "normalization": norm_reports,
-            "exact_dedup": exact_stats,
-            "near_dup": {"threshold": near_thr,
-                         "removed_near": near_stats.get("removed_near", 0),
-                         "kept_after_near": near_stats.get("kept", 0),
-                         "num_pairs": len(near.pairs) if near else 0},
+            "exact_dedup_azure": exact_stats,
+            "near_dup_azure": {"threshold": near_thr,
+                               "removed_near": near_stats.get("removed_near", 0),
+                               "kept_after_near": near_stats.get("kept", 0),
+                               "num_pairs": len(near.pairs) if near else 0},
+            "exact_dedup_general": gen_exact_stats,
+            "near_dup_general": {"removed_near": gen_near_stats.get("removed_near", 0)},
+            "cross_corpus_near_dup_eval": cc_removed,
             "azure_splits": asg.stats,
             "leakage_violations": violations,
             "corpora_content_bytes": contents,
@@ -299,8 +316,15 @@ def _dominant_ct(counts: dict[str, int]) -> str:
 
 
 def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list,
-                     repo_to_category: dict[str, str] | None = None) -> None:
-    """Assemble and freeze the evaluation document set (plan.md §14)."""
+                     repo_to_category: dict[str, str] | None = None,
+                     train_pool: list[tuple[str, str]] | None = None,
+                     near_thr: float = 0.8) -> dict:
+    """Assemble and freeze the evaluation document set (plan.md §14).
+
+    Removes any evaluation item that is a near-duplicate of a training document
+    (cross-corpus leakage control, red-team blocker). Synthetic diagnostics are
+    exempt (they are constructed strings, not corpus text).
+    """
     from .synthetic import synthetic_edge_cases
     repo_to_category = repo_to_category or {}
 
@@ -333,13 +357,36 @@ def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list,
         push("general_english", d.source_repo, d.document_id,
              _dominant_ct(d.content_type_counts), d.semantic_full)
 
-    # Synthetic edge cases (diagnostic)
+    # Cross-corpus near-dup removal for corpus-derived eval docs (not synthetic)
+    removed_near_train = 0
+    removed_by_set: dict[str, int] = {}
+    if train_pool:
+        eval_items = [(r["document_id"], r["text"]) for r in rows]
+        flagged = corpus.dd.flag_eval_near_train(train_pool, eval_items, threshold=near_thr)
+        if flagged:
+            for r in rows:
+                if r["document_id"] in flagged:
+                    removed_by_set[r["eval_set"]] = removed_by_set.get(r["eval_set"], 0) + 1
+            rows = [r for r in rows if r["document_id"] not in flagged]
+            removed_near_train = len(flagged)
+
+    # Synthetic edge cases (diagnostic; exempt from cross-corpus filter)
     for cid, text in synthetic_edge_cases():
         push("synthetic", "synthetic", f"synthetic:{cid}", "mixed", text)
 
     config.EVALUATION.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_parquet(config.EVALUATION / "eval_docs.parquet")
-    _log(f"audit: eval docs = {len(rows)} across {len(set(r['eval_set'] for r in rows))} sets")
+    _log(f"audit: eval docs = {len(rows)} across {len(set(r['eval_set'] for r in rows))} sets; "
+         f"cross-corpus near-dup removed={removed_near_train}")
+    return {"removed_near_train": removed_near_train, "removed_by_set": removed_by_set}
+
+
+def _assert_no_content_leak(train_docs: list, eval_docs: list, label: str) -> None:
+    """Raise if any exact semantic-hash is shared between train and eval."""
+    train_hashes = {d.sha256 for d in train_docs}
+    leaked = [d.document_id for d in eval_docs if d.sha256 in train_hashes]
+    if leaked:
+        raise RuntimeError(f"{label} train/eval content leak: {len(leaked)} docs, e.g. {leaked[:5]}")
 
 
 def _write_dedup_audit(processed: dict, azure_docs: list, near, near_thr: float) -> None:
@@ -533,6 +580,12 @@ def run_benchmark(profile: str, exp: dict, force: bool = False, rounds: int = 5)
         encoders = _load_track_a_encoders(vocabs) + _load_track_b_encoders(exp)
         summaries = benchmark_encoders(encoders, docs, rounds=rounds, seed=config.GLOBAL_SEED)
         payload = {"profile": profile, "rounds": rounds, "n_docs": len(docs),
+                   "controls": {"serialized": True, "randomized_tokenizer_order_per_round": True,
+                                "warmup_rounds": 1, "batch_sizes": [1, 8, 32, 128],
+                                "buckets": ["short", "medium", "long"],
+                                "note": "Single-process serialized run on a thermally variable "
+                                        "laptop; treat small differences as indicative, not definitive. "
+                                        "Plug into power and stop other workloads before running."},
                    "machine": __import__("msdocs_tokenizer.provenance", fromlist=["machine_metadata"]).machine_metadata(),
                    "summaries": [s.__dict__ for s in summaries]}
         out.parent.mkdir(parents=True, exist_ok=True)
@@ -607,6 +660,7 @@ def run_analyze(profile: str, exp: dict, force: bool = False) -> dict:
 
         atomic_write_json(out_boot, boot)
         _make_figures(rows, profile, vocabs, principal_vocab)
+        _fragmentation_and_vocab(profile, principal_vocab)
         out_fig_flag.parent.mkdir(parents=True, exist_ok=True)
         out_fig_flag.write_text("done\n")
         _log(f"analyze: {len(boot['comparisons'])} bootstrap comparisons")
@@ -669,6 +723,83 @@ def _make_figures(rows: pd.DataFrame, profile: str, vocabs, principal_vocab: int
                                values="tokens_per_1000_utf8_bytes_micro")
         piv.to_csv(tabdir / "fig_transfer_by_eval_set.csv")
 
+
+def _fragmentation_and_vocab(profile: str, principal_vocab: int) -> None:
+    """Identifier fragmentation + vocabulary utilization (plan.md §15, figs 6, 8)."""
+    import re
+    from collections import Counter
+
+    from .encoders import HFEncoder
+    from .metrics import fragmentation_stats
+    from .train import load_tokenizer
+    from .vocab import vocabulary_utilization
+
+    eval_docs = config.EVALUATION / "eval_docs.parquet"
+    if not eval_docs.exists():
+        return
+    df = pd.read_parquet(eval_docs)
+    principal = df[df.eval_set == "azure_cross_service_holdout"]
+    text_blob = "\n".join(principal.text.tolist())
+
+    # Extract fragmentation items by category from the principal holdout text
+    patterns = {
+        "resource_provider": re.compile(r"Microsoft\.[A-Za-z][\w.]+(?:/[A-Za-z][\w]+)*"),
+        "cli_flag": re.compile(r"--[a-z][a-z0-9-]+"),
+        "url_path": re.compile(r"https?://[^\s`)\"']+"),
+        "identifier_camel": re.compile(r"\b[a-z]+(?:[A-Z][a-z0-9]+)+\b"),
+        "identifier_snake": re.compile(r"\b[a-z]+(?:_[a-z0-9]+)+\b"),
+        "prose_word": re.compile(r"\b[A-Za-z]{3,}\b"),
+    }
+    items: dict[str, list[str]] = {}
+    for name, pat in patterns.items():
+        found = pat.findall(text_blob)
+        # Deduplicate + cap per category for a bounded, representative sample
+        uniq = list(dict.fromkeys(found))[:2000]
+        items[name] = uniq
+
+    encoders = []
+    for corpus_name in config.TRAINING_CORPORA:
+        art = config.ARTIFACTS / f"{corpus_name}-bytebpe-{principal_vocab}" / "tokenizer.json"
+        if art.exists():
+            encoders.append((f"{corpus_name}-bytebpe-{principal_vocab}", HFEncoder(corpus_name, load_tokenizer(art)), load_tokenizer(art)))
+
+    frag_rows = []
+    for cat, its in items.items():
+        if not its:
+            continue
+        for tok_id, enc, _tok in encoders:
+            counts = [enc.count_tokens(x) for x in its]
+            s = fragmentation_stats(counts)
+            frag_rows.append({
+                "category": cat, "tokenizer_id": tok_id, "n_items": s.n,
+                "mean_tokens": round(s.mean, 3), "median_tokens": s.median, "p95_tokens": s.p95,
+                "frac_one_token": round(s.frac_one_token, 3),
+                "frac_two_tokens": round(s.frac_two_tokens, 3),
+                "frac_three_plus": round(s.frac_three_plus, 3),
+            })
+    if frag_rows:
+        pd.DataFrame(frag_rows).to_csv(config.RESULTS_TABLES / "fragmentation.csv", index=False)
+
+    # Vocabulary utilization on the principal holdout
+    vocab_rows = []
+    for tok_id, enc, tok in encoders:
+        id_counts: Counter = Counter()
+        for text in principal.text.tolist():
+            id_counts.update(enc.encode(text))
+        u = vocabulary_utilization(tok, id_counts)
+        vocab_rows.append({
+            "tokenizer_id": tok_id, "vocab_size": u.vocab_size,
+            "frac_used": round(u.frac_used, 4), "used_ge_10": u.used_ge_10,
+            "used_ge_100": u.used_ge_100, "used_ge_1000": u.used_ge_1000, "unused": u.unused,
+            "top1pct_share": round(u.top1pct_occurrence_share, 4),
+            "top10pct_share": round(u.top10pct_occurrence_share, 4),
+            "mean_token_byte_len": round(u.mean_token_byte_len, 3),
+        })
+    if vocab_rows:
+        pd.DataFrame(vocab_rows).to_csv(config.RESULTS_TABLES / "vocab_utilization.csv", index=False)
+    _log(f"analyze: fragmentation ({len(frag_rows)} rows) + vocab utilization ({len(vocab_rows)} rows)")
+
+
 # --------------------------------------------------------------------------- #
 # REPORT + NOTEBOOKS
 # --------------------------------------------------------------------------- #
@@ -711,6 +842,11 @@ def run_verify(profile: str, exp: dict) -> dict:
         a = json.loads(audit.read_text())
         check("byte_match_ok", a.get("byte_match_ok", False), str(a.get("corpora_content_bytes")))
         check("no_leakage", not a.get("leakage_violations"), str(a.get("leakage_violations")))
+        # Cross-corpus + general leakage controls present (audit raises on any real leak)
+        controls = ("exact_dedup_general" in a and "cross_corpus_near_dup_eval" in a)
+        cc = (a.get("cross_corpus_near_dup_eval") or {}).get("removed_near_train", None)
+        check("leakage_controls_present", controls and cc is not None,
+              f"cross_corpus_removed={cc}")
     else:
         check("audit_summary_exists", False, "missing")
 

@@ -1,12 +1,12 @@
 {
   "content_utf8_bytes": 33554432,
   "corpus": "azure",
-  "file_utf8_bytes": 33560705,
-  "n_documents": 3137,
-  "n_selected": 3137,
+  "file_utf8_bytes": 33560701,
+  "n_documents": 3135,
+  "n_selected": 3135,
   "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/azure.corpus.txt",
-  "profile": "pilot",
-  "sha256": "b7d6d34123d4cbd9dff62e685f3566e37dfec6a8d20d2fc3f38d72c8f6c2e3e1",
+  "profile": "full",
+  "sha256": "8cbfd17f6e9634cd5a9a3ef47919b868ecd0728a8e0fd71b104da60beebc6194",
   "target_bytes": 33554432,
-  "training_manifest_sha256": "f3c0f0f12ca0fcc8ef23a8da839bf860d4cf6fe9f566a30633cd288d7babbc11"
+  "training_manifest_sha256": "199c3641ffce59c51597c5aa34a76878d0b35ab431dc02c21d910c2bebf185c8"
 }

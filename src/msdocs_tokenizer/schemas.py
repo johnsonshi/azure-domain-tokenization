@@ -91,6 +91,8 @@ class TokenizerProvenance(BaseModel):
     git_commit: str = ""
     created_at: str = ""
     seed: int = 0
+    distributable: bool = False
+    distribution_note: str = ""
 
 
 class SourceLock(BaseModel):
