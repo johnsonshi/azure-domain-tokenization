@@ -1,0 +1,33 @@
+{
+  "algorithm": "byte_level_bpe",
+  "artifact_bytes": 18922,
+  "artifact_sha256": "a3c05f760f33a2113573cbcb9e2699552f41b98d7299d9f72bd67261ff886ea0",
+  "config_sha256": "b3b829dd5b68e38f67203b6a1fec95a749e2aec49ce9f4164f4af47f314a1ba6",
+  "cpu_seconds": 0.1385,
+  "created_at": "2026-07-10T00:33:01-0700",
+  "git_commit": "4ecf67afac1568ebd8304b151f7061832d297fbb-dirty",
+  "machine_id": "5b65aebf221355e7",
+  "merge_count": 213,
+  "package_versions": {
+    "datasketch": "1.10.0",
+    "matplotlib": "3.11.0",
+    "numpy": "2.5.1",
+    "pandas": "2.3.3",
+    "pyarrow": "24.0.0",
+    "pydantic": "2.13.4",
+    "scipy": "1.18.0",
+    "tiktoken": "0.9.0",
+    "tokenizers": "0.21.4"
+  },
+  "peak_rss_bytes": 152371200,
+  "seed": 20260709,
+  "special_tokens_count_in_vocab": true,
+  "tokenizer_id": "general-bytebpe-2048",
+  "training_bytes": 262144,
+  "training_corpus": "general",
+  "training_documents": 162,
+  "training_manifest_sha256": "d2558bed45051b93a44d0e0a9f6e894b0d8548b617b3509ad36aad410ed1ba6b",
+  "vocab_size_actual": 471,
+  "vocab_size_requested": 2048,
+  "wall_seconds": 0.0153
+}

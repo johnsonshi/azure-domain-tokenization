@@ -36,6 +36,16 @@ def load_experiment(path: str | Path | None = None) -> dict:
     return {}
 
 
+def _profile_bytes(profile: str) -> int:
+    p = (load_experiment().get("profiles") or {}).get(profile) or {}
+    return int(p.get("corpus_bytes", PROFILE_BYTES.get(profile, config.PILOT_CORPUS_BYTES)))
+
+
+def _profile_vocabs(profile: str) -> tuple[int, ...]:
+    p = (load_experiment().get("profiles") or {}).get(profile) or {}
+    return tuple(p.get("vocab_sizes", PROFILE_VOCABS.get(profile, (config.VOCAB_SIZE_PILOT,))))
+
+
 def _log(msg: str) -> None:
     line = f"{time.strftime('%Y-%m-%dT%H:%M:%S%z')} {msg}"
     print(line, flush=True)
@@ -119,7 +129,7 @@ def _role_of(pq_name: str) -> str:
 
 
 def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
-    target_bytes = PROFILE_BYTES[profile]
+    target_bytes = _profile_bytes(profile)
     seed = config.GLOBAL_SEED
     near_thr = float(exp.get("near_dup_threshold", 0.8))
 
@@ -325,7 +335,7 @@ def _assert_no_train_eval_leak(train_docs, all_azure_docs, asg) -> None:
 # TRAIN
 # --------------------------------------------------------------------------- #
 def run_train(profile: str, force: bool = False, vocab_sizes: tuple[int, ...] | None = None) -> dict:
-    vocabs = vocab_sizes or PROFILE_VOCABS[profile]
+    vocabs = vocab_sizes or _profile_vocabs(profile)
     trained = {}
     for corpus_name in config.TRAINING_CORPORA:
         corpus_path = config.SPLITS / f"{corpus_name}.corpus.txt"
@@ -384,7 +394,7 @@ def _load_track_b_encoders(exp: dict) -> list:
 
 
 def run_evaluate(profile: str, exp: dict, force: bool = False) -> dict:
-    vocabs = PROFILE_VOCABS[profile]
+    vocabs = _profile_vocabs(profile)
     eval_docs_path = config.EVALUATION / "eval_docs.parquet"
     out_rows = config.RESULTS_RAW / "eval_rows.parquet"
     out_agg = config.RESULTS_PROCESSED / "eval_aggregate.csv"
@@ -455,7 +465,7 @@ def run_benchmark(profile: str, exp: dict, force: bool = False, rounds: int = 5)
     from .runtime_bench import benchmark_encoders
     out = config.RESULTS_RAW / "runtime_observations.json"
     eval_docs_path = config.EVALUATION / "eval_docs.parquet"
-    vocabs = PROFILE_VOCABS[profile]
+    vocabs = _profile_vocabs(profile)
 
     def work():
         df = pd.read_parquet(eval_docs_path)
@@ -498,7 +508,7 @@ def run_analyze(profile: str, exp: dict, force: bool = False) -> dict:
     rows_path = config.RESULTS_RAW / "eval_rows.parquet"
     out_boot = config.RESULTS_PROCESSED / "bootstrap.json"
     out_fig_flag = config.RESULTS_FIGURES / ".figures_done"
-    vocabs = PROFILE_VOCABS[profile]
+    vocabs = _profile_vocabs(profile)
     n_resamples = int(exp.get("bootstrap_resamples", 10000))
     principal_vocab = config.VOCAB_SIZE_PILOT if config.VOCAB_SIZE_PILOT in vocabs else vocabs[0]
 
