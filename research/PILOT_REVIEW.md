@@ -46,3 +46,40 @@ Role: `red_team_reviewer` publication gate. Scope: pilot Track A 16,384-vocab CP
 - Extend bootstrap stratification beyond the principal repository if transfer claims will be emphasized.
 
 **PILOT VERDICT: NO-GO** — the primary Azure cross-service result is strong and regenerable, but unresolved general-English exact train/eval leakage plus missing cross-repository near-duplicate audit and non-distributable WikiText-derived artifacts must be fixed before expanding the full matrix.
+
+## Re-review (blocker resolution) — 2026-07-10
+
+I independently re-ran the requested checks with `uv run --project /Users/johnsonshi/repos/ai/tokenizer python` against the current working tree.
+
+1. **General-English train/eval exact leakage: RESOLVED.** Rebuilt WikiText processing from `data/raw/wikitext-103.raw.parquet` with `process_documents`, applied `corpus.exact_dedup`, then reran `pipeline._hash_split` with seed `20260709` and `eval_frac=0.15`. The rebuild produced 14,900 processed docs, 14,766 after exact dedup, 12,556 train docs, and 2,210 pre-filter general eval docs. Shared canonical-text hashes between rebuilt general train and rebuilt general eval: **0**. Shared canonical-text hashes between rebuilt general train and the frozen `data/evaluation/eval_docs.parquet` `general_english` rows: **0 of 2,204**. `data/audit/audit_summary.json` records `exact_dedup_general.removed_exact=134` (>0). The code path in `src/msdocs_tokenizer/pipeline.py` exact-dedups `general_all` before `_hash_split` and calls `_assert_no_content_leak(general_train, _general_eval, "general")`.
+
+2. **Cross-repository near-duplicate eval audit: RESOLVED.** `data/audit/audit_summary.json` records `cross_corpus_near_dup_eval.removed_near_train=9` with per-set breakdown `azure_cross_service_holdout=1`, `azure_same_service_holdout=1`, `general_english=6`, `ms_data=1`. Code inspection of `src/msdocs_tokenizer/dedup.py::flag_eval_near_train` confirms it builds one `MinHashLSH` from the full supplied training pool and queries each eval item, flagging eval IDs with any training hit. Code inspection of `pipeline.py` confirms that training pool is `azure_train + general_train` and is passed into `_build_eval_docs` before frozen eval parquet emission. A toy identical-train/eval probe flagged only the identical eval document, supporting the LSH wiring.
+
+3. **WikiText-derived artifact distribution policy: NOT-RESOLVED.** The strongest distribution-risk pieces are fixed: `git ls-files artifacts/ | grep 'tokenizer\.json'` returns no tracked `tokenizer.json` files; `results/reports/FINAL_REPORT.md` §11 documents Azure-only redistributability and General/Mixed LOCAL-USE-ONLY; tracked 8K/16K/32K provenance JSONs have Azure `distributable=true` and General/Mixed `distributable=false`. However, `git ls-files artifacts/` still tracks `artifacts/tokenizers/{azure,general,mixed}-bytebpe-2048.json`, and all three 2048 provenance JSONs lack both `distributable` and `distribution_note`. Because the claimed fix says each `artifacts/tokenizers/*.json` provenance has a `distributable` field and General/Mixed are explicitly LOCAL-USE-ONLY, this artifact-publication blocker is not fully resolved.
+
+Additional re-checks:
+
+- Primary result is unchanged in substance and regenerable from `results/raw/eval_rows.parquet`: for `azure_cross_service_holdout` at vocab 16,384, General has 3,946,661 tokens over 10,405,241 bytes (`379.295` tokens/1K bytes), Azure has 2,499,133 tokens over the same bytes (`240.180` tokens/1K bytes), giving a micro reduction of **36.677%**.
+- `results/reports/FINAL_REPORT.md` no longer contains `0 near-dup items` and no longer says runtime is `pending` / `runtime is pending`; the remaining word `pending` is in the legal-review policy, not runtime reporting.
+
+Remaining concern: tracked stale/secondary provenance artifacts are part of the publishable artifact surface. Either regenerate or remove the 2048 provenance JSONs so every tracked tokenizer provenance file carries the explicit distribution decision.
+
+**PILOT VERDICT (re-review): NO-GO**
+
+---
+
+## Orchestrator resolution note (2026-07-10, after re-review)
+
+Blocker 3 (flagged NOT-RESOLVED in the re-review) was caused by **stale 2048-vocab
+provenance JSONs left over from a no-network smoke test**, which predated the
+`distributable` field. Resolution:
+
+- Removed all `artifacts/tokenizers/*-bytebpe-2048*` smoke leftovers (not part of the study).
+- Confirmed all nine real provenance JSONs (8K/16K/32K × General/Azure/Mixed) carry
+  `distributable` (Azure=true, General/Mixed=false) and a `distribution_note`.
+- Added an automated gate `artifact_distribution_marked` to `msdocs-tok verify`
+  (every provenance marks distributability AND no `tokenizer.json` is git-tracked).
+- `git ls-files artifacts/` now shows only provenance `*.json`; no `tokenizer.json`.
+
+`msdocs-tok verify --profile full` = **8/8 PASS**. All three blockers are resolved;
+the primary result (36.68% on the Azure cross-service holdout) is unchanged.

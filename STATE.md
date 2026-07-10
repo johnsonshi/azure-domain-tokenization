@@ -3,8 +3,8 @@
 > Canonical run state. Keep under 250 lines. A fresh agent must be able to resume
 > from this file + repository state alone (plan.md §19).
 
-- **Updated:** 2026-07-10T00:45-07:00
-- **Phase:** 5-8 complete (full 9-tokenizer matrix + eval + stats + runtime); Phase 3 red-team gate pending
+- **Updated:** 2026-07-10T01:55-07:00
+- **Phase:** 9 (report). Full 9-tokenizer matrix trained, evaluated, analyzed; leakage-clean; verify 7/7. Red-team re-review (GO/NO-GO) in flight.
 - **Profile target:** pilot (32 MiB corpora, 16K vocab) → then full matrix if budget allows
 - **Runtime budget:** 10h. **Disk:** 607 GiB free (32% used) — well above 15% floor.
 - **Workers:** 10 (max(1, 12−2)). **Seed:** 20260709.
@@ -65,3 +65,18 @@
 - Code: `src/msdocs_tokenizer/` · Tests: `tests/` · Harness: `Makefile`, `scripts/`
 - Provenance (once run): `data/manifests/sources.lock.json`, `artifacts/tokenizers/*.json`
 - Results (once run): `results/tables/`, `results/figures/`, `results/reports/FINAL_REPORT.md`
+
+## Results snapshot (full matrix, 32 MiB, leakage-clean)
+
+- Primary (Azure vs General, cross-service holdout, 16K): **+36.68%** token reduction, CI [35.77, 37.62], win 1.0, n=964.
+- General-English regression: **-34.75%**. Mixed: +34.21% on Azure, only -4.4% English.
+- Vocab sensitivity: 8K/16K/32K reductions 36.7/36.7/35.6%; absolute tokens fall with vocab.
+- Fragmentation: Azure fragments resource-providers/URLs/CLI/identifiers ~2x less. Vocab used: Azure 82% vs General 48%.
+- Runtime (separate): Track A ~5.4 MB/s vs tiktoken 11-19 MB/s.
+- Leakage controls: general exact-dedup (134 removed) + cross-corpus near-dup eval filter (9 removed); byte-match spread 0; verify 7/7.
+
+## Remaining to close the study
+
+- [ ] Red-team re-review GO (in `research/PILOT_REVIEW.md`) — in flight.
+- [x] FINAL_REPORT.md (14 sections), ARTICLE_DRAFT.md, 7 notebooks (execute clean), figures + source tables.
+- [ ] Final `bash scripts/verify_all.sh` + commit; optional `scale` (96 MiB) run if budget remains.

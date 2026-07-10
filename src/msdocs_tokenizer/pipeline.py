@@ -868,12 +868,24 @@ def run_verify(profile: str, exp: dict) -> dict:
 
     # Provenance completeness for every trained tokenizer
     prov_ok = True
+    dist_marked = True
     for pj in config.ARTIFACTS.glob("*.json"):
         p = json.loads(pj.read_text())
         for field in ["artifact_sha256", "config_sha256", "vocab_size_actual", "training_manifest_sha256", "machine_id"]:
             if not p.get(field):
                 prov_ok = False
+        if "distributable" not in p or not p.get("distribution_note"):
+            dist_marked = False
     check("provenance_complete", prov_ok, "")
+
+    # Artifact distribution policy: every provenance marks distributability AND no
+    # tokenizer.json artifact is committed (WikiText-derived are local-use-only).
+    import subprocess as _sp
+    tracked_artifacts = _sp.run(["git", "-C", str(config.ROOT), "ls-files", "artifacts/"],
+                                capture_output=True, text=True).stdout
+    no_tokenizer_json = "tokenizer.json" not in tracked_artifacts
+    check("artifact_distribution_marked", dist_marked and no_tokenizer_json,
+          f"all_marked={dist_marked}, no_tokenizer_json_committed={no_tokenizer_json}")
 
     # Sources pinned
     check("sources_lock_exists", (config.MANIFESTS / "sources.lock.json").exists(), "")
