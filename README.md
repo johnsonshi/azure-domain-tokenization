@@ -2,7 +2,7 @@
 
 **Measuring domain specialization on Microsoft technical documentation — a controlled, CPU-only, reproducible study.**
 
-> Status: **pilot complete, full 9-tokenizer matrix trained and verified (7/7)**. See [`STATE.md`](STATE.md) for live status, [`plan.md`](plan.md) for the full spec, [`FINDINGS.md`](FINDINGS.md) for verified results, and [`results/reports/FINAL_REPORT.md`](results/reports/FINAL_REPORT.md) for the report.
+> Status: **study complete; full 9-tokenizer matrix trained and verified (8/8)**. See [`STATE.md`](STATE.md) for live status, [`plan.md`](plan.md) for the full spec, [`FINDINGS.md`](FINDINGS.md) for verified results, and [`results/reports/FINAL_REPORT.md`](results/reports/FINAL_REPORT.md) for the report.
 
 ## Headline result
 
@@ -31,15 +31,19 @@ bash scripts/doctor.sh
 # 3. Run the test suite (no network needed; uses a tiny fixture corpus)
 uv run pytest
 
-# 4. Drive the pipeline (each target is safe to re-run)
+# 4. Drive the pilot slice (each target is safe to re-run)
 make inventory        # MicrosoftDocs repo inventory + scores
 make research         # literature review artifacts
 make acquire-pilot    # pin + fetch 32 MiB pilot corpora
 make audit-pilot      # clean, dedupe, split, leakage audit
 make train-pilot      # 16K Azure / General / Mixed tokenizers
 make evaluate-pilot   # compression + round-trip on held-out sets
-make report           # final report + figures + notebooks
-make verify           # end-to-end reproduction check
+make report verify    # report + end-to-end reproduction check
+
+# 5. Reproduce the completed full matrix
+make acquire-full audit-full
+make train-all evaluate-all
+PROFILE=full make analyze report verify
 ```
 
 ## Layout

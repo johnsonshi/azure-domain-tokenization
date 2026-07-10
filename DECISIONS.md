@@ -78,3 +78,9 @@
 - **Decision:** Treat plan.md §6 arXiv IDs 2601.21665 (AdaptBPE), 2509.26124, 2605.17379 as real prior work.
 - **Evidence:** independently fetched arxiv.org/abs/2601.21665 — genuine page (canonical URL + abstract "Subword tokenization methods, such as Byte-Pair Encoding..."). literature_researcher verified all three.
 - **Owner:** literature_researcher. **Revisit:** n/a.
+
+### 2026-07-10 · D-0014 · Documentation corrections after final verification
+- **Decision:** Treat the final verified test count as 67 (superseding the 63-test count recorded in D-0001), and treat D-0008 (PowerShell pending) as superseded by D-0009 final transfer selection.
+- **Alternatives:** Rewrite earlier entries (rejected; this log is append-only).
+- **Evidence:** Final `uv run pytest -q -m "not network"` = 67 passed; D-0009 documents the final transfer repo set with PowerShell-Docs dropped.
+- **Owner:** orchestrator. **Revisit:** only if final verification is rerun with a different tracked test suite.

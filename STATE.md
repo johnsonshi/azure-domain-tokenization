@@ -3,7 +3,7 @@
 > Canonical run state. Keep under 250 lines. A fresh agent must be able to resume
 > from this file + repository state alone (plan.md §19).
 
-- **Updated:** 2026-07-10T10:05-07:00
+- **Updated:** 2026-07-10T10:22-07:00
 - **Phase:** COMPLETE — full 9-tokenizer matrix, leakage-clean, verify 8/8, verify_all OK, red-team blockers resolved. Report/article/notebooks delivered.
 - **Profile delivered:** full matrix (General/Azure/Mixed × 8K/16K/32K) at byte-matched 32 MiB; 16K also serves as the pilot. Optional `scale` (96 MiB) profile available if more Azure services are acquired.
 - **Runtime budget:** 10h. **Disk:** 607 GiB free (32% used) — well above 15% floor.
@@ -46,7 +46,8 @@
   1. `scale` run (96 MiB) — first expand the azure-docs sparse-checkout to more of the
      144 `articles/` services, then `msdocs-tok acquire/audit/train/... --profile scale`.
   2. Regenerate any figure PNGs from the committed `results/tables/*` source tables.
-- To reproduce from a clean checkout: `uv sync && make acquire-pilot audit-pilot train-pilot evaluate-pilot analyze report verify`.
+- To reproduce the pilot slice from a clean checkout: `uv sync && make acquire-pilot audit-pilot train-pilot evaluate-pilot analyze report verify`.
+- To reproduce the completed matrix: `uv sync && make acquire-full audit-full train-all evaluate-all && PROFILE=full make analyze report verify` (equivalently use `msdocs-tok ... --profile full`).
 
 ## Last verified commands
 
@@ -77,7 +78,7 @@
 
 - Primary (Azure vs General, cross-service holdout, 16K): **+36.68%** token reduction, CI [35.77, 37.62], win 1.0, n=964.
 - General-English regression: **-34.75%**. Mixed: +34.21% on Azure, only -4.4% English.
-- Vocab sensitivity: 8K/16K/32K reductions 36.7/36.7/35.6%; absolute tokens fall with vocab.
+- Vocab sensitivity: 8K/16K/32K reductions 36.46/36.68/35.41%; absolute tokens fall with vocab.
 - Fragmentation: Azure fragments resource-providers/URLs/CLI/identifiers ~2x less. Vocab used: Azure 82% vs General 48%.
 - Runtime (separate): Track A ~5.4 MB/s vs tiktoken 11-19 MB/s.
 - Leakage controls: general exact-dedup (134 removed) + cross-corpus near-dup eval filter (9 removed); byte-match spread 0; verify 8/8.
