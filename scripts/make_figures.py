@@ -58,8 +58,12 @@ _MANIFEST: list[dict] = []
 
 
 def _save(fig, name: str, caption: str, alt: str, source_table: str) -> None:
-    fig.savefig(FIG_PNG / f"{name}.png")
-    fig.savefig(FIG_PDF / f"{name}.pdf")
+    # Deterministic outputs: strip the wall-clock CreationDate so regenerating a
+    # figure yields byte-identical files (no spurious git diffs).
+    fig.savefig(FIG_PNG / f"{name}.png", metadata={"Software": "msdocs-tokenizer"})
+    fig.savefig(FIG_PDF / f"{name}.pdf",
+                metadata={"CreationDate": None, "Creator": "msdocs-tokenizer",
+                          "Producer": "matplotlib"})
     plt.close(fig)
     _MANIFEST.append({"figure": name, "source_table": source_table, "caption": caption, "alt": alt})
     print(f"  ✓ {name}.png / .pdf  (source: {source_table})")

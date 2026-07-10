@@ -150,6 +150,45 @@ def check_paper() -> None:
     check("paper compiled PDF present", pdf.exists(), str(pdf.relative_to(ROOT)) if pdf.exists() else "run make paper")
 
 
+def check_schemas() -> None:
+    """Validate committed result files have their expected schema (plan-2 §9)."""
+    import json
+    try:
+        import pandas as pd
+    except Exception:
+        check("result schemas", False, "pandas unavailable")
+        return
+    problems = []
+    er = ROOT / "results" / "raw" / "eval_rows.parquet"
+    if er.exists():
+        cols = set(pd.read_parquet(er).columns)
+        need = {"tokenizer_id", "eval_set", "repository", "document_id", "content_type",
+                "utf8_bytes", "unicode_chars", "whitespace_words", "token_count",
+                "roundtrip_ok", "unk_count"}
+        if not need <= cols:
+            problems.append(f"eval_rows missing {need - cols}")
+    else:
+        problems.append("eval_rows.parquet missing")
+    ea = ROOT / "results" / "processed" / "eval_aggregate.csv"
+    if ea.exists():
+        cols = set(pd.read_csv(ea).columns)
+        need = {"tokenizer_id", "eval_set", "tokens_per_1000_utf8_bytes_micro",
+                "tokens_per_1000_utf8_bytes_macro"}
+        if not need <= cols:
+            problems.append(f"eval_aggregate missing {need - cols}")
+    else:
+        problems.append("eval_aggregate.csv missing")
+    bj = ROOT / "results" / "processed" / "bootstrap.json"
+    if bj.exists():
+        b = json.loads(bj.read_text())
+        for k in ("comparisons", "by_eval_set", "by_content_type"):
+            if k not in b:
+                problems.append(f"bootstrap.json missing key {k}")
+    else:
+        problems.append("bootstrap.json missing")
+    check("result file schemas", not problems, "; ".join(problems) or "eval_rows/aggregate/bootstrap OK")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--strict", action="store_true", help="treat warnings as failures")
@@ -157,6 +196,7 @@ def main() -> int:
     print("== publication verify ==")
     check_experiment_verify()
     check_claims()
+    check_schemas()
     check_figure_sources()
     check_licenses()
     check_links()
