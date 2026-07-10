@@ -41,3 +41,13 @@ CLAIM REVIEW: FAIL (blockers: citation mismatch; unregistered numeric statements
 | Headline-number spot-check | PASS | `publication/claim_evidence.csv` matches the checked paper values: primary reduction 36.68 (`PRIMARY_REDUCTION_16K`), general regression -34.75 (`GENERAL_REGRESSION_AZURE`), Mixed +34.21/-4.39 (`MIXED_REDUCTION_PRINCIPAL`/`MIXED_REGRESSION`), transfer Kubernetes +31.18 (`TRANSFER_KUBERNETES`), and coverage 59,160 rows (`COVERAGE_ROWS`). |
 
 CLAIM REVIEW (re-review): NO-GO
+
+
+## Re-review iteration 2 (final)
+
+- Blocker 1 -- citation mismatch: RESOLVED. Exact current sentence: "Prior work builds domain-specific vocabularies or tokenizers for scientific \citep{beltagy2019scibert}, legal \citep{chalkidis2020legalbert}, and legal/financial \citep{bommarito2025kl3m} corpora, and studies tokenizer choice for domains \citep{dagan2024tokenizer}; code and natural-language corpora similarly motivate technical text that mixes prose, identifiers, and snippets \citep{feng2020codebert}." This now matches `paper/literature/citation_verification.csv`: `feng2020codebert` is cited for code/NL corpus context, not for tokenizer compression or domain-tokenizer construction.
+- Domain-vocabulary/tokenizer-building claim: PASS. The only citations attached to building domain-specific vocabularies/tokenizers are `beltagy2019scibert`, `chalkidis2020legalbert`, and `bommarito2025kl3m`; `dagan2024tokenizer` is attached to the tokenizer-choice study clause. These are accurate.
+- BioBERT boundary statement: PASS. Exact current sentence: "Notably, some domain-adapted models instead reuse a general-domain tokenizer \citep{lee2019biobert}, which is precisely the vocabulary-mismatch setting this line of work motivates."
+- Forbidden-claim final scan: PASS. Re-scanned `paper/sections/*.tex` and `paper/main.tex` for model quality/accuracy/reasoning/understanding, latency/GPU/cost reduction, drop-in replacement, and Microsoft endorsement. Matches are disclaimers, limitations, future-work boundaries, CPU tokenizer-throughput reporting, or observational-production-tokenizer caveats; no forbidden claim found.
+
+CLAIM REVIEW (final): PASS

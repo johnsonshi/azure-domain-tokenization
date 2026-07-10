@@ -13,8 +13,8 @@
 | 2026-07-10 | Artifact review (Part I gate) | artifact-reviewer | publication/reviews/ARTIFACT_REVIEW.md | NO-GO -> **GO** after 2 blockers fixed (README, deterministic figures) |
 | 2026-07-10 | Statistical review | statistical-reviewer | publication/reviews/STATISTICAL_REVIEW.md | **PASS** (independent recompute matched) |
 | 2026-07-10 | Methodological red team | method-redteam | publication/reviews/METHOD_REVIEW.md | **PASS** w/ recommendations (0 blockers) |
-| 2026-07-10 | Claim/writing red team | claim-redteam | publication/reviews/CLAIM_REVIEW.md | FAIL -> **addressed** (2 blockers fixed; RESPONSE_TO_REVIEW.md) |
-| _pending_ | Citation verification | citation-checker | paper/literature/citation_verification.csv | — |
+| 2026-07-10 | Claim/writing red team | claim-redteam | publication/reviews/CLAIM_REVIEW.md | FAIL -> re-review NO-GO -> **PASS** (final iteration 2; 2 blockers + citation mismatch fixed; RESPONSE_TO_REVIEW.md) |
+| 2026-07-10 | Citation verification | literature-researcher | paper/literature/citation_verification.csv | **PASS** (26 citations verified, 0 unresolved) |
 
 ## Prior scientific red-team (experiment phase, preserved)
 
