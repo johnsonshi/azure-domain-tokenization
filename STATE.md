@@ -3,8 +3,8 @@
 > Canonical run state. Keep under 250 lines. A fresh agent must be able to resume
 > from this file + repository state alone (plan.md §19).
 
-- **Updated:** 2026-07-10T01:55-07:00
-- **Phase:** 9 (report). Full 9-tokenizer matrix trained, evaluated, analyzed; leakage-clean; verify 7/7. Red-team re-review (GO/NO-GO) in flight.
+- **Updated:** 2026-07-10T02:05-07:00
+- **Phase:** COMPLETE — full 9-tokenizer matrix, leakage-clean, verify 8/8, verify_all OK, red-team blockers resolved. Report/article/notebooks delivered.
 - **Profile target:** pilot (32 MiB corpora, 16K vocab) → then full matrix if budget allows
 - **Runtime budget:** 10h. **Disk:** 607 GiB free (32% used) — well above 15% floor.
 - **Workers:** 10 (max(1, 12−2)). **Seed:** 20260709.
@@ -77,6 +77,6 @@
 
 ## Remaining to close the study
 
-- [ ] Red-team re-review GO (in `research/PILOT_REVIEW.md`) — in flight.
+- [x] Red-team: two passes; blockers 1&2 RESOLVED, blocker 3 resolved (stale smoke artifacts removed + verify gate). See research/PILOT_REVIEW.md.
 - [x] FINAL_REPORT.md (14 sections), ARTICLE_DRAFT.md, 7 notebooks (execute clean), figures + source tables.
-- [ ] Final `bash scripts/verify_all.sh` + commit; optional `scale` (96 MiB) run if budget remains.
+- [x] `bash scripts/verify_all.sh` = OK. Optional `scale` (96 MiB) run remains available if more Azure services are acquired.
