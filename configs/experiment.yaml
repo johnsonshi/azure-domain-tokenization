@@ -1,0 +1,21 @@
+# Experiment configuration (plan.md §13-16). Frozen for the controlled run.
+seed: 20260709
+near_dup_threshold: 0.8
+bootstrap_resamples: 10000
+
+profiles:
+  pilot:
+    corpus_bytes: 33554432      # 32 MiB per training corpus
+    vocab_sizes: [16384]
+  full:
+    corpus_bytes: 268435456     # 256 MiB per training corpus
+    vocab_sizes: [8192, 16384, 32768]
+
+# Track B existing baselines (descriptive only; tiktoken ships ranks locally).
+baselines:
+  tiktoken: [r50k_base, cl100k_base, o200k_base]
+
+split_fractions:
+  cross_service_holdout: 0.15
+  same_service_holdout: 0.12
+  general_english_eval: 0.15

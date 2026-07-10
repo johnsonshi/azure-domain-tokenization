@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# HARD CONSTRAINT (plan.md): never commit downloaded corpora, caches, licensed
+# raw text, or large generated artifacts. Only scripts, manifests, hashes,
+# configs, and aggregate results may be published.
+# ---------------------------------------------------------------------------
+
+# Cloned / downloaded source repositories (licensed raw text)
+/external/
+# Raw + intermediate corpus text (may be licensed; never redistribute)
+/data/raw/
+/data/normalized/
+/data/segments/
+/data/splits/
+/data/evaluation/
+/data/audit/
+/data/cache/
+# Keep the manifests directory (hashes + provenance are publishable)
+!/data/manifests/
+
+# Trained tokenizer artifacts (distributability depends on license review)
+/artifacts/tokenizers/*/
+# But keep provenance json + checksums tracked (small, publishable)
+!/artifacts/tokenizers/*.json
+
+# Raw per-run results can be large; keep processed tables + reports
+/results/raw/logs/*.log
+/results/raw/*.parquet
+/results/raw/*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.uv/
+build/
+dist/
+*.so
+
+# Notebooks scratch
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Locks that are large binary caches
+.cache/
+*.tmp
+*.log
+!RUN_LOG.md

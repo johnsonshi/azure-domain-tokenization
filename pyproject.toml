@@ -1,0 +1,60 @@
+[project]
+name = "msdocs-tokenizer"
+version = "0.1.0"
+description = "Controlled, CPU-only study of domain-specialized tokenizer efficiency on Microsoft technical documentation."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "msdocs-tokenizer-study" }]
+
+dependencies = [
+    # Tokenizer training + baselines
+    "tokenizers>=0.21,<0.22",
+    "tiktoken>=0.8,<0.10",
+    "huggingface-hub>=0.27,<1.0",
+    # Data handling
+    "numpy>=2.0,<3.0",
+    "pandas>=2.2,<3.0",
+    "pyarrow>=18.0",
+    # Schemas / config / provenance
+    "pydantic>=2.9,<3.0",
+    "pyyaml>=6.0",
+    "psutil>=6.0",
+    # Near-duplicate detection
+    "datasketch>=1.6,<2.0",
+    # CLI
+    "typer>=0.15,<0.20",
+    # Figures
+    "matplotlib>=3.9,<4.0",
+    # Notebooks (generated + executed by `make report`)
+    "nbformat>=5.10",
+    "nbclient>=0.10",
+    "ipykernel>=6.29",
+]
+
+[project.scripts]
+msdocs-tok = "msdocs_tokenizer.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9.0",
+    "pytest-cov>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/msdocs_tokenizer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "network: test requires network access (deselect with -m 'not network')",
+    "slow: slow test",
+]
+
+[tool.uv]
+package = true

@@ -1,0 +1,94 @@
+# Source specification (plan.md §7-9). Commits are pinned at acquisition time
+# into data/manifests/sources.lock.json. Licenses are reviewed in licenses/.
+#
+# roles:
+#   anchor              -> Azure training corpus (byte-level BPE trained on this)
+#   transfer            -> other MicrosoftDocs repos (cross-repo transfer eval)
+#   external_technical  -> non-Microsoft technical docs (transfer beyond MS style)
+#   general_english     -> Wikipedia-derived English (training + regression eval)
+#
+# methods:
+#   git       -> blobless clone + cone sparse-checkout of `paths` (training anchor)
+#   gh_api    -> deterministic blob download of <= max_docs markdown (eval-only)
+#   hf_parquet-> Hugging Face Hub versioned parquet (general English)
+
+sources:
+  # ----- Anchor: Azure documentation (CC-BY-4.0) -----
+  - name: azure-docs
+    role: anchor
+    repo: MicrosoftDocs/azure-docs
+    license_id: CC-BY-4.0
+    method: git
+    paths:
+      - articles/storage
+      - articles/virtual-network
+      - articles/application-gateway
+      - articles/frontdoor
+      - articles/expressroute
+      - articles/app-service
+      - articles/azure-functions
+      - articles/container-apps
+      - articles/batch
+      - articles/hdinsight
+      - articles/data-factory
+      - articles/synapse-analytics
+      - articles/service-bus-messaging
+      - articles/event-hubs
+      - articles/logic-apps
+      - articles/api-management
+      - articles/iot-hub
+      - articles/automation
+      - articles/backup
+      - articles/site-recovery
+
+  # ----- Transfer: other MicrosoftDocs repos (eval only) -----
+  - name: architecture-center
+    role: transfer
+    repo: MicrosoftDocs/architecture-center
+    license_id: CC-BY-4.0
+    method: gh_api
+    paths: ["docs/"]
+    max_docs: 200
+
+  - name: azure-devops-docs
+    role: transfer
+    repo: MicrosoftDocs/azure-devops-docs
+    license_id: CC-BY-4.0
+    method: gh_api
+    paths: ["docs/pipelines/"]
+    max_docs: 200
+
+  - name: sql-docs
+    role: transfer
+    repo: MicrosoftDocs/sql-docs
+    license_id: CC-BY-4.0
+    method: gh_api
+    paths: ["docs/relational-databases/"]
+    max_docs: 200
+
+  - name: powershell-docs
+    role: transfer
+    repo: MicrosoftDocs/PowerShell-Docs
+    license_id: UNKNOWN-PENDING-REVIEW
+    method: gh_api
+    paths: ["reference/7.4/"]
+    max_docs: 150
+
+  # ----- External technical control: Kubernetes docs (CC-BY-4.0) -----
+  - name: kubernetes-website
+    role: external_technical
+    repo: kubernetes/website
+    license_id: CC-BY-4.0
+    method: gh_api
+    paths: ["content/en/docs/"]
+    max_docs: 250
+
+  # ----- General English control: Wikipedia-derived (wikitext-103-raw) -----
+  - name: wikitext-103
+    role: general_english
+    hf_repo: Salesforce/wikitext
+    license_id: CC-BY-SA-3.0
+    method: hf_parquet
+    hf_files:
+      - wikitext-103-raw-v1/train-00000-of-00002.parquet
+    max_docs: 20000
