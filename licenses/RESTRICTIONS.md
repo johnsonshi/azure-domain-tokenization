@@ -45,3 +45,27 @@ WikiText is derived from Wikipedia and is labeled on Hugging Face as `cc-by-sa-3
 - Salesforce/wikitext: Hugging Face README/dataset card at revision b08601e04326c79dfdd32d625aee71d232d685c3.
 - openai/tiktoken: `LICENSE`, `README.md`, `tiktoken_ext/openai_public.py` at commit 08a5f3b2c987ada4fc5aa1f16c643c203fa8acaa.
 - huggingface/tokenizers: `LICENSE` at commit 05741122105911e14dbe307c8f640c757fa97779; no root NOTICE found.
+
+## Provenance note: WikiText revision pinning (added during publication audit)
+
+`data/manifests/sources.lock.json` records the general-English source as
+`Salesforce/wikitext` at `commit_sha: hf:main` because acquisition fetched the
+`wikitext-103-raw-v1` parquet from the dataset's `main` branch at acquisition
+time (2026-07-10). The licensing review resolved the dataset **README** to
+revision `b08601e04326c79dfdd32d625aee71d232d685c3`.
+
+For exact reproduction, pin the Hugging Face dataset revision explicitly
+(`hf_hub_download(..., revision="<sha>")`). This provenance note does not alter
+the frozen experiment; it documents the pin. WikiText redistribution and any
+WikiText-derived (General/Mixed) tokenizer-artifact redistribution remain
+**VETOED / local-use-only** pending legal review of the exact license version
+(the HF card lists CC-BY-SA-3.0 + GFDL metadata and CC-BY-SA-4.0 in prose).
+
+## Note: PowerShell-Docs reviewed but not selected
+
+`licenses/SOURCE_LICENSES.csv` and `licenses/ATTRIBUTION.md` retain a
+`MicrosoftDocs/PowerShell-Docs` (CC-BY-4.0) entry from the discovery phase. It
+was **reviewed but is NOT one of the 8 final locked sources** in
+`data/manifests/sources.lock.json` (fabric-docs + microsoft-365-docs were
+selected instead). The entry is kept for provenance; it does not affect any
+published artifact.

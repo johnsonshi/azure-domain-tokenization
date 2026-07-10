@@ -891,11 +891,17 @@ def run_verify(profile: str, exp: dict) -> dict:
     check("sources_lock_exists", (config.MANIFESTS / "sources.lock.json").exists(), "")
 
     all_ok = all(ok for _, ok, _ in checks)
-    md = ["# Verification report", "", f"Profile: `{profile}`  ", f"Generated: {time.strftime('%Y-%m-%dT%H:%M:%S%z')}", "",
+    # Fully deterministic report (no timestamp/commit) so re-running `verify`
+    # never dirties the tracked file; git tracks the file's own provenance.
+    md = ["# Verification report", "",
+          f"Profile: `{profile}`  ",
+          "_Deterministic report — regenerate with `uv run msdocs-tok verify "
+          f"--profile {profile}` (or `make verify`)._", "",
           "| Check | Result | Detail |", "|---|---|---|"]
     for name, ok, detail in checks:
-        md.append(f"| {name} | {'✅ PASS' if ok else '❌ FAIL'} | {detail[:80]} |")
-    md += ["", f"**Overall: {'✅ ALL CHECKS PASS' if all_ok else '❌ FAILURES PRESENT'}**", ""]
+        md.append(f"| {name} | {'PASS' if ok else 'FAIL'} | {detail[:80]} |")
+    md += ["", f"**Overall: {'ALL CHECKS PASS' if all_ok else 'FAILURES PRESENT'}** "
+           f"({sum(1 for _, o, _ in checks if o)}/{len(checks)})", ""]
     config.RESULTS_REPORTS.mkdir(parents=True, exist_ok=True)
     atomic_write_text(config.RESULTS_REPORTS / "VERIFICATION.md", "\n".join(md))
     _log(f"verify: {'PASS' if all_ok else 'FAIL'} ({sum(1 for _,o,_ in checks if o)}/{len(checks)})")

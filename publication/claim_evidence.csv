@@ -38,3 +38,7 @@ CROSS_SERVICE_HOLDOUT_SERVICES,descriptive,OK,5,5,0.0,data/audit/audit_summary.j
 DEDUP_GENERAL_EXACT,descriptive,OK,134,134,0.0,data/audit/audit_summary.json
 CROSS_CORPUS_REMOVED,descriptive,OK,9,9,0.0,data/audit/audit_summary.json
 SEED,descriptive,OK,20260709,20260709,0.0,configs/experiment.yaml
+RUNTIME_TRACKA_MIN,descriptive,OK,5.13,5.129767927728537,0.2,results/tables/runtime_summary.csv
+RUNTIME_TRACKA_MAX,descriptive,OK,5.47,5.469546001618316,0.2,results/tables/runtime_summary.csv
+RUNTIME_TRACKB_MIN,descriptive,OK,11.61,11.60777467773929,0.2,results/tables/runtime_summary.csv
+RUNTIME_TRACKB_MAX,descriptive,OK,19.83,19.834158846208965,0.2,results/tables/runtime_summary.csv

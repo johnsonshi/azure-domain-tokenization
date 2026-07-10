@@ -168,8 +168,15 @@ def build_corpus_file(texts: list[str], out_path: Path, separator: str = "\n\n")
     tmp = out_path.with_suffix(out_path.suffix + ".tmp")
     tmp.write_text(blob, encoding="utf-8")
     tmp.replace(out_path)
+    # Store a repo-relative path so manifests are portable (no machine-specific
+    # absolute paths in committed provenance).
+    try:
+        from . import config as _cfg
+        rel = str(out_path.resolve().relative_to(_cfg.ROOT))
+    except Exception:
+        rel = out_path.name
     return {
-        "path": str(out_path),
+        "path": rel,
         "n_documents": len(texts),
         "content_utf8_bytes": content_bytes,
         "file_utf8_bytes": out_path.stat().st_size,

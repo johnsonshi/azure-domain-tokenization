@@ -3,14 +3,14 @@
 > Canonical publication-prep state (plan-2.md §4.4). A fresh agent resumes from
 > this file + repository state alone. Keep concise.
 
-- **Updated:** 2026-07-10T11:35-07:00
+- **Updated:** 2026-07-10T11:55-07:00
 - **Branch:** `publication/arxiv-prep` (experiment preserved on `main`; snapshot tag `experiment-full-verified-20260709` → commit a7d0301)
-- **Phase:** A (preserve + audit) — snapshot preserved, claim registry built (39/39 verify), audits launching.
+- **Phase:** A COMPLETE → B. Snapshot preserved; claim registry 43/43; 5 audits done; all blockers resolved (secret PASS, license ×4, repro ×1, repo ×2). Figures generated.
 - **Scientific record:** FROZEN. Do not rerun/alter the experiment. Primary = 36.68% (Azure vs General, 16K, azure_cross_service_holdout; CI [35.77,37.62]; win 1.0; n=964).
 
 ## Phase gates (plan-2.md §26)
 
-- [~] **Phase A** preserve + audit: snapshot ✓, branch ✓, claim registry ✓ (`publication/claims.yaml`, `scripts/verify_claims.py`, 39 claims). Pending: repo/license/secret/link/reproducibility audits + blocker resolution.
+- [x] **Phase A** preserve + audit: snapshot ✓, branch ✓, claim registry ✓ (43 claims, 43/43 PASS), 5 audits ✓, blockers resolved ✓ (`publication/audits/AUDIT_RESOLUTION.md`), 6 publication figures ✓ (`scripts/make_figures.py`).
 - [ ] **Phase B** repository information architecture (README, docs/, results dict, notebooks, Make targets, community files)
 - [ ] **Phase C** public figures + claim verification + artifact review
 - [ ] **Phase D** literature review + citation verification

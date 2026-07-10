@@ -4,7 +4,7 @@
   "file_utf8_bytes": 33560701,
   "n_documents": 3135,
   "n_selected": 3135,
-  "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/azure.corpus.txt",
+  "path": "data/splits/azure.corpus.txt",
   "profile": "full",
   "sha256": "8cbfd17f6e9634cd5a9a3ef47919b868ecd0728a8e0fd71b104da60beebc6194",
   "target_bytes": 33554432,

@@ -6,7 +6,7 @@
   "general_bytes": 16777216,
   "n_documents": 2585,
   "n_selected": 2585,
-  "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/mixed.corpus.txt",
+  "path": "data/splits/mixed.corpus.txt",
   "profile": "full",
   "sha256": "fbcaeefc8cbf52cd68fc351695d4599167e224d5440ef24c14e529a38da9040a",
   "target_bytes": 33554432,

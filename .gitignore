@@ -55,3 +55,6 @@ dist/
 
 # Stage resumption markers (regenerated; outputs are git-ignored so stages re-run)
 /data/.stages/
+
+# Any generated training corpus text (licensed source text)
+*.corpus.txt
