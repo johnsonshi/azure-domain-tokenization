@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:52:57-0700",
+  "command": "gh api git/trees/71d23f81 (prefix=content/en/docs/); select<= 250; download blobs",
+  "commit_sha": "71d23f81e3479361befc94564e2b955860c03164",
+  "file_count": 250,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=external_technical; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "kubernetes/website",
+  "retained_clean_bytes": 0,
+  "source_bytes": 2616599,
+  "sparse_paths": [
+    "content/en/docs/"
+  ],
+  "url": "https://github.com/kubernetes/website"
+}

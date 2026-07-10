@@ -138,6 +138,27 @@ def near_dedup_clusters(docs: list[ProcessedDoc], threshold: float = 0.8) -> dd.
     return dd.find_near_duplicates(items, threshold=threshold)
 
 
+def near_dedup(docs: list[ProcessedDoc], threshold: float = 0.8) -> tuple[list[ProcessedDoc], dd.NearDupResult, dict]:
+    """Remove near-duplicates, keeping one representative per cluster (plan.md §11).
+
+    Keeping a single representative both cleans the corpus and prevents genuine
+    cross-service near-duplicates (e.g. Azure's auto-generated per-service policy
+    pages) from bridging otherwise-independent services in the split.
+    """
+    near = near_dedup_clusters(docs, threshold)
+    by_cluster: dict[int, list[ProcessedDoc]] = {}
+    for d in docs:
+        by_cluster.setdefault(near.clusters.get(d.document_id, -1), []).append(d)
+    kept: list[ProcessedDoc] = []
+    removed = 0
+    for group in by_cluster.values():
+        group_sorted = sorted(group, key=lambda d: d.document_id)
+        kept.append(group_sorted[0])
+        removed += len(group_sorted) - 1
+    stats = {"input": len(docs), "kept": len(kept), "removed_near": removed, "threshold": threshold}
+    return kept, near, stats
+
+
 def build_corpus_file(texts: list[str], out_path: Path, separator: str = "\n\n") -> dict:
     """Write selected document texts to a single training corpus file."""
     out_path = Path(out_path)

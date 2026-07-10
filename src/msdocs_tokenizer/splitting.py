@@ -52,6 +52,23 @@ class SplitAssignment:
     stats: dict[str, int] = field(default_factory=dict)
 
 
+class _SplitUnionFind:
+    def __init__(self) -> None:
+        self.parent: dict[str, str] = {}
+
+    def find(self, x: str) -> str:
+        self.parent.setdefault(x, x)
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        return x
+
+    def union(self, a: str, b: str) -> None:
+        ra, rb = self.find(a), self.find(b)
+        if ra != rb:
+            self.parent[ra] = rb
+
+
 def assign_azure_splits(
     docs: list[DocumentRef],
     seed: int,
@@ -60,43 +77,71 @@ def assign_azure_splits(
 ) -> SplitAssignment:
     """Assign every Azure document to a split with strict group isolation.
 
-    Strategy:
-    1. Group documents by top-level service. Deterministically route a fraction
-       of *services* wholly into the cross-service holdout (no doc from those
-       services appears in train).
-    2. Within the remaining (train) services, deterministically hold out a
-       fraction of *near-duplicate clusters* as the same-service holdout.
-    """
-    # Group by service
-    services: dict[str, list[DocumentRef]] = {}
-    for d in docs:
-        services.setdefault(top_level_service(d.source_path), []).append(d)
+    Leakage groups are the connected components after unioning documents that
+    share a top-level service OR a near-duplicate cluster. This guarantees no
+    near-duplicate cluster and no service can straddle the train/holdout boundary
+    even when a near-duplicate cluster spans multiple services.
 
+    1. Route a deterministic fraction of whole leakage groups to the
+       cross-service holdout (service- and near-dup-disjoint from train).
+    2. Within train-pool groups, route whole near-duplicate clusters (by global
+       cluster id) to the same-service holdout.
+    """
+    uf = _SplitUnionFind()
+    for d in docs:
+        uf.find(d.document_id)
+
+    # Union by service
+    service_rep: dict[str, str] = {}
+    for d in docs:
+        svc = top_level_service(d.source_path)
+        if svc in service_rep:
+            uf.union(service_rep[svc], d.document_id)
+        else:
+            service_rep[svc] = d.document_id
+    # Union by near-duplicate cluster
+    cluster_rep: dict[int, str] = {}
+    for d in docs:
+        if d.cluster_id >= 0:
+            if d.cluster_id in cluster_rep:
+                uf.union(cluster_rep[d.cluster_id], d.document_id)
+            else:
+                cluster_rep[d.cluster_id] = d.document_id
+
+    groups: dict[str, list[DocumentRef]] = {}
+    for d in docs:
+        groups.setdefault(uf.find(d.document_id), []).append(d)
+
+    doc_to_split: dict[str, str] = {}
+    for gid, gdocs in groups.items():
+        if _stable_fraction(f"grp|{seed}|{gid}") < cross_service_fraction:
+            for d in gdocs:
+                doc_to_split[d.document_id] = "azure_cross_service_holdout"
+        else:
+            # Train-pool group: hold out whole near-dup clusters (global id) as same-service.
+            for d in gdocs:
+                key_id = d.cluster_id if d.cluster_id >= 0 else d.document_id
+                if _stable_fraction(f"ssh|{seed}|{key_id}") < same_service_holdout_fraction:
+                    doc_to_split[d.document_id] = "azure_same_service_holdout"
+                else:
+                    doc_to_split[d.document_id] = "azure_train"
+
+    # Report service -> split (a service is wholly in one leakage group)
     service_to_split: dict[str, str] = {}
-    for svc in services:
-        if _stable_fraction(f"svc|{seed}|{svc}") < cross_service_fraction:
+    svc_splits: dict[str, set[str]] = {}
+    for d in docs:
+        svc_splits.setdefault(top_level_service(d.source_path), set()).add(doc_to_split[d.document_id])
+    for svc, splits in svc_splits.items():
+        if splits == {"azure_cross_service_holdout"}:
             service_to_split[svc] = "azure_cross_service_holdout"
         else:
             service_to_split[svc] = "azure_train"
 
-    doc_to_split: dict[str, str] = {}
-    for svc, svc_docs in services.items():
-        if service_to_split[svc] == "azure_cross_service_holdout":
-            for d in svc_docs:
-                doc_to_split[d.document_id] = "azure_cross_service_holdout"
-            continue
-        # Same-service holdout: route whole near-dup clusters out of train.
-        for d in svc_docs:
-            group_key = f"clu|{seed}|{svc}|{d.cluster_id if d.cluster_id >= 0 else d.document_id}"
-            if _stable_fraction(group_key) < same_service_holdout_fraction:
-                doc_to_split[d.document_id] = "azure_same_service_holdout"
-            else:
-                doc_to_split[d.document_id] = "azure_train"
-
     stats: dict[str, int] = {}
     for s in doc_to_split.values():
         stats[s] = stats.get(s, 0) + 1
-    stats["n_services"] = len(services)
+    stats["n_services"] = len(svc_splits)
+    stats["n_leakage_groups"] = len(groups)
     stats["n_cross_service_holdout_services"] = sum(
         1 for v in service_to_split.values() if v == "azure_cross_service_holdout"
     )

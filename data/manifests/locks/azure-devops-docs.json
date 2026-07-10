@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:47:33-0700",
+  "command": "gh api git/trees/83e59036 (prefix=docs/pipelines/); select<= 220; download blobs",
+  "commit_sha": "83e590364fe13aab331d166cab63b5cbea0b35ab",
+  "file_count": 220,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=transfer; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "MicrosoftDocs/azure-devops-docs",
+  "retained_clean_bytes": 0,
+  "source_bytes": 1762647,
+  "sparse_paths": [
+    "docs/pipelines/"
+  ],
+  "url": "https://github.com/MicrosoftDocs/azure-devops-docs"
+}

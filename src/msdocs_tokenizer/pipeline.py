@@ -175,13 +175,18 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
             out_segments.parent.mkdir(parents=True, exist_ok=True)
             seg_df.to_parquet(out_segments)
 
-        # Exact + near-dup within anchor (azure)
+        # Exact + near-dup within anchor (azure). Near-duplicates are REMOVED
+        # (one representative kept) so genuine cross-service duplicates cannot
+        # bridge services in the split (plan.md §11).
         azure_docs = processed.get("anchor", [])
         azure_docs, exact_stats = corpus.exact_dedup(azure_docs)
-        near = corpus.near_dedup_clusters(azure_docs, threshold=near_thr) if azure_docs else None
-
-        # Azure group-aware splits
+        near = None
+        near_stats = {"removed_near": 0, "input": len(azure_docs), "kept": len(azure_docs), "threshold": near_thr}
+        if azure_docs:
+            azure_docs, near, near_stats = corpus.near_dedup(azure_docs, threshold=near_thr)
         cluster_of = near.clusters if near else {}
+
+        # Azure group-aware splits (near-dups already removed -> service-granular)
         refs = [splitting.DocumentRef(d.document_id, d.source_repo, d.source_path,
                                       cluster_of.get(d.document_id, -1)) for d in azure_docs]
         asg = splitting.assign_azure_splits(refs, seed=seed)
@@ -262,8 +267,8 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
             "normalization": norm_reports,
             "exact_dedup": exact_stats,
             "near_dup": {"threshold": near_thr,
-                         "num_near_dup_items": near.num_near_dup_items if near else 0,
-                         "num_clusters": near.num_clusters if near else 0,
+                         "removed_near": near_stats.get("removed_near", 0),
+                         "kept_after_near": near_stats.get("kept", 0),
                          "num_pairs": len(near.pairs) if near else 0},
             "azure_splits": asg.stats,
             "leakage_violations": violations,

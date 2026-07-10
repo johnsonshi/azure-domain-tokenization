@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:46:03-0700",
+  "command": "gh api git/trees/9bb6e65c (prefix=docs/); select<= 220; download blobs",
+  "commit_sha": "9bb6e65cf6b109039e966e27aad44ce71ab4120b",
+  "file_count": 220,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=transfer; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "MicrosoftDocs/architecture-center",
+  "retained_clean_bytes": 0,
+  "source_bytes": 4602930,
+  "sparse_paths": [
+    "docs/"
+  ],
+  "url": "https://github.com/MicrosoftDocs/architecture-center"
+}
