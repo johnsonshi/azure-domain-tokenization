@@ -38,7 +38,7 @@ msdocs-tok = "msdocs_tokenizer.cli:app"
 [dependency-groups]
 dev = [
     "detect-secrets>=1.5.0",
-    "pytest>=8.3,<9.0",
+    "pytest>=9.0.3,<10.0",
     "pytest-cov>=6.0",
 ]
 
