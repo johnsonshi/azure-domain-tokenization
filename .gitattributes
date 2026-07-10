@@ -1,0 +1,30 @@
+# Normalize line endings for text files
+* text=auto eol=lf
+
+# Treat these as text
+*.py    text
+*.md    text
+*.txt   text
+*.csv   text
+*.json  text
+*.yaml  text
+*.yml   text
+*.toml  text
+*.cff   text
+*.tex   text
+*.bib   text
+*.sh    text eol=lf
+Makefile text
+
+# Binary / vector assets — do not diff or eol-normalize
+*.png   binary
+*.pdf   binary
+*.parquet binary
+*.ipynb  -text -diff linguist-documentation
+
+# Keep language stats focused on the pipeline
+docs/*        linguist-documentation
+paper/*       linguist-documentation
+notebooks/*   linguist-documentation
+research/*    linguist-documentation
+publication/* linguist-documentation
