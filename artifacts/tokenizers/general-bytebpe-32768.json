@@ -1,11 +1,13 @@
 {
   "algorithm": "byte_level_bpe",
-  "artifact_bytes": 2335097,
-  "artifact_sha256": "3fe366b74970f2e75296ce223dc44e98718603bf025aa42166168943d69fe31d",
+  "artifact_bytes": 2334947,
+  "artifact_sha256": "87d1bbee68471ca9f5c8ab835631821703a81ee6c92573b22ccb031736048ec6",
   "config_sha256": "b0df8a5af424d501a87b0f8f5a307cac458d7ed6bf5e16da023aaa0f06efbc02",
-  "cpu_seconds": 4.5993,
-  "created_at": "2026-07-10T01:20:18-0700",
-  "git_commit": "0b08a4185126d4d46134da241bacfcb39b27e04c-dirty",
+  "cpu_seconds": 4.4461,
+  "created_at": "2026-07-10T01:49:56-0700",
+  "distributable": false,
+  "distribution_note": "Trained on WikiText (CC-BY-SA, unclear redistribution) — LOCAL-USE-ONLY, do not redistribute the tokenizer.json artifact pending legal review (licenses/RESTRICTIONS.md).",
+  "git_commit": "676aaa189193e96095d0654ff6cb6cd67b19ae24-dirty",
   "machine_id": "5b65aebf221355e7",
   "merge_count": 32510,
   "package_versions": {
@@ -19,15 +21,15 @@
     "tiktoken": "0.9.0",
     "tokenizers": "0.21.4"
   },
-  "peak_rss_bytes": 329678848,
+  "peak_rss_bytes": 329154560,
   "seed": 20260709,
   "special_tokens_count_in_vocab": true,
   "tokenizer_id": "general-bytebpe-32768",
   "training_bytes": 33554432,
   "training_corpus": "general",
-  "training_documents": 1931,
-  "training_manifest_sha256": "d1914a9370b600832ef15e8f7ce2b2b8f341920fa4eb41b85a0b925488ba05c6",
+  "training_documents": 1922,
+  "training_manifest_sha256": "f75dc459998a5438eb47a2ae6fad8943709ad744808387ab531cc66d88b5c0de",
   "vocab_size_actual": 32768,
   "vocab_size_requested": 32768,
-  "wall_seconds": 4.6009
+  "wall_seconds": 4.4491
 }

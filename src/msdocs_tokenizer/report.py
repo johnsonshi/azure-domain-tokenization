@@ -65,11 +65,19 @@ def build_final_report(profile: str, exp: dict) -> str:
         w(f"- Byte-matched corpora (content UTF-8 bytes): `{contents}`; "
           f"byte-match within 0.1%: **{audit.get('byte_match_ok')}** "
           f"(spread {audit.get('byte_match_spread')} bytes).")
-        ed = audit.get("exact_dedup", {})
-        nd = audit.get("near_dup", {})
-        w(f"- Exact dedup: {ed.get('removed_exact', 0)} removed of {ed.get('input', 0)}. "
-          f"Near-dup (threshold {nd.get('threshold')}): {nd.get('num_near_dup_items', 0)} items "
-          f"in {nd.get('num_clusters', 0)} clusters.")
+        ed = audit.get("exact_dedup_azure", {})
+        nd = audit.get("near_dup_azure", {})
+        edg = audit.get("exact_dedup_general", {})
+        ndg = audit.get("near_dup_general", {})
+        cc = audit.get("cross_corpus_near_dup_eval", {})
+        w(f"- Azure exact dedup: {ed.get('removed_exact', 0)} removed of {ed.get('input', 0)}. "
+          f"Azure near-dup removal (threshold {nd.get('threshold')}): "
+          f"{nd.get('removed_near', 0)} removed, {nd.get('num_pairs', 0)} pairs found.")
+        w(f"- General exact dedup: {edg.get('removed_exact', 0)} removed of {edg.get('input', 0)}; "
+          f"general near-dup removed: {ndg.get('removed_near', 0)} (before train/eval split, so no "
+          "identical WikiText content spans the split).")
+        w(f"- Cross-corpus near-dup eval removal (eval items that near-duplicate any training "
+          f"doc): **{(cc or {}).get('removed_near_train', 0)}** removed.")
         w(f"- Azure group-aware splits: `{audit.get('azure_splits', {})}`. "
           f"Leakage violations: **{audit.get('leakage_violations') or 'none'}**.")
     w("- Splits are group-aware: whole services route to the cross-service holdout; whole "
@@ -121,7 +129,37 @@ def build_final_report(profile: str, exp: dict) -> str:
       "In-domain gains are reported **alongside** out-of-domain regressions (plan.md §26).")
     w("")
 
-    w("## 7. Runtime (reported separately from compression)")
+    w("## 7. Identifier fragmentation (mechanism)")
+    frag = _load_csv(config.RESULTS_TABLES / "fragmentation.csv")
+    if frag is not None and len(frag):
+        piv = frag.pivot_table(index="category", columns="tokenizer_id", values="mean_tokens")
+        cols = [c for c in piv.columns if "bytebpe" in c]
+        w("Mean tokens per item on the Azure cross-service holdout (lower = less fragmented):")
+        w("")
+        w("| Category | " + " | ".join(c.replace("-bytebpe", "") for c in cols) + " |")
+        w("|---|" + "---:|" * len(cols))
+        for cat, row in piv.iterrows():
+            w(f"| {cat} | " + " | ".join(f"{row[c]:.2f}" for c in cols) + " |")
+        w("")
+        w("The Azure tokenizer fragments Azure-specific constructs (resource providers, CLI "
+          "flags, URLs, identifiers) far less than General — the mechanism behind the "
+          "compression gain. Source: `results/tables/fragmentation.csv`.")
+    w("")
+
+    w("## 8. Vocabulary utilization")
+    vu = _load_csv(config.RESULTS_TABLES / "vocab_utilization.csv")
+    if vu is not None and len(vu):
+        w("On the Azure cross-service holdout:")
+        w("")
+        w("| Tokenizer | frac vocab used | unused | top-10% occurrence share |")
+        w("|---|---:|---:|---:|")
+        for _, r in vu.iterrows():
+            w(f"| `{r.tokenizer_id}` | {r.frac_used:.3f} | {int(r.unused)} | {r.top10pct_share:.3f} |")
+        w("")
+        w("Source: `results/tables/vocab_utilization.csv`.")
+    w("")
+
+    w("## 9. Runtime (reported separately from compression)")
     if runtime is not None and len(runtime):
         w("| Tokenizer | MB/s median | MB/s p95 |")
         w("|---|---:|---:|")
@@ -134,14 +172,14 @@ def build_final_report(profile: str, exp: dict) -> str:
         w("_Runtime benchmark pending (`make benchmark-runtime`)._")
     w("")
 
-    w("## 8. Existing tokenizers (Track B — observational, not controlled)")
+    w("## 10. Existing tokenizers (Track B — observational, not controlled)")
     w("tiktoken `r50k_base` / `cl100k_base` / `o200k_base` differ in training data, vocab "
       "size, normalization, and intended model; they are reported in a **separate** table "
       "(`results/tables/eval_aggregate.csv`, rows `tiktoken-*`) and never treated as "
       "controlled comparisons (plan.md §5).")
     w("")
 
-    w("## 9. Sources, licenses, provenance")
+    w("## 11. Sources, licenses, provenance")
     if sources.get("sources"):
         w("| Repository | Commit | License | Files |")
         w("|---|---|---|---:|")
@@ -150,22 +188,31 @@ def build_final_report(profile: str, exp: dict) -> str:
         w("")
     w("Full pins: `data/manifests/sources.lock.json`. License review: `licenses/`.")
     w("")
+    w("**Artifact distribution policy.** Per `licenses/RESTRICTIONS.md`: raw source text is "
+      "never committed (git-ignored); only scripts, manifests, hashes, and aggregate results "
+      "are published. The **Azure-only** tokenizer artifact is redistributable with CC-BY "
+      "attribution. The **General** and **Mixed** tokenizer artifacts are trained on WikiText "
+      "(CC-BY-SA, unclear redistribution) and are **LOCAL-USE-ONLY** pending legal review — "
+      "their `tokenizer.json` files are git-ignored; only their provenance metadata (hashes, "
+      "config, timing) is tracked. Each tokenizer's `distributable` flag is recorded in "
+      "`artifacts/tokenizers/*.json`.")
+    w("")
 
-    w("## 10. Limitations")
+    w("## 12. Limitations")
     w("- Tokenization-only; no model-quality, GPU, or cost claims.")
     w("- Corpus sizes are bounded by the local run budget; see profile above.")
     w("- Existing-tokenizer comparisons are observational.")
     w("- Context/billing figures are labelled estimates, not measured costs.")
     w("")
 
-    w("## 11. Reproduction")
+    w("## 13. Reproduction")
     w("```bash")
     w("uv sync && bash scripts/doctor.sh")
     w("make acquire-pilot audit-pilot train-pilot evaluate-pilot analyze report verify")
     w("```")
     w("Deterministic from the global seed, pinned source commits, and content hashes.")
     w("")
-    w("## 12. Conclusions (limited to measured tokenization behaviour)")
+    w("## 14. Conclusions (limited to measured tokenization behaviour)")
     w("See §5 effect sizes. Claims are restricted to token counts on the stated corpora "
       "under the stated controls.")
     w("")

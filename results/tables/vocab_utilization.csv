@@ -1,0 +1,4 @@
+tokenizer_id,vocab_size,frac_used,used_ge_10,used_ge_100,used_ge_1000,unused,top1pct_share,top10pct_share,mean_token_byte_len
+general-bytebpe-16384,16384,0.4848,4999,2176,539,8441,0.6576,0.9528,6.171
+azure-bytebpe-16384,16384,0.8174,9321,2659,362,2992,0.5322,0.8436,6.356
+mixed-bytebpe-16384,16384,0.6803,8066,2846,395,5238,0.5227,0.8521,5.956

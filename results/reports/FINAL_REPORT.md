@@ -14,8 +14,10 @@ At a fixed tokenizer algorithm, vocabulary size, training-data size, normalizati
 
 ## 3. Corpus construction & leakage controls
 - Byte-matched corpora (content UTF-8 bytes): `{'azure': 33554432, 'general': 33554432, 'mixed': 33554432}`; byte-match within 0.1%: **True** (spread 0 bytes).
-- Exact dedup: 2 removed of 5340. Near-dup (threshold 0.8): 0 items in 0 clusters.
-- Azure group-aware splits: `{'azure_cross_service_holdout': 964, 'azure_same_service_holdout': 487, 'azure_train': 3802, 'n_cross_service_holdout_services': 5, 'n_leakage_groups': 20, 'n_services': 20}`. Leakage violations: **none**.
+- Azure exact dedup: 2 removed of 5340. Azure near-dup removal (threshold 0.8): 86 removed, 163 pairs found.
+- General exact dedup: 134 removed of 14900; general near-dup removed: 0 (before train/eval split, so no identical WikiText content spans the split).
+- Cross-corpus near-dup eval removal (eval items that near-duplicate any training doc): **9** removed.
+- Azure group-aware splits: `{'azure_cross_service_holdout': 965, 'azure_same_service_holdout': 488, 'azure_train': 3799, 'n_cross_service_holdout_services': 5, 'n_leakage_groups': 20, 'n_services': 20}`. Leakage violations: **none**.
 - Splits are group-aware: whole services route to the cross-service holdout; whole near-duplicate clusters stay on one side of the train/eval boundary (plan.md §11).
 - Source table: `data/audit/audit_summary.json`.
 
@@ -27,49 +29,80 @@ Tokens per 1000 UTF-8 bytes on the **Azure cross-service holdout** (principal se
 
 | Tokenizer | tokens/1000 bytes (micro) | chars/token | round-trip |
 |---|---:|---:|---:|
-| `azure-bytebpe-16384` | 240.13 | 4.162 | 1.000 |
-| `azure-bytebpe-32768` | 232.50 | 4.299 | 1.000 |
-| `azure-bytebpe-8192` | 255.87 | 3.906 | 1.000 |
-| `general-bytebpe-16384` | 379.76 | 2.632 | 1.000 |
-| `general-bytebpe-32768` | 360.71 | 2.771 | 1.000 |
-| `general-bytebpe-8192` | 404.35 | 2.472 | 1.000 |
-| `mixed-bytebpe-16384` | 250.05 | 3.997 | 1.000 |
-| `mixed-bytebpe-32768` | 238.90 | 4.183 | 1.000 |
-| `mixed-bytebpe-8192` | 271.09 | 3.687 | 1.000 |
+| `azure-bytebpe-16384` | 240.18 | 4.161 | 1.000 |
+| `azure-bytebpe-32768` | 232.78 | 4.294 | 1.000 |
+| `azure-bytebpe-8192` | 256.21 | 3.901 | 1.000 |
+| `general-bytebpe-16384` | 379.30 | 2.635 | 1.000 |
+| `general-bytebpe-32768` | 360.38 | 2.773 | 1.000 |
+| `general-bytebpe-8192` | 403.23 | 2.479 | 1.000 |
+| `mixed-bytebpe-16384` | 249.52 | 4.005 | 1.000 |
+| `mixed-bytebpe-32768` | 238.82 | 4.185 | 1.000 |
+| `mixed-bytebpe-8192` | 270.92 | 3.689 | 1.000 |
 
 Source: `results/tables/eval_aggregate.csv`, figure `results/figures/fig02_tokens_per_1k.png`.
 
 ### Effect size with paired bootstrap (95% CI)
 | Comparison | reduction % | 95% CI | win rate |
 |---|---:|---|---:|
-| azure_vs_general:16384:azure_cross_service_holdout | 36.77 | [35.83, 37.74] | 1.000 |
-| azure_vs_general:32768:azure_cross_service_holdout | 35.55 | [34.53, 36.59] | 1.000 |
-| azure_vs_general:8192:azure_cross_service_holdout | 36.72 | [35.83, 37.62] | 1.000 |
-| mixed_vs_general:16384:azure_cross_service_holdout | 34.15 | [33.21, 35.12] | 1.000 |
-| mixed_vs_general:32768:azure_cross_service_holdout | 33.77 | [32.76, 34.81] | 1.000 |
-| mixed_vs_general:8192:azure_cross_service_holdout | 32.96 | [32.06, 33.86] | 1.000 |
+| azure_vs_general:16384:azure_cross_service_holdout | 36.68 | [35.77, 37.62] | 1.000 |
+| azure_vs_general:32768:azure_cross_service_holdout | 35.41 | [34.45, 36.41] | 1.000 |
+| azure_vs_general:8192:azure_cross_service_holdout | 36.46 | [35.59, 37.33] | 1.000 |
+| mixed_vs_general:16384:azure_cross_service_holdout | 34.21 | [33.30, 35.16] | 1.000 |
+| mixed_vs_general:32768:azure_cross_service_holdout | 33.73 | [32.79, 34.73] | 1.000 |
+| mixed_vs_general:8192:azure_cross_service_holdout | 32.81 | [31.95, 33.68] | 1.000 |
 
 Paired bootstrap over documents, 10000 resamples, seed fixed. Source: `results/processed/bootstrap.json`.
 
 ## 6. Cross-repository transfer & general-English regression
 Transfer to other MicrosoftDocs repos, external technical docs (Kubernetes), and the general-English regression are in `results/tables/fig_transfer_by_eval_set.csv`. In-domain gains are reported **alongside** out-of-domain regressions (plan.md §26).
 
-## 7. Runtime (reported separately from compression)
+## 7. Identifier fragmentation (mechanism)
+Mean tokens per item on the Azure cross-service holdout (lower = less fragmented):
+
+| Category | azure-16384 | general-16384 | mixed-16384 |
+|---|---:|---:|---:|
+| cli_flag | 4.56 | 8.02 | 4.86 |
+| identifier_camel | 2.88 | 6.52 | 3.45 |
+| identifier_snake | 4.91 | 7.39 | 5.31 |
+| prose_word | 1.64 | 2.88 | 1.92 |
+| resource_provider | 10.55 | 22.64 | 11.86 |
+| url_path | 26.35 | 42.87 | 27.66 |
+
+The Azure tokenizer fragments Azure-specific constructs (resource providers, CLI flags, URLs, identifiers) far less than General — the mechanism behind the compression gain. Source: `results/tables/fragmentation.csv`.
+
+## 8. Vocabulary utilization
+On the Azure cross-service holdout:
+
+| Tokenizer | frac vocab used | unused | top-10% occurrence share |
+|---|---:|---:|---:|
+| `general-bytebpe-16384` | 0.485 | 8441 | 0.953 |
+| `azure-bytebpe-16384` | 0.817 | 2992 | 0.844 |
+| `mixed-bytebpe-16384` | 0.680 | 5238 | 0.852 |
+
+Source: `results/tables/vocab_utilization.csv`.
+
+## 9. Runtime (reported separately from compression)
 | Tokenizer | MB/s median | MB/s p95 |
 |---|---:|---:|
-| `general-bytebpe-16384` | 5.14 | 5.38 |
-| `azure-bytebpe-16384` | 5.45 | 5.70 |
-| `mixed-bytebpe-16384` | 5.39 | 5.65 |
-| `tiktoken-r50k_base` | 18.58 | 19.37 |
-| `tiktoken-cl100k_base` | 19.34 | 21.05 |
-| `tiktoken-o200k_base` | 11.26 | 11.90 |
+| `general-bytebpe-8192` | 5.13 | 5.40 |
+| `general-bytebpe-16384` | 5.16 | 5.44 |
+| `general-bytebpe-32768` | 5.19 | 5.48 |
+| `azure-bytebpe-8192` | 5.44 | 5.71 |
+| `azure-bytebpe-16384` | 5.47 | 5.77 |
+| `azure-bytebpe-32768` | 5.47 | 5.76 |
+| `mixed-bytebpe-8192` | 5.41 | 5.68 |
+| `mixed-bytebpe-16384` | 5.45 | 5.74 |
+| `mixed-bytebpe-32768` | 5.43 | 5.74 |
+| `tiktoken-r50k_base` | 18.66 | 19.53 |
+| `tiktoken-cl100k_base` | 19.83 | 21.31 |
+| `tiktoken-o200k_base` | 11.61 | 12.10 |
 
 Source: `results/tables/runtime_throughput.csv`. CPU tokenizer throughput only — **not** inference throughput.
 
-## 8. Existing tokenizers (Track B — observational, not controlled)
+## 10. Existing tokenizers (Track B — observational, not controlled)
 tiktoken `r50k_base` / `cl100k_base` / `o200k_base` differ in training data, vocab size, normalization, and intended model; they are reported in a **separate** table (`results/tables/eval_aggregate.csv`, rows `tiktoken-*`) and never treated as controlled comparisons (plan.md §5).
 
-## 9. Sources, licenses, provenance
+## 11. Sources, licenses, provenance
 | Repository | Commit | License | Files |
 |---|---|---|---:|
 | `MicrosoftDocs/azure-docs` | `80e8be2fca41` | CC-BY-4.0 | 5340 |
@@ -83,18 +116,20 @@ tiktoken `r50k_base` / `cl100k_base` / `o200k_base` differ in training data, voc
 
 Full pins: `data/manifests/sources.lock.json`. License review: `licenses/`.
 
-## 10. Limitations
+**Artifact distribution policy.** Per `licenses/RESTRICTIONS.md`: raw source text is never committed (git-ignored); only scripts, manifests, hashes, and aggregate results are published. The **Azure-only** tokenizer artifact is redistributable with CC-BY attribution. The **General** and **Mixed** tokenizer artifacts are trained on WikiText (CC-BY-SA, unclear redistribution) and are **LOCAL-USE-ONLY** pending legal review — their `tokenizer.json` files are git-ignored; only their provenance metadata (hashes, config, timing) is tracked. Each tokenizer's `distributable` flag is recorded in `artifacts/tokenizers/*.json`.
+
+## 12. Limitations
 - Tokenization-only; no model-quality, GPU, or cost claims.
 - Corpus sizes are bounded by the local run budget; see profile above.
 - Existing-tokenizer comparisons are observational.
 - Context/billing figures are labelled estimates, not measured costs.
 
-## 11. Reproduction
+## 13. Reproduction
 ```bash
 uv sync && bash scripts/doctor.sh
 make acquire-pilot audit-pilot train-pilot evaluate-pilot analyze report verify
 ```
 Deterministic from the global seed, pinned source commits, and content hashes.
 
-## 12. Conclusions (limited to measured tokenization behaviour)
+## 14. Conclusions (limited to measured tokenization behaviour)
 See §5 effect sizes. Claims are restricted to token counts on the stated corpora under the stated controls.

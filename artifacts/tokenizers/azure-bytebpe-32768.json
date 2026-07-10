@@ -1,11 +1,13 @@
 {
   "algorithm": "byte_level_bpe",
-  "artifact_bytes": 2348529,
-  "artifact_sha256": "18e19cab71ca611d0debf48905494ecca09ca5420659b08463c77ad8bed8dde1",
+  "artifact_bytes": 2349575,
+  "artifact_sha256": "d72aa78a48a9ba946926b2b699b2a8f139e1d0df13ddaf8e88c6d2eef19cfc1c",
   "config_sha256": "b0df8a5af424d501a87b0f8f5a307cac458d7ed6bf5e16da023aaa0f06efbc02",
-  "cpu_seconds": 5.3685,
-  "created_at": "2026-07-10T01:20:34-0700",
-  "git_commit": "0b08a4185126d4d46134da241bacfcb39b27e04c-dirty",
+  "cpu_seconds": 5.2012,
+  "created_at": "2026-07-10T01:50:12-0700",
+  "distributable": true,
+  "distribution_note": "Trained only on CC-BY-4.0 Azure documentation; redistributable WITH attribution.",
+  "git_commit": "676aaa189193e96095d0654ff6cb6cd67b19ae24-dirty",
   "machine_id": "5b65aebf221355e7",
   "merge_count": 32510,
   "package_versions": {
@@ -19,15 +21,15 @@
     "tiktoken": "0.9.0",
     "tokenizers": "0.21.4"
   },
-  "peak_rss_bytes": 373293056,
+  "peak_rss_bytes": 357105664,
   "seed": 20260709,
   "special_tokens_count_in_vocab": true,
   "tokenizer_id": "azure-bytebpe-32768",
   "training_bytes": 33554432,
   "training_corpus": "azure",
-  "training_documents": 3137,
-  "training_manifest_sha256": "f3c0f0f12ca0fcc8ef23a8da839bf860d4cf6fe9f566a30633cd288d7babbc11",
+  "training_documents": 3135,
+  "training_manifest_sha256": "199c3641ffce59c51597c5aa34a76878d0b35ab431dc02c21d910c2bebf185c8",
   "vocab_size_actual": 32768,
   "vocab_size_requested": 32768,
-  "wall_seconds": 5.371
+  "wall_seconds": 5.2045
 }
