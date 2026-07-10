@@ -54,3 +54,16 @@ coverage, round-trip/UNK, and runtime all matched. No action needed.
 After the edits: paper recompiles cleanly (0 undefined citations/references),
 `scripts/paper_check.py` = 6/6, `make verify-claims` = 44/44, and a forbidden-claim
 scan of the sections is clean.
+
+## Claim re-review iteration 2
+
+The first re-review confirmed blocker 2 and the nit resolved, but found blocker 1
+only partially fixed: `\citep{feng2020codebert}` remained in the
+"builds domain-specific vocabularies or tokenizers" list, yet CodeBERT reuses an
+existing (RoBERTa/GPT-2 byte-level BPE) tokenizer. Per the literature agent's own
+`citation_verification.csv`, CodeBERT was verified for "code and NL corpora
+motivate technical text mixing prose, identifiers, and snippets" — not
+tokenizer-building. **Fixed**: CodeBERT is now cited for that accurate motivation,
+and only SciBERT, LEGAL-BERT, and KL3M remain attached to the domain-vocabulary/
+tokenizer claim; BioBERT and (implicitly) CodeBERT are the general-tokenizer-reuse
+examples.
