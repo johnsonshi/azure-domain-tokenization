@@ -28,3 +28,16 @@ Scope read: `paper/sections/*.tex`, `paper/appendix/*.tex`, `paper/main.tex`, `p
 - Consider softening cost-adjacent framing in `paper/sections/01_introduction.tex:5-8` and `paper/sections/09_ethics_and_licenses.tex:18-20` if the target venue is extremely sensitive to billing implications, although current disclaimers are adequate.
 
 CLAIM REVIEW: FAIL (blockers: citation mismatch; unregistered numeric statements)
+
+
+## Re-review (blocker resolution)
+
+| Item | Verdict | Evidence |
+|---|---:|---|
+| Blocker 1 -- citation mismatch | NOT RESOLVED | BioBERT itself is fixed: the current accurate sentence is "Notably, some domain-adapted models instead reuse a general-domain tokenizer \citep{lee2019biobert}, which is precisely the vocabulary-mismatch setting this line of work motivates." However, the preceding sentence still says "Prior work builds domain-specific vocabularies or tokenizers for scientific \citep{beltagy2019scibert}, legal \citep{chalkidis2020legalbert}, legal/financial \citep{bommarito2025kl3m}, and code \citep{feng2020codebert} corpora, and studies tokenizer choice for domains \citep{dagan2024tokenizer}." SciBERT, LegalBERT/Chalkidis, KL3M/Bommarito, and Dagan support this framing, but CodeBERT/Feng is still a domain pretraining/code-corpus citation rather than clear evidence for building a domain-specific vocabulary/tokenizer; `paper/literature/citation_verification.csv` says to cite it for code/NL domain context, "not tokenizer compression." |
+| Blocker 2 -- numeric registry overclaim | RESOLVED | The registry statement no longer says "every number." `paper/main.tex` now says: "Every empirical result value reported in this paper (effect sizes, confidence intervals, coverage counts, and runtime summaries) is registered in a machine-readable claim registry (\texttt{publication/claims.yaml}) and re-checked against its authoritative source file by \texttt{make verify-claims}; experimental constants (seed, budgets, batch sizes, vocabulary sizes) are recorded in the repository configs." `paper/appendix/verification.tex` similarly scopes registration to empirical result values and notes constants are in configs. |
+| Nit -- unbounded language | RESOLVED | `paper/sections/07_analysis.tex` no longer contains "substantially less" or "much larger fraction". It now uses bounded wording: "for example, roughly half as many tokens per resource-provider identifier in the repository's fragmentation table" and "uses a larger fraction of its vocabulary on Azure text." |
+| Forbidden-claim re-scan | PASS | Re-scanned `paper/sections/*.tex` and `paper/main.tex` for model quality/accuracy/reasoning/understanding, inference latency, GPU throughput, cost reduction, drop-in/replacement, and Microsoft endorsement. Matches are explicit disclaimers, limitations, future-work boundaries, or CPU tokenizer-throughput measurements; no real violation found. |
+| Headline-number spot-check | PASS | `publication/claim_evidence.csv` matches the checked paper values: primary reduction 36.68 (`PRIMARY_REDUCTION_16K`), general regression -34.75 (`GENERAL_REGRESSION_AZURE`), Mixed +34.21/-4.39 (`MIXED_REDUCTION_PRINCIPAL`/`MIXED_REGRESSION`), transfer Kubernetes +31.18 (`TRANSFER_KUBERNETES`), and coverage 59,160 rows (`COVERAGE_ROWS`). |
+
+CLAIM REVIEW (re-review): NO-GO
