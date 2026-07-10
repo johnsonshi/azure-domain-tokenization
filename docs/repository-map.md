@@ -8,7 +8,7 @@ published.
 .
 ├── README.md                     # project overview + primary result + reproduction
 ├── LICENSE                       # MIT (original code/writing only)
-├── CITATION.cff                  # citation metadata (author = placeholder)
+├── CITATION.cff                  # citation metadata (Johnson Shi, Microsoft)
 ├── CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md CHANGELOG.md
 ├── plan.md                       # original experiment plan (frozen)
 ├── plan-2.md                     # publication + arXiv preparation plan

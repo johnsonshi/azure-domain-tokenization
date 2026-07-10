@@ -28,13 +28,13 @@ Full specialization has a cost: on held-out general English the Azure tokenizer 
 
 ## 3. Mixed-tokenizer tradeoff
 
-The 50/50 Mixed tokenizer keeps most of the Azure gain with a much smaller
-English penalty:
+The 50/50 Mixed tokenizer retains **93.3%** of the Azure-only in-domain gain
+(`MIXED_RETAINED_FRACTION`) with a much smaller general-English cost:
 
 | Tokenizer | Azure cross-service holdout | General English |
 |---|---:|---:|
-| Azure | +36.68% (`PRIMARY_REDUCTION_16K`) | −34.75% (`GENERAL_REGRESSION_AZURE`) |
-| Mixed | +34.21% (`MIXED_REDUCTION_PRINCIPAL`) | −4.39% (`MIXED_REGRESSION`) |
+| Azure | 36.68% fewer tokens (`PRIMARY_REDUCTION_16K`) | 34.75% more tokens (`GENERAL_REGRESSION_AZURE`) |
+| Mixed | 34.21% fewer tokens (`MIXED_REDUCTION_PRINCIPAL`) | 4.39% more tokens (`MIXED_REGRESSION`) |
 
 ![Specialization–generalization tradeoff](../results/figures/fig02_tradeoff.png)
 

@@ -3,9 +3,9 @@
 > Canonical publication-prep state (plan-2.md §4.4). A fresh agent resumes from
 > this file + repository state alone. Keep concise.
 
-- **Updated:** 2026-07-10T14:40-07:00
+- **Updated:** 2026-07-10T15:40-07:00
 - **Branch:** `publication/arxiv-prep` (experiment preserved on `main`; snapshot tag `experiment-full-verified-20260709` → commit a7d0301)
-- **Phase:** **ALL PHASES A–G COMPLETE.** Publication-ready pending human-only gates. `make publication-verify` OK (11/11); claim registry 44/44; arXiv package builds clean-room; all 5 independent reviews PASS/GO.
+- **Phase:** **ALL PHASES A–G COMPLETE + author metadata / retitle / abstract correction applied.** Title = "Domain-Specialized Byte-Level BPE for Technical Documentation: Compression Gains and General-English Tradeoffs"; author Johnson Shi (Microsoft), ORCID 0009-0001-2638-6007. Abstract fixed: Mixed **retains 93.3%** of the Azure gain (new registered derived claim `MIXED_RETAINED_FRACTION`); signed regressions reworded to "more tokens". `make publication-verify` OK (11/11); claim registry **45/45**. Repo to publish: `johnsonshi/azure-domain-tokenization`.
 - **Scientific record:** FROZEN. Do not rerun/alter the experiment. Primary = 36.68% (Azure vs General, 16K, azure_cross_service_holdout; CI [35.77,37.62]; win 1.0; n=964).
 
 ## Phase gates (plan-2.md §26)

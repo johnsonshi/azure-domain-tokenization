@@ -4,11 +4,11 @@
 Under a controlled, byte-matched comparison at a matched 16K vocabulary, training a
 byte-level BPE tokenizer on Azure documentation reduced token count on an unseen
 cross-service Azure holdout by \reduc{36.68} relative to a general-English
-tokenizer (95\% CI $[35.77\%, 37.62\%]$), with a general-English regression of
-\reduc{-34.75}. A 50/50 Mixed tokenizer retained most of the in-domain gain
-(\reduc{+34.21}) with a much smaller general-English penalty (\reduc{-4.39}), and
-the advantage transferred partially to other Microsoft and external
-technical-documentation corpora. These findings concern \emph{tokenization
+tokenizer (95\% CI $[35.77\%, 37.62\%]$), while using \reduc{34.75} more tokens on
+held-out general English. A 50/50 Mixed tokenizer retained \reduc{93.3} of the
+in-domain gain (a \reduc{34.21} reduction on the Azure holdout) while using only
+\reduc{4.39} more tokens on general English, and the advantage transferred
+partially to other Microsoft and external technical-documentation corpora. These findings concern \emph{tokenization
 compression only}, on the evaluated corpora and under the stated controls; they
 imply nothing about model output quality, inference latency, GPU throughput, or
 cost. The controlled comparison isolates the training corpus, whereas existing

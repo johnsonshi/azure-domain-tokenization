@@ -33,13 +33,14 @@ paired-bootstrap confidence intervals. Higher is better.}
 \end{figure}
 
 \paragraph{General-English regression (RQ2).} Full specialization has a cost: on
-held-out general English the Azure tokenizer is \reduc{-34.75} relative to General
-(95\% CI $[-35.10\%, -34.40\%]$)---it uses more tokens on out-of-domain text.
+held-out general English the Azure tokenizer uses \reduc{34.75} more tokens than
+General (95\% CI $[34.40\%, 35.10\%]$ more)---the direction reverses on
+out-of-domain text.
 
-\paragraph{Mixed-tokenizer tradeoff (RQ3).} The 50/50 Mixed tokenizer keeps most
-of the in-domain gain (\reduc{+34.21} on the Azure holdout) while nearly
-eliminating the out-of-domain penalty (\reduc{-4.39} on general English)
-(Figure~\ref{fig:tradeoff}).
+\paragraph{Mixed-tokenizer tradeoff (RQ3).} The 50/50 Mixed tokenizer achieves a
+\reduc{34.21} reduction on the Azure holdout---retaining \reduc{93.3} of the
+Azure-only tokenizer's in-domain gain---while using only \reduc{4.39} more tokens
+on held-out general English (Figure~\ref{fig:tradeoff}).
 
 \begin{figure}[t]
 \centering

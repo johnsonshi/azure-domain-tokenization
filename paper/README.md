@@ -24,7 +24,7 @@ Requires a TeX distribution (pdflatex, bibtex). Figures are vector PDFs in
   results, analysis, limitations, ethics, future work, conclusion.
 - `tables/` — LaTeX tables generated from `results/` + the claim registry.
 - `figures/` — vector PDF figures (source tables in `results/tables/`).
-- `metadata/` — title, abstract, author placeholders, arXiv categories.
+- `metadata/` — title, abstract, author metadata (`authors.yaml`), arXiv categories.
 - `arxiv/` — packaging (submission checklist, manifest, build) — see Phase G.
 
 ## Status

@@ -1,33 +1,38 @@
 # Author and Submission Inputs Requiring Human Approval
 
 > plan-2.md §23, §27. These decisions require the author. The agent must NOT
-> fabricate any of these values, and must NOT push, release, mint a DOI, or
-> submit to arXiv without explicit approval. Placeholders (`<...>`) remain in
-> `CITATION.cff`, `paper/metadata/authors.example.yaml`, and the paper title
-> page until the author supplies real values.
+> fabricate any of these values. **Author identity, ORCID, affiliation, final
+> title, and repository URL were confirmed by the author on 2026-07-10** and have
+> been written into `CITATION.cff`, `paper/metadata/authors.yaml`, the LaTeX
+> title/author block, and the README. The remaining **open human gates** are:
+> employer publication review, paper license choice, and the explicit decision to
+> submit to arXiv / mint a DOI. The user authorized creating and publishing the
+> GitHub repository on 2026-07-10.
 
-## Author identity (currently placeholders)
+## Author identity (CONFIRMED 2026-07-10)
 
-| Field | Needed value | Status |
+| Field | Value | Status |
 |---|---|---|
-| Legal author name | `<AUTHOR LEGAL NAME>` | REQUIRED |
-| Preferred publication name | `<AUTHOR PUBLICATION NAME>` | REQUIRED |
-| Email | `<AUTHOR EMAIL>` | REQUIRED |
-| ORCID | `<0000-0000-0000-0000>` | optional but recommended |
-| Affiliation | `<AFFILIATION>` | REQUIRED |
-| Copyright holder (LICENSE) | currently "The msdocs-tokenizer study authors" | confirm/replace |
+| Legal author name | Johnson Shi | ✅ confirmed |
+| Preferred publication name | Johnson Shi | ✅ confirmed |
+| Email (corresponding) | johnsonshi86@gmail.com | ✅ confirmed |
+| Email (alternate) | johnson.shi@microsoft.com | ✅ confirmed |
+| ORCID | 0009-0001-2638-6007 | ✅ confirmed |
+| Affiliation | Microsoft | ✅ confirmed |
+| Copyright holder (LICENSE) | Johnson Shi | ✅ set |
 
 ## Affiliation and employer review
 
-- **Microsoft affiliation:** If the author is employed by Microsoft, state the
-  relationship accurately if listed. Do **not** claim Microsoft sponsorship or
-  endorsement. This study uses only public documentation and is **not** an
-  official Microsoft result. **Check applicable employer publication-review
-  requirements before submission.** — HUMAN GATE.
-- Coauthors and contribution approval: `<none / list>` — REQUIRED if any.
+- **Microsoft affiliation:** The author is employed by Microsoft; the affiliation
+  is stated accurately. The paper and repo do **not** claim Microsoft sponsorship
+  or endorsement, and state that this is not an official Microsoft result.
+  **Applicable employer publication-review requirements must be satisfied before
+  public submission/release.** — HUMAN GATE (open).
+- Coauthors and contribution approval: none (single author).
 - Acknowledgments: `<optional>`.
-- Funding: `<none / list>`.
-- Conflicts of interest: `<state, e.g., employment>`.
+- Funding: none stated.
+- Conflicts of interest: the author is employed by Microsoft, the vendor of the
+  studied documentation (stated in the paper's non-endorsement note).
 
 ## Submission decisions
 
@@ -35,10 +40,10 @@
 |---|---|---|
 | Primary arXiv category | `cs.CL` (recommended) | confirm |
 | Cross-list categories | `cs.LG`, `cs.AI`, `cs.CE` (candidates — investigate, do not assume) | confirm |
-| Paper license | e.g., CC BY 4.0 or arXiv default (`arXiv.org perpetual, non-exclusive`) | REQUIRED — HUMAN GATE |
-| Final title | choose among plan-2 §15 candidates (literature+writing agents recommend) | confirm |
-| Final abstract | draft in `paper/metadata/abstract.txt` | confirm |
-| Repository URL | `<https://github.com/<user>/<repo>>` | REQUIRED for CITATION/paper |
+| Paper license | e.g., CC BY 4.0 or arXiv default (`arXiv.org perpetual, non-exclusive`) | **REQUIRED — HUMAN GATE (open)** |
+| Final title | Domain-Specialized Byte-Level BPE for Technical Documentation: Compression Gains and General-English Tradeoffs | ✅ confirmed |
+| Final abstract | `paper/metadata/abstract.txt` (revised 2026-07-10) | ✅ confirmed |
+| Repository URL | `https://github.com/johnsonshi/azure-domain-tokenization` | ✅ confirmed |
 | Release DOI (Zenodo etc.) | `<none / DOI>` | optional |
 | Distribute generated tokenizers? | Azure-only = OK w/ attribution; General/Mixed = local-use-only (legal review) | confirm |
 | Anonymous vs named pre-review copies | `<preference>` | optional |

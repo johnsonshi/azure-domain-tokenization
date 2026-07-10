@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 The msdocs-tokenizer study authors
+Copyright (c) 2026 Johnson Shi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,4 @@ It does NOT license, and does not purport to license:
   local-use-only pending legal review.
 - Microsoft product names and trademarks. No endorsement is implied.
 - The accompanying academic paper (under `paper/`), whose license is to be
-  selected by the author(s); see `publication/AUTHOR_INPUTS_REQUIRED.md`.
-
-The copyright holder name above is a placeholder pending author confirmation
-(`publication/AUTHOR_INPUTS_REQUIRED.md`).
+  selected by the author; see `publication/AUTHOR_INPUTS_REQUIRED.md`.

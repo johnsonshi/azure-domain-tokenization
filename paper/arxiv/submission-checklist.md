@@ -38,10 +38,10 @@ Regenerate everything with `make -C paper arxiv` (runs tables → pdflatex → b
 | 11 | No figures omitted | ✅ | Clean-room build reports no missing-file errors; all 6 PDFs resolve via `\graphicspath`. |
 | 12 | `\today` avoided in `\date` (arXiv rebuild guidance) | ✅ | `main.tex` uses `\date{2026}` (static), not `\today`. |
 | 13 | Metadata title matches manuscript | ✅ | `paper/metadata/title.txt` == `\title{...}` main line in `main.tex`. |
-| 14 | Metadata abstract matches manuscript | ✅ | `paper/metadata/abstract.txt` == `sections/00_abstract.tex` (numbers: 36.68 / −34.75 / +34.21 / −4.39; CI [35.77, 37.62]; win 1.000). |
+| 14 | Metadata abstract matches manuscript | ✅ | `paper/metadata/abstract.txt` == `sections/00_abstract.tex` (numbers: 36.68 / 34.75 / 34.21 / 93.3 / 4.39; CI [35.77, 37.62]; win 1.000). |
 | 15 | No embedded JavaScript / movies / animated GIF in PDF | ✅ | Static matplotlib-vector figures only; no `animate`/`media9`/JS. |
-| 16 | Author placeholders remain obvious until author supplies details | ✅ | `\author` block + `CITATION.cff` + `authors.example.yaml` hold `<...>` placeholders; tracked in `publication/AUTHOR_INPUTS_REQUIRED.md`. |
-| 17 | Full local publication gate | ✅ | `make publication-verify` → **OK (11/11)**; `make verify-claims` → 44/44. |
+| 16 | Author metadata present and accurate | ✅ | `\author` = Johnson Shi (Microsoft), ORCID 0009-0001-2638-6007, corresponding johnsonshi86@gmail.com; matches `CITATION.cff` + `paper/metadata/authors.yaml`. Non-endorsement footnote present. |
+| 17 | Full local publication gate | ✅ | `make publication-verify` → **OK (11/11)**; `make verify-claims` → 45/45. |
 
 ## Part B — Submission-time decisions (recommendation only; author confirms)
 
@@ -57,13 +57,13 @@ Regenerate everything with `make -C paper arxiv` (runs tables → pdflatex → b
 These are **not** automatable and must be completed by the author before upload
 (see `publication/AUTHOR_INPUTS_REQUIRED.md`):
 
-- [ ] Real author name, email, affiliation, ORCID (replace all `<...>` placeholders).
+- [x] Real author name, email, affiliation, ORCID (confirmed 2026-07-10: Johnson Shi, Microsoft, ORCID 0009-0001-2638-6007).
 - [ ] **Employer publication review** completed if applicable (this is public-docs
       research, **not** an official Microsoft result; claim no sponsorship/endorsement).
 - [ ] Paper **license** chosen (e.g., CC BY 4.0 vs arXiv default perpetual non-exclusive).
-- [ ] Final **title** and **abstract** confirmed.
+- [x] Final **title** and **abstract** confirmed (2026-07-10).
 - [ ] arXiv **category** + any cross-lists confirmed; arXiv endorsement in place if required.
-- [ ] Repository URL finalized in `CITATION.cff` and the paper.
+- [x] Repository URL finalized in `CITATION.cff` and the paper (`https://github.com/johnsonshi/azure-domain-tokenization`).
 - [ ] Author has **viewed the arXiv-generated PDF** during submission (arXiv requires this).
 - [ ] Explicit approval to submit.
 

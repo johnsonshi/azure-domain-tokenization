@@ -103,12 +103,27 @@ def _yaml_value(spec: dict):
     return cur
 
 
+def _ratio_percent(spec: dict):
+    """100 * numerator / denominator, each resolved by a nested extractor spec.
+
+    Used for derived presentation quantities such as the fraction of the
+    Azure-only in-domain gain that the Mixed tokenizer retains. Keeps the derived
+    number reconciled to the same authoritative source files as its inputs.
+    """
+    num = float(extract(spec["numerator"]))
+    den = float(extract(spec["denominator"]))
+    if den == 0:
+        raise ValueError("ratio_percent denominator is zero")
+    return 100.0 * num / den
+
+
 EXTRACTORS = {
     "json_path": _json_path,
     "csv_cell": _csv_cell,
     "csv_reduction": _csv_reduction,
     "parquet": _parquet,
     "yaml_value": _yaml_value,
+    "ratio_percent": _ratio_percent,
 }
 
 
