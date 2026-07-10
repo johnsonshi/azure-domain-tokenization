@@ -1,6 +1,6 @@
-# Does Your Tokenizer Speak Cloud?
+# Domain-Specialized Byte-Level BPE for Technical Documentation: Compression Gains and General-English Tradeoffs
 
-**A controlled, CPU-only study of how training-corpus specialization changes byte-level BPE tokenizer *compression* on Microsoft technical documentation.**
+**A controlled, CPU-only study of how training-corpus specialization changes byte-level BPE tokenizer *compression* on cloud and technical documentation.**
 
 This repository is a reproducible research artifact. It trains byte-level BPE tokenizers on byte-matched corpora and measures how many tokens each needs to encode unseen documentation. It measures **tokenization only**.
 
@@ -25,30 +25,31 @@ Full specialization has a cost, and a mixed corpus mostly avoids it (all relativ
 
 | Tokenizer | Azure cross-service holdout | Held-out general English |
 |---|---:|---:|
-| **Azure** | **+36.68%** (fewer tokens) | **−34.75%** (regression) |
-| **Mixed (50/50)** | **+34.21%** | **−4.39%** |
-| General | 0 (reference) | 0 (reference) |
+| **Azure** | **36.68% fewer tokens** | **34.75% more tokens** |
+| **Mixed (50/50)** | **34.21% fewer tokens** | **4.39% more tokens** |
+| General | reference | reference |
 
-The **Mixed** tokenizer keeps most of the Azure-domain compression gain while nearly eliminating the general-English penalty.
+The **Mixed** tokenizer retains **93.3%** of the Azure-only in-domain gain while using only **4.39% more tokens** on general English.
 
 ## Compact results (16K, Azure vs General)
 
 | Dimension | Result |
 |---|---|
-| Primary (Azure cross-service holdout) | **+36.68%**, 95% CI [35.77, 37.62], win rate 1.000, n=964 |
-| General-English regression | **−34.75%**, 95% CI [−35.10, −34.40] |
+| Primary (Azure cross-service holdout) | **36.68% fewer tokens**, 95% CI [35.77, 37.62], win rate 1.000, n=964 |
+| General-English cost (Azure tokenizer) | **34.75% more tokens**, 95% CI [34.40, 35.10] |
 | Transfer: Azure same-service | +35.03% |
 | Transfer: Microsoft data docs | +32.94% |
 | Transfer: Microsoft DevOps docs | +31.76% |
 | Transfer: Kubernetes (external technical) | +31.18% |
 | Transfer: Microsoft architecture docs | +26.03% |
 | Transfer: Microsoft broad-enterprise docs | +25.89% |
+| Mixed tokenizer | 34.21% fewer tokens in-domain (retains **93.3%** of the Azure gain); 4.39% more tokens on general English |
 | Vocabulary stability (8K / 16K / 32K) | +36.46% / +36.68% / +35.41% |
 | Content type: prose-dominant (n=900) | +36.75% (not only code/markup) |
 | Coverage | 59,160 rows, 12 encoders × 9 eval sets; 100% exact round-trip; 0 `[UNK]` |
 | CPU tokenizer throughput (median) | Track A 5.1–5.5 MB/s; Track B `tiktoken` 11.6–19.8 MB/s |
 
-Every number above is registered in [`publication/claims.yaml`](publication/claims.yaml) and re-checked against its source file by `make verify-claims` (44/44). More figures and tables: [`docs/results.md`](docs/results.md), [`results/figures/FIGURES.md`](results/figures/FIGURES.md).
+Every number above is registered in [`publication/claims.yaml`](publication/claims.yaml) and re-checked against its source file by `make verify-claims` (45/45). More figures and tables: [`docs/results.md`](docs/results.md), [`results/figures/FIGURES.md`](results/figures/FIGURES.md).
 
 ## Experimental design
 
@@ -158,7 +159,7 @@ An arXiv-ready manuscript is in [`paper/`](paper/) (in preparation). It reports 
 
 ## Citation
 
-Please cite via [`CITATION.cff`](CITATION.cff). Author and affiliation fields are **placeholders** pending confirmation ([`publication/AUTHOR_INPUTS_REQUIRED.md`](publication/AUTHOR_INPUTS_REQUIRED.md)).
+Please cite via [`CITATION.cff`](CITATION.cff). Author: **Johnson Shi** (Microsoft), ORCID [0009-0001-2638-6007](https://orcid.org/0009-0001-2638-6007). Repository: <https://github.com/johnsonshi/azure-domain-tokenization>.
 
 ## Limitations
 
@@ -170,4 +171,4 @@ Original code and writing in this repository are licensed under the [MIT LICENSE
 
 ## Author and affiliation disclaimer
 
-Author, affiliation, and any employer relationship are **not yet finalized** (placeholders pending confirmation — see [`publication/AUTHOR_INPUTS_REQUIRED.md`](publication/AUTHOR_INPUTS_REQUIRED.md)). This is an independent research artifact using only public documentation; it does not represent Microsoft's position and implies no endorsement.
+The author (**Johnson Shi**) is affiliated with **Microsoft**. This is independent research using only public documentation; it does **not** represent Microsoft's position, is **not** an official Microsoft product or result, and implies **no** endorsement. Employer publication review and the paper's license are tracked in [`publication/AUTHOR_INPUTS_REQUIRED.md`](publication/AUTHOR_INPUTS_REQUIRED.md).

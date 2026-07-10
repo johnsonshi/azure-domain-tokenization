@@ -23,7 +23,7 @@
 - **Evidence:** plan-2.md §1 preamble ("Do not copy numbers … without reconciling"). Verified via build_claims + verify_claims.
 
 ### 2026-07-10 · PD-0005 · Link checker ignores Markdown inside code spans
-- **Decision:** `scripts/publication_verify.py::check_links` strips fenced (```` ``` ````) and inline (`` ` ``) code before scanning for relative links. A `` `![alt](path)` `` embed quoted inside backticks in a review doc is literal text, not a live link, so it must not be resolved/flagged. This removed a false-positive "broken link" (`ARTIFACT_REVIEW.md -> results/figures/fig01_primary.png`) without weakening real link checks.
+- **Decision:** `scripts/publication_verify.py::check_links` strips fenced and inline code spans before scanning for relative links. A Markdown image embed quoted inside backticks in a review doc is literal text, not a live link, so it must not be resolved or flagged. This removed a false-positive broken-link report (an `ARTIFACT_REVIEW.md` reference to the primary figure under `results/figures/`) without weakening real link checks.
 - **Alternatives:** rewrite the review-doc text to avoid `](...)` (rejected — recurs whenever docs legitimately quote Markdown); resolve links from repo root (rejected — breaks standard file-relative semantics).
 - **Evidence:** CommonMark treats code-span content as literal; `make publication-verify` → OK (11/11) after the fix.
 - **Revisit:** if a doc needs a real link that only appears inside a code span (none today).

@@ -1,6 +1,6 @@
 # arXiv source package manifest
 
-Archive: `arxiv-source.tar.gz` (sha256 `7df7379060e6f234aace3eb991082d0e2fa93ed1c16c611be35b30faca3c33a9`)
+Archive: `arxiv-source.tar.gz` (sha256 `806afc14790166b7f65d490a4d406fb9eff2f2c3dc8b1d0c8c69094d79ef6576`)
 Files: 32
 
 Contents (portable LaTeX only; no corpora, no build caches, no logs):

@@ -1,22 +1,24 @@
 \begin{abstract}
 General-purpose tokenizers may allocate vocabulary inefficiently for specialized
-technical documentation, inflating sequence length. We present a controlled,
-CPU-only case study of how the \emph{training corpus} changes byte-level BPE
-tokenizer \emph{compression} on unseen documentation, holding the algorithm,
+technical documentation, increasing sequence length. We present a controlled,
+CPU-only case study of how training-corpus composition affects byte-level BPE
+compression on unseen documentation. We hold the tokenizer algorithm,
 pre-tokenizer, decoder, normalization, special tokens, vocabulary size, and
-training-byte budget fixed. Under a byte-matched 32\,MiB budget, we train
-General, Azure-documentation, and 50/50 Mixed tokenizers at 8K/16K/32K
-vocabularies and evaluate on nine leakage-controlled held-out sets. On an unseen
-cross-service Azure holdout (five whole held-out services, 964 documents), the
-Azure tokenizer uses \reduc{36.68} fewer tokens per 1{,}000 UTF-8 bytes than the
-byte-matched General tokenizer at 16K (95\% paired-bootstrap CI
-$[35.77\%, 37.62\%]$; document win rate $1.000$). Full specialization carries a
-general-English regression of \reduc{-34.75}; a 50/50 Mixed tokenizer retains
-\reduc{+34.21} of the Azure gain with only \reduc{-4.39} general-English
-regression. The advantage is stable across vocabulary sizes, persists on
-prose-dominant content, and transfers partially to other Microsoft and external
-(Kubernetes) technical documentation. We report \emph{compression only}: no
-model-quality, inference-latency, GPU-throughput, or cost claim is made. Code,
-source manifests with pinned commits, per-document result rows, and a machine-
-verified claim registry are released; raw corpora are not redistributed.
+training-data budget fixed. Using byte-matched 32\,MiB corpora, we train
+General-English, Azure-documentation, and 50/50 Mixed tokenizers with 8K, 16K,
+and 32K vocabularies and evaluate them on nine leakage-controlled held-out
+datasets. On an unseen cross-service Azure holdout containing 964 documents from
+five wholly held-out services, the 16K Azure tokenizer uses \reduc{36.68} fewer
+tokens per 1{,}000 UTF-8 bytes than the matched General tokenizer (95\%
+paired-bootstrap CI $[35.77\%, 37.62\%]$; document win rate $1.000$). However, it
+uses \reduc{34.75} more tokens on held-out general English. The 50/50 Mixed
+tokenizer achieves a \reduc{34.21} reduction on the Azure holdout, retaining
+\reduc{93.3} of the Azure-only tokenizer's in-domain gain, while using only
+\reduc{4.39} more tokens on general English. The in-domain reduction is stable
+across the evaluated vocabulary sizes, persists on prose-dominant content, and
+transfers partially to other Microsoft and external Kubernetes documentation. We
+evaluate tokenizer compression and CPU tokenization throughput only. We make no
+claims about model quality, inference latency, GPU throughput, or realized cost.
+We release code, pinned source manifests, per-document measurements, and a
+machine-verified claim registry; raw source corpora are not redistributed.
 \end{abstract}

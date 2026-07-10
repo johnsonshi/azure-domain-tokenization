@@ -8,6 +8,7 @@ PRIMARY_AZURE_TPK,descriptive,OK,240.18,240.18021302918405,0.02,results/processe
 PRIMARY_GENERAL_TPK,descriptive,OK,379.3,379.2954915700655,0.02,results/processed/eval_aggregate.csv
 PRIMARY_MIXED_TPK,descriptive,OK,249.52,249.52310090655277,0.02,results/processed/eval_aggregate.csv
 MIXED_REDUCTION_PRINCIPAL,primary,OK,34.21,34.21406094924291,0.05,results/processed/bootstrap.json
+MIXED_RETAINED_FRACTION,derived,OK,93.3,93.28406773478646,0.1,results/processed/bootstrap.json
 GENERAL_REGRESSION_AZURE,primary,OK,-34.75,-34.74744696153846,0.05,results/processed/bootstrap.json
 GENERAL_REGRESSION_CI_LOW,primary,OK,-35.1,-35.10254129378103,0.05,results/processed/bootstrap.json
 GENERAL_REGRESSION_CI_HIGH,primary,OK,-34.4,-34.39833706929963,0.05,results/processed/bootstrap.json

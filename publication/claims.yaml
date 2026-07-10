@@ -177,6 +177,34 @@ claims:
   source_file: results/processed/bootstrap.json
   status: registered
   reviewer: pending
+- id: MIXED_RETAINED_FRACTION
+  text: Fraction of the Azure-only 16K in-domain gain retained by the Mixed tokenizer on the principal holdout (%)
+  type: derived
+  extractor:
+    kind: ratio_percent
+    file: results/processed/bootstrap.json
+    numerator:
+      kind: json_path
+      file: results/processed/bootstrap.json
+      path:
+      - comparisons
+      - mixed_vs_general:16384:azure_cross_service_holdout
+      - point_estimate
+    denominator:
+      kind: json_path
+      file: results/processed/bootstrap.json
+      path:
+      - comparisons
+      - azure_vs_general:16384:azure_cross_service_holdout
+      - point_estimate
+  tolerance: 0.1
+  tables:
+  - main_results
+  paper_section: abstract
+  display_value: 93.3
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
 - id: GENERAL_REGRESSION_AZURE
   text: Azure vs General on general_english (%)
   type: primary

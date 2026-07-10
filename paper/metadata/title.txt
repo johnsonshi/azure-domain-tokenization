@@ -1,1 +1,1 @@
-Training Corpus Matters: Byte-Level BPE Compression on Cloud and Technical Documentation
+Domain-Specialized Byte-Level BPE for Technical Documentation: Compression Gains and General-English Tradeoffs

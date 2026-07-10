@@ -1,13 +1,16 @@
 # Final Verification — Definition of Done (plan-2.md §30)
 
 > Reconciliation of the publication-preparation work against the plan-2.md §30
-> Definition of Done. Generated at Phase G close. **No push, release, DOI, or
-> arXiv submission has occurred.**
+> Definition of Done. Updated 2026-07-10 after author metadata, retitle, and the
+> abstract correction (Mixed retains **93.3%** of the Azure gain — a derived,
+> registered claim). **No arXiv submission or DOI has occurred.**
 
-- **Branch:** `publication/arxiv-prep` @ `ad5a416`
+- **Branch:** `publication/arxiv-prep`
 - **Preserved experiment snapshot:** tag `experiment-full-verified-20260709` → commit `a7d0301` (on `main`)
-- **arXiv archive:** `paper/arxiv/arxiv-source.tar.gz` — sha256 `7df7379060e6f234aace3eb991082d0e2fa93ed1c16c611be35b30faca3c33a9` (32 files, 194,277 bytes)
-- **Full gate:** `make publication-verify` → **OK (11/11)**; `make verify-claims` → **44/44**
+- **arXiv archive:** `paper/arxiv/arxiv-source.tar.gz` — sha256 `806afc14790166b7f65d490a4d406fb9eff2f2c3dc8b1d0c8c69094d79ef6576` (32 files)
+- **Author:** Johnson Shi (Microsoft), ORCID 0009-0001-2638-6007 — confirmed 2026-07-10; non-endorsement stated.
+- **Title:** Domain-Specialized Byte-Level BPE for Technical Documentation: Compression Gains and General-English Tradeoffs
+- **Full gate:** `make publication-verify` → **OK (11/11)**; `make verify-claims` → **45/45**
 
 ## Definition-of-Done checklist
 

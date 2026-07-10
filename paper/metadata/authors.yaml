@@ -1,0 +1,16 @@
+# Final author metadata (confirmed by the author 2026-07-10).
+# Employer publication review and paper license remain human-approval gates
+# (see publication/AUTHOR_INPUTS_REQUIRED.md).
+authors:
+  - name: "Johnson Shi"
+    email: "johnsonshi86@gmail.com"          # primary corresponding
+    email_alt: "johnson.shi@microsoft.com"
+    orcid: "0009-0001-2638-6007"
+    affiliation: "Microsoft"
+    is_corresponding: true
+# The author is affiliated with Microsoft, the vendor of the studied
+# documentation. This work is independent, uses only public documentation, does
+# not claim Microsoft sponsorship or endorsement, and is not an official
+# Microsoft result. Employer publication-review requirements must be satisfied
+# before public submission.
+notes: "Employer publication review and paper license are human-approval gates."
