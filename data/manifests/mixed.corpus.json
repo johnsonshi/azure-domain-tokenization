@@ -8,7 +8,7 @@
   "n_selected": 204,
   "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/mixed.corpus.txt",
   "profile": "smoke",
-  "sha256": "9f277ec8f9bfe92073bc6c397e1d8a9329a0d77ee751ab593dc8a84d40d69f45",
+  "sha256": "0378ac8d8efd634f89075ef7a921cfc92ff1425698f4f54163cf08be91e9bc37",
   "target_bytes": 262144,
   "training_manifest_sha256": "32a74d08ff793a533af649a549f919b168b10e80f9eb91629f844de746109209"
 }

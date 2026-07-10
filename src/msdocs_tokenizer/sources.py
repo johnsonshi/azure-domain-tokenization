@@ -35,6 +35,7 @@ class SourceSpec:
     hf_repo: str = ""
     hf_files: list[str] = None
     max_docs: int = 0    # 0 = no cap
+    eval_category: str = ""  # friendly eval-set label (plan.md §14 categories)
 
     def __post_init__(self):
         self.paths = self.paths or []

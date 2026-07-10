@@ -3,8 +3,8 @@
 > Canonical run state. Keep under 250 lines. A fresh agent must be able to resume
 > from this file + repository state alone (plan.md §19).
 
-- **Updated:** 2026-07-09T23:59-07:00
-- **Phase:** 0 → 1 (bootstrap complete; launching parallel research/discovery)
+- **Updated:** 2026-07-10T00:45-07:00
+- **Phase:** 1 → 2/3 (research+discovery complete; running the corpus+tokenizer pilot)
 - **Profile target:** pilot (32 MiB corpora, 16K vocab) → then full matrix if budget allows
 - **Runtime budget:** 10h. **Disk:** 607 GiB free (32% used) — well above 15% floor.
 - **Workers:** 10 (max(1, 12−2)). **Seed:** 20260709.
@@ -12,9 +12,14 @@
 ## Completed gates
 
 - [x] **Phase 0 bootstrap**: repo skeleton, `uv` env (Python 3.12), library, CLI,
-      Makefile, scripts, fixture corpus, **63 tests passing**, `doctor.sh` green.
-- [ ] Phase 1 research + discovery (in progress)
-- [ ] Phase 2 corpus pilot
+      Makefile, scripts, fixture corpus, **67 tests passing**, `doctor.sh` green.
+- [x] **Phase 1 research + discovery**: literature review (16 verified papers +
+      3 plan arXiv IDs confirmed real), MicrosoftDocs inventory + scores + selection
+      (5 transfer repos / 4 strata, pinned commits), license review (all sources
+      CC-BY-4.0 except WikiText CC-BY-SA local-only; VETO on artifact redistribution),
+      frozen EXPERIMENT_SPEC + DEVIATIONS. Methodologist code gaps all fixed.
+      Pipeline validated end-to-end on the smoke profile.
+- [ ] Phase 2 corpus pilot (running)
 - [ ] Phase 3 tokenizer pilot (PILOT_REVIEW.md)
 - [ ] Phase 4 full corpus + EXPERIMENT_SPEC freeze
 - [ ] Phase 5 full matrix (9 tokenizers)
@@ -25,10 +30,8 @@
 
 ## Active tasks
 
-- TASK-0002 literature_researcher → research/ (sub-agent)
-- TASK-0003 repo_scout → inventory/ (sub-agent)
-- TASK-0004 licensing_reviewer → licenses/ (sub-agent)
-- TASK-0005 methodologist → research/EXPERIMENT_SPEC.md (sub-agent)
+- TASK-0006 corpus_engineer → run `acquire-pilot` + `audit-pilot` (in progress)
+- TASK-0007 tokenizer_engineer → `train-pilot` + `evaluate-pilot` (next)
 
 ## Blocked
 
@@ -36,9 +39,10 @@
 
 ## Best next action
 
-1. Run the four Phase-1 sub-agents in parallel (research, discovery, license, methodology).
-2. Synthesize into `research/PILOT_SPEC.md`; freeze `configs/sources.yaml`.
-3. `make acquire-pilot audit-pilot train-pilot evaluate-pilot analyze report verify`.
+1. `make acquire-pilot` (git sparse azure-docs 20 services + gh_api transfer/external + wikitext).
+2. `make audit-pilot` → byte-matched 32 MiB corpora + leakage audit gate.
+3. `make train-pilot evaluate-pilot analyze report` → pilot results.
+4. Red-team review → `research/PILOT_REVIEW.md`; then Phase 4+ (full matrix if budget).
 
 ## Last verified commands
 
