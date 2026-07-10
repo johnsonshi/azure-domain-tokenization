@@ -51,10 +51,13 @@
 \input{sections/11_conclusion}
 
 \section*{Reproducibility statement}
-All results regenerate from a public, version-controlled repository. Every number
-in this paper is registered in a machine-readable claim registry
-(\texttt{publication/claims.yaml}) and re-checked against its authoritative source
-file by \texttt{make verify-claims}. The analysis-only path (\texttt{make verify},
+All results regenerate from a public, version-controlled repository. Every
+empirical result value reported in this paper (effect sizes, confidence intervals,
+coverage counts, and runtime summaries) is registered in a machine-readable claim
+registry (\texttt{publication/claims.yaml}) and re-checked against its
+authoritative source file by \texttt{make verify-claims}; experimental constants
+(seed, budgets, batch sizes, vocabulary sizes) are recorded in the repository
+configs. The analysis-only path (\texttt{make verify},
 \texttt{make verify-claims}, \texttt{make figures}, \texttt{make report}) runs from
 committed result files without downloading any corpus; full reproduction downloads
 the pinned public sources. See Appendix~\ref{app:repro}.

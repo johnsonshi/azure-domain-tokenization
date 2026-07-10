@@ -5,10 +5,11 @@ The results are consistent with the Azure tokenizer allocating vocabulary to
 domain-recurring strings and documentation patterns, so that resource-provider
 names, command flags, paths, and configuration keys are encoded in fewer pieces.
 The mechanism appears in fragmentation and vocabulary-utilization measurements in
-the repository: on the principal holdout the Azure tokenizer fragments
-resource-provider identifiers, URLs, command flags, and camel/snake identifiers
-substantially less than the General tokenizer, and it uses a much larger fraction
-of its vocabulary on Azure text.
+the repository: on the principal holdout the Azure tokenizer encodes
+resource-provider identifiers, URLs, command flags, and camel/snake identifiers in
+fewer tokens than the General tokenizer (for example, roughly half as many tokens
+per resource-provider identifier in the repository's fragmentation table), and it
+uses a larger fraction of its vocabulary on Azure text.
 
 Several observations bound the interpretation. First, the effect \emph{persists on
 prose} (the largest content stratum, $n=900$, still shows \reduc{+36.75}), which

@@ -21,12 +21,14 @@ full-coverage tokenization. We use one such implementation for the controlled
 tokenizers and treat production \texttt{tiktoken} encodings as observational
 baselines.
 
-\paragraph{Domain-specific tokenizers trained on domain corpora.}
-Prior work trains tokenizers (and models) on scientific
+\paragraph{Domain-specific tokenizers and vocabularies.}
+Prior work builds domain-specific vocabularies or tokenizers for scientific
 \citep{beltagy2019scibert}, legal \citep{chalkidis2020legalbert}, legal/financial
-\citep{bommarito2025kl3m}, biomedical \citep{lee2019biobert}, and code
-\citep{feng2020codebert} corpora, and studies tokenizer choice for domains
-\citep{dagan2024tokenizer}. This study targets cloud/technical documentation and
+\citep{bommarito2025kl3m}, and code \citep{feng2020codebert} corpora, and studies
+tokenizer choice for domains \citep{dagan2024tokenizer}. Notably, some
+domain-adapted models instead reuse a general-domain tokenizer
+\citep{lee2019biobert}, which is precisely the vocabulary-mismatch setting this
+line of work motivates. This study targets cloud/technical documentation and
 isolates \emph{compression} rather than downstream model quality.
 
 \paragraph{Vocabulary adaptation for existing models.}

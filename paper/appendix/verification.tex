@@ -1,7 +1,9 @@
 \section{Verification and claim registry}
 \label{app:verify}
-Every numeric statement in this paper is registered in a machine-readable claim
-registry (\texttt{publication/claims.yaml}). For each claim the registry records an
+Every empirical result value in this paper (effect sizes, confidence intervals,
+coverage counts, and runtime summaries) is registered in a machine-readable claim
+registry (\texttt{publication/claims.yaml}); experimental constants are recorded in
+the repository configs. For each registered claim the registry records an
 extraction specification (source file and column/key), a frozen display value, and
 a tolerance; \texttt{make verify-claims} re-extracts each value from its
 authoritative result file and fails on any mismatch. An automated experiment gate
