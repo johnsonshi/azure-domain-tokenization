@@ -65,7 +65,29 @@ def test_near_dup_cluster_not_split():
         assert sp.verify_no_cross_split_leakage(docs, asg) == []
 
 
-def test_top_level_service():
+def test_near_dup_cluster_spanning_services_not_split():
+    # Regression: a near-dup cluster whose members live in DIFFERENT services
+    # must never straddle train and any holdout (the real-data bug).
+    docs = []
+    services = ["storage", "compute", "network", "aks", "functions", "cosmos",
+                "monitor", "keyvault", "sql", "cdn", "batch", "dns"]
+    for svc in services:
+        for i in range(15):
+            docs.append(DocumentRef(f"{svc}-{i}", "r", f"articles/{svc}/p{i}.md", cluster_id=-1))
+    # Inject cross-service near-dup clusters (same cluster id across two services)
+    docs.append(DocumentRef("storage-x", "r", "articles/storage/x.md", cluster_id=500))
+    docs.append(DocumentRef("compute-x", "r", "articles/compute/x.md", cluster_id=500))
+    docs.append(DocumentRef("aks-y", "r", "articles/aks/y.md", cluster_id=501))
+    docs.append(DocumentRef("dns-y", "r", "articles/dns/y.md", cluster_id=501))
+    for seed in range(25):
+        asg = sp.assign_azure_splits(docs, seed=seed)
+        assert sp.verify_no_cross_split_leakage(docs, asg) == [], f"seed={seed}"
+        # cluster-mates share a split
+        assert asg.doc_to_split["storage-x"] == asg.doc_to_split["compute-x"]
+        assert asg.doc_to_split["aks-y"] == asg.doc_to_split["dns-y"]
+
+
+
     assert sp.top_level_service("articles/storage/blobs/foo.md") == "storage"
     assert sp.top_level_service("docs/aks/bar.md") == "aks"
 

@@ -1,0 +1,153 @@
+{
+  "generated_at": "2026-07-10T00:53:14-0700",
+  "seed": 20260709,
+  "sources": [
+    {
+      "acquired_at": "2026-07-10T00:44:32-0700",
+      "command": "git clone --filter=blob:none --no-checkout https://github.com/MicrosoftDocs/azure-docs.git; sparse-checkout set articles/storage articles/virtual-network articles/application-gateway articles/frontdoor articles/expressroute articles/app-service articles/azure-functions articles/container-apps articles/batch articles/hdinsight articles/data-factory articles/synapse-analytics articles/service-bus-messaging articles/event-hubs articles/logic-apps articles/api-management articles/iot-hub articles/automation articles/backup articles/site-recovery",
+      "commit_sha": "80e8be2fca4160d1ff2528ae84bbf96f4a90d46e",
+      "file_count": 5340,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=anchor",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/azure-docs",
+      "retained_clean_bytes": 0,
+      "source_bytes": 65711494,
+      "sparse_paths": [
+        "articles/storage",
+        "articles/virtual-network",
+        "articles/application-gateway",
+        "articles/frontdoor",
+        "articles/expressroute",
+        "articles/app-service",
+        "articles/azure-functions",
+        "articles/container-apps",
+        "articles/batch",
+        "articles/hdinsight",
+        "articles/data-factory",
+        "articles/synapse-analytics",
+        "articles/service-bus-messaging",
+        "articles/event-hubs",
+        "articles/logic-apps",
+        "articles/api-management",
+        "articles/iot-hub",
+        "articles/automation",
+        "articles/backup",
+        "articles/site-recovery"
+      ],
+      "url": "https://github.com/MicrosoftDocs/azure-docs.git"
+    },
+    {
+      "acquired_at": "2026-07-10T00:46:03-0700",
+      "command": "gh api git/trees/9bb6e65c (prefix=docs/); select<= 220; download blobs",
+      "commit_sha": "9bb6e65cf6b109039e966e27aad44ce71ab4120b",
+      "file_count": 220,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=transfer; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/architecture-center",
+      "retained_clean_bytes": 0,
+      "source_bytes": 4602930,
+      "sparse_paths": [
+        "docs/"
+      ],
+      "url": "https://github.com/MicrosoftDocs/architecture-center"
+    },
+    {
+      "acquired_at": "2026-07-10T00:47:33-0700",
+      "command": "gh api git/trees/83e59036 (prefix=docs/pipelines/); select<= 220; download blobs",
+      "commit_sha": "83e590364fe13aab331d166cab63b5cbea0b35ab",
+      "file_count": 220,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=transfer; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/azure-devops-docs",
+      "retained_clean_bytes": 0,
+      "source_bytes": 1762647,
+      "sparse_paths": [
+        "docs/pipelines/"
+      ],
+      "url": "https://github.com/MicrosoftDocs/azure-devops-docs"
+    },
+    {
+      "acquired_at": "2026-07-10T00:49:01-0700",
+      "command": "gh api git/trees/b1212537 (prefix=docs/relational-databases/); select<= 220; download blobs",
+      "commit_sha": "b1212537b039d992f1acafa81747239794ff32a1",
+      "file_count": 220,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=transfer; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/sql-docs",
+      "retained_clean_bytes": 0,
+      "source_bytes": 1421628,
+      "sparse_paths": [
+        "docs/relational-databases/"
+      ],
+      "url": "https://github.com/MicrosoftDocs/sql-docs"
+    },
+    {
+      "acquired_at": "2026-07-10T00:50:09-0700",
+      "command": "gh api git/trees/e8925d86 (prefix=docs/data-engineering/); select<= 150; download blobs",
+      "commit_sha": "e8925d869c90b57daf9a41b984f16b3636d227ac",
+      "file_count": 150,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=transfer; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/fabric-docs",
+      "retained_clean_bytes": 0,
+      "source_bytes": 1480255,
+      "sparse_paths": [
+        "docs/data-engineering/"
+      ],
+      "url": "https://github.com/MicrosoftDocs/fabric-docs"
+    },
+    {
+      "acquired_at": "2026-07-10T00:51:32-0700",
+      "command": "gh api git/trees/eab9d769 (prefix=microsoft-365/enterprise/); select<= 200; download blobs",
+      "commit_sha": "eab9d7696cdff87474698b08a1fb328091102a2f",
+      "file_count": 200,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=transfer; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "MicrosoftDocs/microsoft-365-docs",
+      "retained_clean_bytes": 0,
+      "source_bytes": 1837200,
+      "sparse_paths": [
+        "microsoft-365/enterprise/"
+      ],
+      "url": "https://github.com/MicrosoftDocs/microsoft-365-docs"
+    },
+    {
+      "acquired_at": "2026-07-10T00:52:57-0700",
+      "command": "gh api git/trees/71d23f81 (prefix=content/en/docs/); select<= 250; download blobs",
+      "commit_sha": "71d23f81e3479361befc94564e2b955860c03164",
+      "file_count": 250,
+      "license_id": "CC-BY-4.0",
+      "notes": "role=external_technical; gh_api deterministic selection",
+      "redistributable": null,
+      "repository": "kubernetes/website",
+      "retained_clean_bytes": 0,
+      "source_bytes": 2616599,
+      "sparse_paths": [
+        "content/en/docs/"
+      ],
+      "url": "https://github.com/kubernetes/website"
+    },
+    {
+      "acquired_at": "2026-07-10T00:53:14-0700",
+      "command": "hf_hub_download(Salesforce/wikitext, ['wikitext-103-raw-v1/train-00000-of-00002.parquet'], repo_type=dataset)",
+      "commit_sha": "hf:main",
+      "file_count": 14900,
+      "license_id": "CC-BY-SA-3.0",
+      "notes": "role=general_english; grouped wikitext articles",
+      "redistributable": null,
+      "repository": "Salesforce/wikitext",
+      "retained_clean_bytes": 0,
+      "source_bytes": 269630498,
+      "sparse_paths": [
+        "wikitext-103-raw-v1/train-00000-of-00002.parquet"
+      ],
+      "url": "https://huggingface.co/datasets/Salesforce/wikitext"
+    }
+  ]
+}

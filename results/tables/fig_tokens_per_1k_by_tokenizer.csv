@@ -1,0 +1,4 @@
+tokenizer_id,tokens_per_1000_utf8_bytes_micro
+azure-bytebpe-16384,240.12660062361704
+general-bytebpe-16384,379.7551327520691
+mixed-bytebpe-16384,250.0516186721206

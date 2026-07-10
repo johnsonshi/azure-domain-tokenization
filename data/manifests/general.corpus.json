@@ -1,12 +1,12 @@
 {
-  "content_utf8_bytes": 262144,
+  "content_utf8_bytes": 33554432,
   "corpus": "general",
-  "file_utf8_bytes": 262467,
-  "n_documents": 162,
-  "n_selected": 162,
+  "file_utf8_bytes": 33558293,
+  "n_documents": 1931,
+  "n_selected": 1931,
   "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/general.corpus.txt",
-  "profile": "smoke",
-  "sha256": "026269b2975b25de2373874f8107b2a1203061f06beb1e7dd8e947207ad3446b",
-  "target_bytes": 262144,
-  "training_manifest_sha256": "d2558bed45051b93a44d0e0a9f6e894b0d8548b617b3509ad36aad410ed1ba6b"
+  "profile": "pilot",
+  "sha256": "8ac03a537123c008e740c39ca53bf32cd3775ccce44f6c42b81467461d5b51ef",
+  "target_bytes": 33554432,
+  "training_manifest_sha256": "d1914a9370b600832ef15e8f7ce2b2b8f341920fa4eb41b85a0b925488ba05c6"
 }

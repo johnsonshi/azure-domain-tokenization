@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:51:32-0700",
+  "command": "gh api git/trees/eab9d769 (prefix=microsoft-365/enterprise/); select<= 200; download blobs",
+  "commit_sha": "eab9d7696cdff87474698b08a1fb328091102a2f",
+  "file_count": 200,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=transfer; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "MicrosoftDocs/microsoft-365-docs",
+  "retained_clean_bytes": 0,
+  "source_bytes": 1837200,
+  "sparse_paths": [
+    "microsoft-365/enterprise/"
+  ],
+  "url": "https://github.com/MicrosoftDocs/microsoft-365-docs"
+}

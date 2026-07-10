@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:50:09-0700",
+  "command": "gh api git/trees/e8925d86 (prefix=docs/data-engineering/); select<= 150; download blobs",
+  "commit_sha": "e8925d869c90b57daf9a41b984f16b3636d227ac",
+  "file_count": 150,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=transfer; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "MicrosoftDocs/fabric-docs",
+  "retained_clean_bytes": 0,
+  "source_bytes": 1480255,
+  "sparse_paths": [
+    "docs/data-engineering/"
+  ],
+  "url": "https://github.com/MicrosoftDocs/fabric-docs"
+}

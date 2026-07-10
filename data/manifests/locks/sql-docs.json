@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:49:01-0700",
+  "command": "gh api git/trees/b1212537 (prefix=docs/relational-databases/); select<= 220; download blobs",
+  "commit_sha": "b1212537b039d992f1acafa81747239794ff32a1",
+  "file_count": 220,
+  "license_id": "CC-BY-4.0",
+  "notes": "role=transfer; gh_api deterministic selection",
+  "redistributable": null,
+  "repository": "MicrosoftDocs/sql-docs",
+  "retained_clean_bytes": 0,
+  "source_bytes": 1421628,
+  "sparse_paths": [
+    "docs/relational-databases/"
+  ],
+  "url": "https://github.com/MicrosoftDocs/sql-docs"
+}

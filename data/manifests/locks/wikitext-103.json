@@ -1,0 +1,16 @@
+{
+  "acquired_at": "2026-07-10T00:53:14-0700",
+  "command": "hf_hub_download(Salesforce/wikitext, ['wikitext-103-raw-v1/train-00000-of-00002.parquet'], repo_type=dataset)",
+  "commit_sha": "hf:main",
+  "file_count": 14900,
+  "license_id": "CC-BY-SA-3.0",
+  "notes": "role=general_english; grouped wikitext articles",
+  "redistributable": null,
+  "repository": "Salesforce/wikitext",
+  "retained_clean_bytes": 0,
+  "source_bytes": 269630498,
+  "sparse_paths": [
+    "wikitext-103-raw-v1/train-00000-of-00002.parquet"
+  ],
+  "url": "https://huggingface.co/datasets/Salesforce/wikitext"
+}
