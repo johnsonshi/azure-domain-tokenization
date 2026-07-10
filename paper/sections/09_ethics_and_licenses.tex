@@ -1,0 +1,31 @@
+\section{Ethics, licensing, and broader impact}
+\label{sec:ethics}
+
+\paragraph{Sources and licensing.} All data are public documentation. Microsoft
+documentation sources are used under CC-BY-4.0 (documentation) with MIT code
+samples; the Kubernetes website content is CC-BY-4.0; the general-English corpus
+(WikiText-103) is Wikipedia-derived under CC-BY-SA. Sources are pinned by commit
+and attributed in the repository (\texttt{licenses/}). No user data and no private
+content are used.
+
+\paragraph{Redistribution boundaries.} We do not republish raw source corpora;
+reproduction downloads the pinned public sources. We release scripts, source
+manifests, content hashes, per-document result rows, processed tables, and
+figures. The Azure-only tokenizer artifact is redistributable with attribution;
+the General and Mixed tokenizers are derived in part from WikiText and are kept
+local-use-only pending clarification of the applicable share-alike terms.
+
+\paragraph{Broader impact.} Token-count differences across domains can translate
+into uneven context capacity and per-token accounting across users and domains;
+studying compression makes such disparities measurable. We caution against
+over-reading compression as model quality: fewer tokens is an efficiency property,
+not evidence of better understanding, accuracy, or safety.
+
+\paragraph{Environmental scope.} The experiment is CPU-only and trains no language
+model; its compute footprint is small (tokenizer training and evaluation complete
+in minutes on a laptop).
+
+\paragraph{Non-endorsement and review.} This is independent research using public
+documentation and does not represent the position of any vendor. We make no IRB
+claim (no human-subjects data). Author affiliation and any required employer
+publication review are recorded as open items in the repository.

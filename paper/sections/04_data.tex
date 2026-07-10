@@ -1,0 +1,41 @@
+\section{Data}
+\label{sec:data}
+
+All sources are public and pinned by exact commit or dataset revision (repository
+file \texttt{data/manifests/sources.lock.json}); raw source text is not
+redistributed. Table~\ref{tab:datasets} summarizes the sources; per-source
+licenses, attribution, and acquisition commands are in Appendix~\ref{app:data}.
+
+\begin{table}[t]
+\centering
+\caption{Public sources, roles, retained Markdown file counts, and licenses.
+Sources are pinned by commit; raw text is not redistributed.}
+\label{tab:datasets}
+\small
+\input{tables/tab_datasets}
+\end{table}
+
+\paragraph{Training corpora.} Three byte-matched corpora of 33{,}554{,}432 UTF-8
+bytes each: \emph{General} (Wikipedia-derived English, WikiText-103-raw),
+\emph{Azure} (20 service directories of \texttt{MicrosoftDocs/azure-docs},
+$3{,}799$ documents after deduplication and holdout), and \emph{Mixed}, a
+deterministic document-by-document 50/50 interleave. Corpora are matched on
+cleaned bytes, not document count.
+
+\paragraph{Evaluation corpora.} Nine held-out sets: the Azure cross-service
+holdout (five whole services never seen in training, the \emph{principal} set,
+$964$ documents), an Azure same-service holdout, four Microsoft transfer sets
+(architecture, DevOps, data, broad-enterprise), one external technical control
+(Kubernetes website documentation), a held-out general-English set, and a
+diagnostic synthetic set.
+
+\paragraph{Cleaning, classification, and leakage control.} Documents are decoded
+as UTF-8, NFC-normalized (no lowercasing or accent stripping), stripped of front
+matter and build directives, segmented, and classified into content types by a
+rule-based classifier. Exact duplicates (SHA-256) and MinHash near-duplicates are
+removed from Azure before splitting; the General corpus is exact-deduplicated
+before the train/eval split ($134$ documents removed); and evaluation items that
+are near-duplicates of any training document are removed ($9$ items). Whole Azure
+services are held out so the principal evaluation is service-disjoint from
+training. We do not reproduce source-document text beyond minimal illustrative
+tokens.

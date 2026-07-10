@@ -1,0 +1,14 @@
+
+\begin{tabular}{lrr}
+\toprule
+\textbf{Tokenizer (16K)} & \textbf{Azure cross-service} & \textbf{General English} \\
+ & \textbf{reduction (\%)} & \textbf{reduction (\%)} \\
+\midrule
+Azure & $+36.68$ & $-34.75$ \\
+Mixed (50/50) & $+34.21$ & $-4.39$ \\
+General & $0$ (ref.) & $0$ (ref.) \\
+\midrule
+\multicolumn{3}{l}{\footnotesize Azure primary 95\% CI $[35.77, 37.62]$, win rate 1.0, $n=964$.} \\
+\multicolumn{3}{l}{\footnotesize Positive $=$ specialized tokenizer uses fewer tokens per 1{,}000 UTF-8 bytes.} \\
+\bottomrule
+\end{tabular}

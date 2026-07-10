@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+
+% --- Portable, arXiv-friendly preamble (no proprietary fonts, no absolute paths) ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[hmargin=1in,vmargin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black}
+\usepackage{url}
+\usepackage{microtype}
+
+\newcommand{\reduc}[1]{\ensuremath{#1\%}}
+
+\title{\textbf{Training Corpus Matters: Byte-Level BPE Compression\\ on Cloud and Technical Documentation}\\
+\large A controlled, byte-matched case study measuring tokenizer compression, not model quality}
+
+% Author metadata is a PLACEHOLDER pending confirmation
+% (see publication/AUTHOR_INPUTS_REQUIRED.md). Do not treat as final.
+\author{%
+  \texttt{$\langle$AUTHOR NAME$\rangle$}\thanks{Author, affiliation, and any employer
+  relationship are placeholders pending confirmation; see the repository's
+  \texttt{publication/AUTHOR\_INPUTS\_REQUIRED.md}. This is an independent research
+  artifact using only public documentation; it does not represent Microsoft's
+  position and implies no endorsement.}\\
+  \texttt{$\langle$AFFILIATION$\rangle$}
+}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_research_questions}
+\input{sections/04_data}
+\input{sections/05_methodology}
+\input{sections/06_results}
+\input{sections/07_analysis}
+\input{sections/08_limitations}
+\input{sections/09_ethics_and_licenses}
+\input{sections/10_future_work}
+\input{sections/11_conclusion}
+
+\section*{Reproducibility statement}
+All results regenerate from a public, version-controlled repository. Every number
+in this paper is registered in a machine-readable claim registry
+(\texttt{publication/claims.yaml}) and re-checked against its authoritative source
+file by \texttt{make verify-claims}. The analysis-only path (\texttt{make verify},
+\texttt{make verify-claims}, \texttt{make figures}, \texttt{make report}) runs from
+committed result files without downloading any corpus; full reproduction downloads
+the pinned public sources. See Appendix~\ref{app:repro}.
+
+\section*{Data and code availability}
+Code, source manifests with pinned commits, content hashes, per-document result
+rows, processed tables, and figures are released under the repository's terms.
+Raw source corpora are not redistributed; reproduction downloads the pinned public
+sources. The Azure-only tokenizer artifact is distributable with attribution; the
+General and Mixed (WikiText-derived) tokenizers are local-use-only pending license
+review.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\input{appendix/experiment_matrix}
+\input{appendix/dataset_details}
+\input{appendix/additional_results}
+\input{appendix/runtime_details}
+\input{appendix/verification}
+\input{appendix/reproducibility}
+
+\end{document}

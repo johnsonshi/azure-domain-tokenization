@@ -1,0 +1,49 @@
+\section{Introduction}
+\label{sec:intro}
+
+Language models read text as \emph{tokens}, and a tokenizer's vocabulary
+determines how many tokens a given string becomes. Because sequence length drives
+context consumption and per-token accounting, a tokenizer that fragments a domain's
+recurring strings---resource identifiers, command flags, paths, configuration
+keys---into many pieces imposes a standing overhead on that domain. Subword
+tokenizers such as byte-pair encoding (BPE) \citep{sennrich2016bpe}, WordPiece
+\citep{schuster2012wordpiece}, and Unigram/SentencePiece
+\citep{kudo2018subword,kudo2018sentencepiece} learn their inventories from a
+training corpus, so the corpus composition shapes which strings are cheap.
+
+Technical documentation is a useful domain to study this effect: it mixes natural
+language with dense, repetitive technical syntax, and large, permissively licensed
+corpora exist. Azure documentation is a useful controlled case---sizable,
+public, and internally varied across services---so that we can hold out whole
+services for genuinely unseen evaluation. Crucially, in-domain gains must be
+reported \emph{with} out-of-domain regressions: a tokenizer specialized to one
+domain is expected to compress other text worse, and a practical deployment may
+prefer a mixed tokenizer that balances the two.
+
+Existing production tokenizers (e.g., \texttt{tiktoken}
+\citep{openai2026tiktoken}) differ from one another in training data, vocabulary
+size, normalization, and algorithm simultaneously, so comparing them cannot
+isolate the effect of the \emph{training corpus} alone. We therefore run a
+controlled experiment: identical byte-level BPE tokenizers that differ only in
+their training corpus, trained on byte-matched budgets, with leakage-controlled
+held-out evaluation.
+
+This paper measures \emph{tokenization compression only}. It does not train or
+evaluate a language model, and makes no claim about model quality, accuracy,
+reasoning, inference latency, GPU throughput, or realized cost. Our contributions
+are:
+
+\begin{enumerate}
+  \item A controlled corpus-composition study with matched byte budgets and fixed
+  byte-level BPE configuration (General vs Azure vs Mixed, at 8K/16K/32K).
+  \item Cross-service and cross-repository held-out evaluation with explicit
+  leakage controls (whole-service holdout, exact and near-duplicate removal,
+  cross-corpus near-duplicate filtering).
+  \item An analysis of the specialization--generalization tradeoff via a 50/50
+  Mixed tokenizer.
+  \item Content-type, vocabulary-size, coverage, transfer, and CPU-runtime
+  analyses, separating compression from runtime.
+  \item A reproducible artifact with source locks, raw per-document results, and a
+  machine-verified claim registry in which every reported number is reconciled
+  against its source file.
+\end{enumerate}

@@ -1,0 +1,20 @@
+\section{Future work}
+\label{sec:future}
+
+The priority follow-up is a \emph{matched general-technical documentation} training
+control that shares technical style, markup, and identifier density with the Azure
+corpus but not its Azure-specific vocabulary, to separate general
+technical-documentation specialization from Azure specialization. Beyond that:
+(i)~more corpus mixture ratios between the General and Azure extremes;
+(ii)~larger training-data budgets to test whether the reduction changes with
+scale; (iii)~other tokenizer algorithms (e.g., Unigram, WordPiece) under matched
+controls; (iv)~deeper vocabulary-utilization and token-category allocation
+analysis; and (v)~temporal holdouts across documentation snapshots.
+
+Separately, and clearly labeled as future GPU/model work not attempted here, one
+could integrate an adapted tokenizer into a small model trained from scratch to
+measure any downstream effect, and measure real prefill, KV-cache, latency, and
+throughput with a compatible model. Evaluating code-heavy and multilingual
+technical documentation, and vocabulary-replacement or adaptation methods rather
+than full retraining, are additional directions. None of these downstream or
+serving results are claimed by the present study.

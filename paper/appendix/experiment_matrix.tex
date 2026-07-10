@@ -1,0 +1,10 @@
+\section{Experimental matrix}
+\label{app:matrix}
+The controlled matrix comprises nine tokenizers: General, Azure, and Mixed (50/50)
+training corpora crossed with vocabulary sizes $8{,}192$, $16{,}384$, and
+$32{,}768$. Within each vocabulary size, the three tokenizers are identical except
+for the training corpus; each is trained on exactly $33{,}554{,}432$ UTF-8 bytes.
+Track~B adds three observational \texttt{tiktoken} encodings, giving $12$ encoders
+evaluated on $9$ held-out sets. Per-tokenizer provenance (configuration hash,
+artifact hash, byte counts, merge count, package versions, machine metadata, and
+redistribution flag) is recorded in \texttt{artifacts/tokenizers/*.json}.

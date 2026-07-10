@@ -1,0 +1,68 @@
+\section{Related work}
+\label{sec:related}
+
+We organize related work by methodological relationship to this study rather than
+as a list of results.
+
+\paragraph{Subword tokenization foundations.}
+BPE for open-vocabulary neural machine translation \citep{sennrich2016bpe},
+WordPiece \citep{schuster2012wordpiece}, subword regularization and Unigram
+language-model tokenization \citep{kudo2018subword}, and SentencePiece
+\citep{kudo2018sentencepiece} define the tokenizer families and the
+open-vocabulary motivation; byte-level BPE \citep{radford2019gpt2} and
+WordPiece-based encoders \citep{devlin2019bert} are widely deployed. We do not
+introduce a new tokenizer algorithm; we vary the training corpus within a fixed
+byte-level BPE design.
+
+\paragraph{Byte-level BPE and implementation baselines.}
+Byte-level BPE \citep{radford2019gpt2} and its production implementations
+\citep{openai2026tiktoken,huggingface2026tokenizers} provide robust,
+full-coverage tokenization. We use one such implementation for the controlled
+tokenizers and treat production \texttt{tiktoken} encodings as observational
+baselines.
+
+\paragraph{Domain-specific tokenizers trained on domain corpora.}
+Prior work trains tokenizers (and models) on scientific
+\citep{beltagy2019scibert}, legal \citep{chalkidis2020legalbert}, legal/financial
+\citep{bommarito2025kl3m}, biomedical \citep{lee2019biobert}, and code
+\citep{feng2020codebert} corpora, and studies tokenizer choice for domains
+\citep{dagan2024tokenizer}. This study targets cloud/technical documentation and
+isolates \emph{compression} rather than downstream model quality.
+
+\paragraph{Vocabulary adaptation for existing models.}
+A separate line adapts or augments an existing model's tokenizer---adaptive
+tokenization \citep{sachidananda2021adaptive}, adaptive BPE and vocabulary
+adaptation in fine-tuning \citep{balde2024adaptivebpe,herold2025vocabulary},
+general-to-specialized adaptation \citep{liyanage2026adaptbpe}, and
+parameter-efficient vocabulary adaptation \citep{balde2026learning}. These methods
+modify an existing vocabulary and often evaluate downstream tasks; we instead
+train tokenizers from scratch on byte-matched corpora and report intrinsic
+compression only, so we make no model-substitution claim.
+
+\paragraph{Pre-tokenization and scaling choices.}
+Pre-tokenization \citep{kudo2018sentencepiece,dagan2024tokenizer} and the amount of
+tokenizer training data \citep{reddy2025diminishing} both affect the learned
+inventory. We fix byte-level BPE design choices and vary corpus composition and
+vocabulary size, observing diminishing sensitivity across 8K/16K/32K.
+
+\paragraph{Fertility, compression, and fairness metrics.}
+Token counts are corpus- and language-sensitive and can create inequities
+\citep{petrov2023unfairness}, motivating metrics beyond raw fertility
+\citep{nayeem2025strr} and studies of tokenizer choice
+\citep{ali2024tokenizerchoice,rust2021tokenizer}. We adopt tokens per 1{,}000
+UTF-8 bytes as the outcome and explicitly avoid downstream quality or fairness
+claims.
+
+\paragraph{Leakage and evaluation controls.}
+Deduplication improves the integrity of train/eval separation for language
+modeling \citep{lee2022dedup}. We apply analogous exact and near-duplicate
+controls to tokenizer-compression evaluation.
+
+\medskip
+Taken together, prior work establishes that tokenizer inventories are
+corpus-sensitive and can affect efficiency and downstream systems. Our
+contribution is a controlled, byte-matched, leakage-controlled case study
+measuring how that sensitivity manifests as \emph{compression} on technical
+documentation, including the tradeoff between full specialization and mixed-domain
+training. This work sits primarily in the ``trained from scratch on domain data''
+and ``fertility/compression measurement'' categories above.

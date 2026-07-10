@@ -1,0 +1,18 @@
+\section{Reproducibility}
+\label{app:repro}
+The environment is pinned with \texttt{uv} (Python 3.12; \texttt{uv.lock}). Two
+paths are supported. \emph{Analysis-only} reproduction runs from committed result
+files without downloading any corpus:
+\begin{quote}\ttfamily
+uv sync; make verify; make verify-claims; make figures; make report
+\end{quote}
+\emph{Full} reproduction downloads the pinned public sources and recomputes:
+\begin{quote}\ttfamily
+make acquire-full audit-full train-all evaluate-all; \\
+PROFILE=full make analyze report figures verify
+\end{quote}
+Full reproduction takes roughly $20$--$25$ minutes on an Apple M3 Pro and a
+transient ${\sim}2.7$\,GB of disk (a git-ignored source clone plus working data);
+the analysis-only path runs in minutes with no downloads. All stochastic steps are
+driven by a single seed ($20{,}260{,}709$); the main known nondeterminism is CPU
+runtime timing on a thermally variable laptop.
