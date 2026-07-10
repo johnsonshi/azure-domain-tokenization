@@ -15,6 +15,8 @@
 | 2026-07-10 | Methodological red team | method-redteam | publication/reviews/METHOD_REVIEW.md | **PASS** w/ recommendations (0 blockers) |
 | 2026-07-10 | Claim/writing red team | claim-redteam | publication/reviews/CLAIM_REVIEW.md | FAIL -> re-review NO-GO -> **PASS** (final iteration 2; 2 blockers + citation mismatch fixed; RESPONSE_TO_REVIEW.md) |
 | 2026-07-10 | Citation verification | literature-researcher | paper/literature/citation_verification.csv | **PASS** (26 citations verified, 0 unresolved) |
+| 2026-07-10 | arXiv packaging preflight (Phase G) | arxiv-packager (orchestrator) | paper/arxiv/submission-checklist.md | **PASS** (clean-room pdflatex-only build 17 pp, 0 undefined, fonts embedded; 17/17 automated) |
+| 2026-07-10 | Final verification (§30 DoD) | orchestrator | publication/FINAL_VERIFICATION.md | **15/15** — publication-ready pending human gates |
 
 ## Prior scientific red-team (experiment phase, preserved)
 
