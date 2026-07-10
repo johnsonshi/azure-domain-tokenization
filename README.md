@@ -2,7 +2,12 @@
 
 **Measuring domain specialization on Microsoft technical documentation — a controlled, CPU-only, reproducible study.**
 
-> Status: **bootstrapping** (Phase 0). See [`STATE.md`](STATE.md) for the live status, [`plan.md`](plan.md) for the full execution specification, and [`FINDINGS.md`](FINDINGS.md) for verified results.
+> Status: **pilot complete, full 9-tokenizer matrix trained and verified (7/7)**. See [`STATE.md`](STATE.md) for live status, [`plan.md`](plan.md) for the full spec, [`FINDINGS.md`](FINDINGS.md) for verified results, and [`results/reports/FINAL_REPORT.md`](results/reports/FINAL_REPORT.md) for the report.
+
+## Headline result
+
+On held-out Azure services, a byte-level BPE tokenizer trained on Azure docs uses **36.7% fewer tokens per 1,000 UTF-8 bytes** than a byte-matched general-English tokenizer (95% paired-bootstrap CI [35.8%, 37.6%], wins on 100% of 964 pages). It is **34.8% worse** on general English (the expected trade-off, reported alongside), while a 50/50 **Mixed** corpus keeps +34.2% on Azure with only −4.4% English regression. The gain survives on prose alone (+36.8%) and transfers to non-Microsoft Kubernetes docs (+31.2%). Mechanism: the Azure tokenizer fragments resource providers, URLs, CLI flags, and identifiers ~2× less and uses 82% of its vocabulary on Azure content vs General's 48%. _Tokenization only — no model-quality/latency/cost claim._
+
 
 ## What this is
 
