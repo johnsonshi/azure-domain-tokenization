@@ -98,11 +98,17 @@ def check_links() -> None:
                 if not any(part in {".git", "external", ".venv"} for part in p.parts)]
     broken = []
     link_re = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+    fence_re = re.compile(r"```.*?```", re.DOTALL)
+    inline_code_re = re.compile(r"`[^`]*`")
     for f in md_files:
         try:
             text = f.read_text(encoding="utf-8")
         except Exception:
             continue
+        # Content inside code fences/spans is literal text, not a live link;
+        # strip it so quoted Markdown (e.g. a README image embed) isn't flagged.
+        text = fence_re.sub("", text)
+        text = inline_code_re.sub("", text)
         for m in link_re.finditer(text):
             target = m.group(1).strip()
             if target.startswith(("http://", "https://", "#", "mailto:")):

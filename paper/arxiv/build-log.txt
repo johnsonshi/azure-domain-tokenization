@@ -61,14 +61,14 @@ ty (/usr/local/texlive/2026/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/microtype-pdftex.def)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/microtype.cfg))
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
-(arxiv/build/main.aux)
+(./main.aux)
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 (/usr/local/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 (/usr/local/texlive/2026/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
-(arxiv/build/main.out) (arxiv/build/main.out)
+(./main.out) (./main.out)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-cmr.cfg)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/local/texlive/2026/texmf-dist/tex/latex/microtype/mt-msa.cfg)
@@ -93,14 +93,15 @@ Overfull \hbox (34.92389pt too wide) in paragraph at lines 18--24
 \T1/cmr/m/n/10.95 (-20) (Wikipedia-derived En-glish, WikiText-103-raw), \T1/cmr
 /m/it/10.95 (-20) Azure \T1/cmr/m/n/10.95 (-20) (20 ser-vice di-rec-to-ries of 
 \T1/cmtt/m/n/10.95 MicrosoftDocs/azure-docs\T1/cmr/m/n/10.95 (-20) ,
-) (./sections/05_methodology.tex [4] (./tables/tab_matrix.tex))
-(./sections/06_results.tex [5] (./tables/tab_main_results.tex) [6 <./figures/fi
-g01_primary.pdf>] (./tables/tab_transfer.tex) [7 <./figures/fig02_tradeoff.pdf>
-] (./tables/tab_runtime_verification.tex)) (./sections/07_analysis.tex [8 <./fi
-gures/fig03_transfer.pdf>] [9 <./figures/fig04_vocab.pdf> <./figures/fig05_cont
-ent.pdf>]) (./sections/08_limitations.tex [10 <./figures/fig06_runtime.pdf>])
-(./sections/09_ethics_and_licenses.tex) (./sections/10_future_work.tex [11])
-(./sections/11_conclusion.tex) [12] (arxiv/build/main.bbl [13]
+) (./sections/05_methodology.tex [4] (./tables/tab_matrix.tex) [5])
+(./sections/06_results.tex (./tables/tab_main_results.tex)
+(./tables/tab_transfer.tex) [6] (./tables/tab_runtime_verification.tex)
+[7 <./figures/fig01_primary.pdf>]) (./sections/07_analysis.tex [8 <./figures/fi
+g02_tradeoff.pdf>]) (./sections/08_limitations.tex [9 <./figures/fig03_transfer
+.pdf>] [10 <./figures/fig04_vocab.pdf> <./figures/fig05_content.pdf>])
+(./sections/09_ethics_and_licenses.tex [11 <./figures/fig06_runtime.pdf>])
+(./sections/10_future_work.tex) (./sections/11_conclusion.tex) [12] (./main.bbl
+[13]
 Underfull \hbox (badness 2435) in paragraph at lines 181--187
 \T1/cmr/m/n/10.95 (+20) Lan-guage mod-els are un-su-per-vised mul-ti-task learn
 -ers.  Tech-ni-cal re-port, Ope-nAI,
@@ -109,13 +110,9 @@ Underfull \hbox (badness 1199) in paragraph at lines 181--187
 \T1/cmr/m/n/10.95 (+20) 2019.  URL [][]$\T1/cmtt/m/n/10.95 https : / / cdn . op
 enai . com / better-[]language-[]models / language _ models _ are _
 [14]) (./appendix/experiment_matrix.tex) (./appendix/dataset_details.tex)
-(./appendix/additional_results.tex) (./appendix/runtime_details.tex [15])
-(./appendix/verification.tex) (./appendix/reproducibility.tex
-Overfull \hbox (71.35841pt too wide) in paragraph at lines 3--1
-\T1/cmr/m/n/10.95 (-20) Every nu-meric state-ment in this pa-per is reg-is-tere
-d in a machine-readable claim reg-istry (\T1/cmtt/m/n/10.95 publication/claims.
-yaml\T1/cmr/m/n/10.95 (-20) ).
-) [16] (arxiv/build/main.aux) )
+(./appendix/additional_results.tex [15]) (./appendix/runtime_details.tex)
+(./appendix/verification.tex) (./appendix/reproducibility.tex) [16] [17]
+(./main.aux) )
 (see the transcript file for additional information)</usr/local/texlive/2026/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2026/texmf
@@ -139,5 +136,5 @@ r/sftt0900.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/
 sftt1000.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sf
 tt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt
 1200.pfb>
-Output written on arxiv/build/main.pdf (16 pages, 678235 bytes).
-Transcript written on arxiv/build/main.log.
+Output written on main.pdf (17 pages, 679966 bytes).
+Transcript written on main.log.

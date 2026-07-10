@@ -21,3 +21,14 @@
 ### 2026-07-10 · PD-0004 · Numbers reconcile to files, not to plan-2 §1
 - **Decision:** All display values are extracted from `results/` files, not copied from plan-2 §1. (They matched plan-2 §1, which itself used the verified files.)
 - **Evidence:** plan-2.md §1 preamble ("Do not copy numbers … without reconciling"). Verified via build_claims + verify_claims.
+
+### 2026-07-10 · PD-0005 · Link checker ignores Markdown inside code spans
+- **Decision:** `scripts/publication_verify.py::check_links` strips fenced (```` ``` ````) and inline (`` ` ``) code before scanning for relative links. A `` `![alt](path)` `` embed quoted inside backticks in a review doc is literal text, not a live link, so it must not be resolved/flagged. This removed a false-positive "broken link" (`ARTIFACT_REVIEW.md -> results/figures/fig01_primary.png`) without weakening real link checks.
+- **Alternatives:** rewrite the review-doc text to avoid `](...)` (rejected — recurs whenever docs legitimately quote Markdown); resolve links from repo root (rejected — breaks standard file-relative semantics).
+- **Evidence:** CommonMark treats code-span content as literal; `make publication-verify` → OK (11/11) after the fix.
+- **Revisit:** if a doc needs a real link that only appears inside a code span (none today).
+
+### 2026-07-10 · PD-0006 · arXiv packaging = local preflight only, stop before submission
+- **Decision:** Phase G produces the upload archive + manifest + reference PDF + build log + checklist and verifies a clean-room **pdflatex-only** build using the bundled `.bbl`. Submission itself, author metadata, license, category, employer review, push, release, and DOI are human-only gates and are NOT performed by the agent.
+- **Evidence:** plan-2.md §22, §27, §30; `paper/arxiv/submission-checklist.md` Part C; `publication/AUTHOR_INPUTS_REQUIRED.md`.
+- **Revisit:** on explicit user approval to submit.
