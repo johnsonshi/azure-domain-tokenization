@@ -5,8 +5,8 @@
 > [`claim_evidence.csv`](claim_evidence.csv). Regenerate/verify with
 > `make verify-claims` (`uv run python scripts/verify_claims.py`).
 
-- **Total registered claims:** 39
-- **Last verification:** 39/39 PASS
+- **Total registered claims:** 44
+- **Last verification:** 44/44 PASS
 - **Rule:** No number may appear in README, docs, figures, tables, captions,
   social copy, release notes, or the paper unless it is registered here and
   passes verification.
@@ -35,6 +35,9 @@
 See `claims.yaml` for the full 39-entry registry with extraction commands,
 tolerances, and the figures/tables/paper sections each claim feeds.
 
-## Pending additions
+## Coverage
 
-- Runtime Track A / Track B min–max MB/s (register against a `results/tables/runtime_summary.csv` built in Phase C).
+The 44 claims cover the primary result, general-English regression, Mixed tradeoff,
+6 transfer sets, 3 vocabulary sizes, 4 content types, coverage (rows/encoders/eval
+sets/UNK/round-trip), corpus byte-match, dedup counts, seed, bootstrap resamples,
+and runtime Track A/B min–max throughput (`results/tables/runtime_summary.csv`).
