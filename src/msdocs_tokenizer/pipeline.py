@@ -82,6 +82,7 @@ def run_acquire(profile: str, sources_cfg: str | Path, force: bool = False) -> d
                 "license_id": rd.license_id,
                 "role": spec.role,
                 "source_name": spec.name,
+                "eval_category": spec.eval_category,
                 "raw_text": rd.raw_bytes.decode("utf-8", errors="replace"),
             } for rd in raw_docs]
             out_parquet.parent.mkdir(parents=True, exist_ok=True)
@@ -138,13 +139,19 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
     out_splits = config.SPLITS / "azure_splits.parquet"
     out_segments = config.SEGMENTS / "segments.sample.parquet"
     out_eval = config.EVALUATION / "eval_docs.parquet"
+    out_dedup = config.AUDIT / "cross_repo_overlap.parquet"
 
     def work():
         _log(f"audit: profile={profile} target_bytes={target_bytes}")
-        # Load by role
+        # Load by role; also build source_repo -> friendly eval category map
         raw_by_role: dict[str, list[RawDoc]] = {}
+        repo_to_category: dict[str, str] = {}
         for pq in sorted(config.RAW.glob("*.raw.parquet")):
             df = pd.read_parquet(pq)
+            if "eval_category" in df.columns:
+                for repo, cat in df[["source_repo", "eval_category"]].dropna().itertuples(index=False):
+                    if cat:
+                        repo_to_category[repo] = cat
             for role, g in df.groupby("role"):
                 lst = raw_by_role.setdefault(role, [])
                 for _, r in g.iterrows():
@@ -211,11 +218,22 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
                                                  config.SPLITS / "azure.corpus.txt")
         info["general"] = corpus.build_corpus_file(list(general_sample.texts.values()),
                                                    config.SPLITS / "general.corpus.txt")
-        mixed_texts = list(mix_a.texts.values()) + list(mix_b.texts.values())
+        # True deterministic document-by-document interleaving (plan.md §12)
+        a_texts = list(mix_a.texts.values())
+        b_texts = list(mix_b.texts.values())
+        mixed_texts: list[str] = []
+        for i in range(max(len(a_texts), len(b_texts))):
+            if i < len(a_texts):
+                mixed_texts.append(a_texts[i])
+            if i < len(b_texts):
+                mixed_texts.append(b_texts[i])
         info["mixed"] = corpus.build_corpus_file(mixed_texts, config.SPLITS / "mixed.corpus.txt")
 
         # Build + persist the frozen evaluation document set (plan.md §14)
-        _build_eval_docs(processed, azure_docs, asg, _general_eval)
+        _build_eval_docs(processed, azure_docs, asg, _general_eval, repo_to_category)
+
+        # Cross-repo dedup + overlap audit (plan.md §11)
+        _write_dedup_audit(processed, azure_docs, near, near_thr)
 
         # Byte-match gate (plan.md §20 Phase 2)
         contents = {k: v["content_utf8_bytes"] for k, v in info.items()}
@@ -262,7 +280,7 @@ def run_audit(profile: str, exp: dict, force: bool = False) -> dict:
     res = stage(
         name=f"audit-{profile}",
         input_files=sorted(str(p) for p in config.RAW.glob("*.raw.parquet")),
-        output_files=out_corpora + [out_audit, out_splits, out_eval],
+        output_files=out_corpora + [out_audit, out_splits, out_eval, out_dedup],
         params={"profile": profile, "target_bytes": target_bytes, "near_thr": near_thr, "seed": seed},
         fn=work, force=force,
     )
@@ -275,9 +293,11 @@ def _dominant_ct(counts: dict[str, int]) -> str:
     return max(counts.items(), key=lambda kv: kv[1])[0]
 
 
-def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list) -> None:
+def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list,
+                     repo_to_category: dict[str, str] | None = None) -> None:
     """Assemble and freeze the evaluation document set (plan.md §14)."""
     from .synthetic import synthetic_edge_cases
+    repo_to_category = repo_to_category or {}
 
     rows = []
 
@@ -292,9 +312,10 @@ def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list)
         if split in ("azure_same_service_holdout", "azure_cross_service_holdout"):
             push(split, d.source_repo, d.document_id, _dominant_ct(d.content_type_counts), d.semantic_full)
 
-    # Transfer repos (one eval_set per repository)
+    # Transfer repos -> mapped to plan.md §14 friendly categories (fallback transfer:<repo>)
     for d in processed.get("transfer", []):
-        push(f"transfer:{d.source_repo}", d.source_repo, d.document_id,
+        cat = repo_to_category.get(d.source_repo) or f"transfer:{d.source_repo}"
+        push(cat, d.source_repo, d.document_id,
              _dominant_ct(d.content_type_counts), d.semantic_full)
 
     # External technical
@@ -314,6 +335,36 @@ def _build_eval_docs(processed: dict, azure_docs: list, asg, general_eval: list)
     config.EVALUATION.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_parquet(config.EVALUATION / "eval_docs.parquet")
     _log(f"audit: eval docs = {len(rows)} across {len(set(r['eval_set'] for r in rows))} sets")
+
+
+def _write_dedup_audit(processed: dict, azure_docs: list, near, near_thr: float) -> None:
+    """Write exact/near-duplicate + cross-repo overlap audit parquets (plan.md §11)."""
+    config.AUDIT.mkdir(parents=True, exist_ok=True)
+    all_docs = [d for docs in processed.values() for d in docs]
+
+    # Exact duplicate groups across ALL sources
+    by_hash: dict[str, list] = {}
+    for d in all_docs:
+        by_hash.setdefault(d.sha256, []).append(d)
+    exact_rows = [{"sha256": h, "n": len(g), "document_ids": ",".join(x.document_id for x in g),
+                   "repos": ",".join(sorted({x.source_repo for x in g}))}
+                  for h, g in by_hash.items() if len(g) > 1]
+    pd.DataFrame(exact_rows or [{"sha256": "", "n": 0, "document_ids": "", "repos": ""}]).to_parquet(
+        config.AUDIT / "exact_duplicates.parquet")
+
+    # Cross-repo overlap: identical semantic hash appearing under >1 repo (leakage flag)
+    cross_rows = [{"sha256": h, "repos": ",".join(sorted({x.source_repo for x in g})),
+                   "n_repos": len({x.source_repo for x in g})}
+                  for h, g in by_hash.items() if len({x.source_repo for x in g}) > 1]
+    pd.DataFrame(cross_rows or [{"sha256": "", "repos": "", "n_repos": 0}]).to_parquet(
+        config.AUDIT / "cross_repo_overlap.parquet")
+
+    # Near-duplicate pairs within the Azure anchor
+    near_rows = [{"id_a": a, "id_b": b, "jaccard": j} for a, b, j in (near.pairs if near else [])]
+    pd.DataFrame(near_rows or [{"id_a": "", "id_b": "", "jaccard": 0.0}]).to_parquet(
+        config.AUDIT / "near_duplicates.parquet")
+    _log(f"audit: dedup audit — exact_groups={len(exact_rows)} cross_repo={len(cross_rows)} "
+         f"near_pairs={len(near_rows)}")
 
 
 def _hash_split(docs: list, seed: int, eval_frac: float) -> tuple[list, list]:
@@ -526,14 +577,28 @@ def run_analyze(profile: str, exp: dict, force: bool = False) -> dict:
                         m.token_count_g.values, m.token_count_a.values, n_resamples=n_resamples, seed=config.GLOBAL_SEED)
                     boot["comparisons"][f"{label}:{vocab}:{principal_set}"] = r.__dict__
 
-            # Azure vs general stratified by content_type (principal vocab only)
+            # Stratified analyses at the principal vocab (plan.md §16)
             if vocab == principal_vocab:
                 m = _paired_counts(rows, principal_set, gid, aid)
                 if len(m) >= 5:
-                    strat = stratified_bootstrap(m.token_count_g.values, m.token_count_a.values,
-                                                 m.content_type.tolist(), n_resamples=min(n_resamples, 5000),
-                                                 seed=config.GLOBAL_SEED)
-                    boot["by_content_type"] = {k: v.__dict__ for k, v in strat.items()}
+                    strat_ct = stratified_bootstrap(m.token_count_g.values, m.token_count_a.values,
+                                                    m.content_type.tolist(), n_resamples=n_resamples,
+                                                    seed=config.GLOBAL_SEED)
+                    boot["by_content_type"] = {k: v.__dict__ for k, v in strat_ct.items()}
+                    strat_repo = stratified_bootstrap(m.token_count_g.values, m.token_count_a.values,
+                                                      m.repository.tolist(), n_resamples=n_resamples,
+                                                      seed=config.GLOBAL_SEED)
+                    boot["by_repository"] = {k: v.__dict__ for k, v in strat_repo.items()}
+
+                # Transfer + regression: azure_vs_general on every eval set
+                boot["by_eval_set"] = {}
+                for eval_set in sorted(rows.eval_set.unique()):
+                    mm = _paired_counts(rows, eval_set, gid, aid)
+                    if len(mm) >= 5:
+                        rr = paired_bootstrap_relative_reduction(
+                            mm.token_count_g.values, mm.token_count_a.values,
+                            n_resamples=n_resamples, seed=config.GLOBAL_SEED)
+                        boot["by_eval_set"][eval_set] = rr.__dict__
 
         atomic_write_json(out_boot, boot)
         _make_figures(rows, profile, vocabs, principal_vocab)
