@@ -10,7 +10,7 @@
 | 2026-07-10 | Secret scan | orchestrator (detect-secrets) | publication/audits/SECRET_SCAN.md | PASS |
 | 2026-07-10 | Link check | repo-auditor | publication/audits/LINK_CHECK.md | see file |
 | 2026-07-10 | Reproducibility audit | reproducibility-auditor | publication/audits/REPRODUCIBILITY_AUDIT.md | 1 blocker (resolved) |
-| _pending_ | Artifact review (Part I gate) | artifact-reviewer | publication/reviews/ARTIFACT_REVIEW.md | — |
+| 2026-07-10 | Artifact review (Part I gate) | artifact-reviewer | publication/reviews/ARTIFACT_REVIEW.md | NO-GO -> **GO** after 2 blockers fixed (README, deterministic figures) |
 | _pending_ | Statistical review | statistician | publication/reviews/STATISTICAL_REVIEW.md | — |
 | _pending_ | Methodological red team | method-redteam | publication/reviews/METHOD_REVIEW.md | — |
 | _pending_ | Claim/writing red team | claim-redteam | publication/reviews/CLAIM_REVIEW.md | — |

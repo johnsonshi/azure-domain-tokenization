@@ -45,3 +45,34 @@ Primary micro reduction on `azure_cross_service_holdout` for `general-bytebpe-16
 - Consider making `make report` default to the publication/full profile or documenting that the default `PROFILE=pilot` is intentional.
 
 ARTIFACT REVIEW: NO-GO
+
+## Re-review (blocker resolution)
+
+Date: 2026-07-10  
+Environment used: `export PATH="$HOME/.local/bin:$PATH" TOKENIZERS_PARALLELISM=false`
+
+### Blocker 1 — README completeness: RESOLVED
+
+- (a) Main figure above the fold: **RESOLVED**. `README.md` places `![Primary token reduction ...](results/figures/fig01_primary.png)` immediately after the primary result and controlled/observational framing.
+- (b) Primary result uses the 16K slice: **RESOLVED**. The section title is `Primary result (16K slice)` and the text says, "The **primary result uses the 16K vocabulary slice**."
+- (c) Track B observational wording: **RESOLVED**. The README states production tokenizers (`tiktoken`) are "**Track B — observational baselines only**" and not controlled.
+- (d) Exact full-reproduction resource usage: **RESOLVED**. The full reproduction section gives acquisition/audit/training/evaluation times, ≈20–25 min wall time on Apple M3 Pro, transient disk ~2.7 GB, and peak memory a few GB.
+
+Spot checks still present: controlled primary comparison, byte-matched corpora, cross-service principal holdout, tokenization-only scope, raw corpora not necessarily included, and exact quick/full reproduction commands.
+
+### Blocker 2 — deterministic figure regeneration: RESOLVED
+
+Ran `uv run python scripts/make_figures.py` twice.
+
+- After run 1, `git status --short results/figures/ paper/figures/`: no output.
+- After run 2, `git status --short results/figures/ paper/figures/`: no output.
+
+The committed figures are byte-identical to freshly generated outputs. Required publication figures exist: six named PNGs in `results/figures/` (`fig01_primary`, `fig02_tradeoff`, `fig03_transfer`, `fig04_vocab`, `fig05_content`, `fig06_runtime`) and six matching PDFs in `paper/figures/`. There are 8 matching `results/figures/figNN_*.png` files total because two legacy/source-result PNGs are also tracked.
+
+### Re-run verification
+
+- `uv run python scripts/publication_verify.py`: `PUBLICATION VERIFY: OK (10 checks passed)`, including result-schema validation.
+- `uv run python scripts/verify_claims.py`: `CLAIM VERIFICATION: 44/44 passed — ALL OK`.
+- Independent primary recompute from `results/raw/eval_rows.parquet` on `azure_cross_service_holdout`: General `3,946,661` tokens / `10,405,241` bytes = `379.295492` tokens per 1,000 bytes; Azure `2,499,133` / `10,405,241` = `240.180213`; relative reduction = `36.677282%` (≈36.68%).
+
+ARTIFACT REVIEW (re-review): GO
