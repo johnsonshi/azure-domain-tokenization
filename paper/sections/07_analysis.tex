@@ -1,0 +1,46 @@
+\section{Analysis and discussion}
+\label{sec:analysis}
+
+The results are consistent with the Azure tokenizer allocating vocabulary to
+domain-recurring strings and documentation patterns, so that resource-provider
+names, command flags, paths, and configuration keys are encoded in fewer pieces.
+The mechanism appears in fragmentation and vocabulary-utilization measurements in
+the repository: on the principal holdout the Azure tokenizer fragments
+resource-provider identifiers, URLs, command flags, and camel/snake identifiers
+substantially less than the General tokenizer, and it uses a much larger fraction
+of its vocabulary on Azure text.
+
+Several observations bound the interpretation. First, the effect \emph{persists on
+prose} (the largest content stratum, $n=900$, still shows \reduc{+36.75}), which
+weakens the alternative that gains come only from code fences or configuration
+syntax. Second, the advantage \emph{transfers} to non-Microsoft Kubernetes
+documentation (\reduc{+31.18}), suggesting overlap in general
+technical-documentation style rather than only Azure-specific terminology. Third,
+the reduction is \emph{stable across} 8K/16K/32K, suggesting corpus composition
+mattered more than the tested vocabulary range. Fourth, the Mixed tokenizer is the
+central practical result: it recovers most of the in-domain gain with a small
+out-of-domain penalty, which matters when a single tokenizer must serve mixed
+traffic.
+
+We are explicit about a design limit: comparing Azure documentation with general
+English changes \emph{more than subject domain}. It also changes technical writing
+style, markup distribution, identifier density, and document structure. The
+transfer and prose-only analyses narrow, but do not fully isolate, Azure-specific
+vocabulary from general technical-documentation specialization
+(Section~\ref{sec:limits}). Finally, faster compression does not imply faster CPU
+tokenization---the controlled tokenizers compress more yet run slower on CPU than
+the production baselines---and none of these measurements support any downstream
+model claim.
+
+\subsection*{What this study is and is not}
+
+\noindent\fbox{\parbox{0.98\linewidth}{%
+\textbf{This study is:} a tokenizer-training and \emph{compression} benchmark; a
+controlled comparison of corpus composition; a held-out technical-documentation
+evaluation; a study of domain/general tradeoffs; a CPU-only reproducible artifact.
+
+\smallskip
+\textbf{This study is not:} an LLM quality evaluation; a model-adaptation method; a
+serving or GPU benchmark; a billing study; an endorsement of replacing production
+tokenizers; or a claim that fewer tokens always means a better system.%
+}}

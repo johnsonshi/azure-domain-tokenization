@@ -1,0 +1,13 @@
+\section{Verification and claim registry}
+\label{app:verify}
+Every numeric statement in this paper is registered in a machine-readable claim
+registry (\texttt{publication/claims.yaml}). For each claim the registry records an
+extraction specification (source file and column/key), a frozen display value, and
+a tolerance; \texttt{make verify-claims} re-extracts each value from its
+authoritative result file and fails on any mismatch. An automated experiment gate
+(\texttt{make verify}) independently re-checks byte-matching of corpora, leakage
+controls, exact round-trip and unknown-token counts ($100\%$ round-trip, zero
+unknown tokens across $59{,}160$ rows), totals reconciliation, provenance
+completeness, artifact-distribution policy, and source pinning, without retraining.
+The independently recomputed primary micro reduction from the per-document rows is
+$36.677\%$, matching the reported \reduc{36.68}.

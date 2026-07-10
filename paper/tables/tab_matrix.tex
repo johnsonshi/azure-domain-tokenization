@@ -1,0 +1,13 @@
+
+\begin{tabular}{lll}
+\toprule
+\textbf{Factor} & \textbf{Levels} & \textbf{Held constant} \\
+\midrule
+Training corpus (manipulated) & General, Azure, Mixed 50/50 & --- \\
+Vocabulary size & 8{,}192 / 16{,}384 / 32{,}768 & within a comparison \\
+Algorithm & byte-level BPE & implementation, pre-tokenizer, decoder \\
+Training budget & 33,554,432 UTF-8 bytes & byte-matched across corpora \\
+Normalization & Unicode NFC & no lowercasing, no accent stripping \\
+Seed & 20260709& sampling, splitting, bootstrap \\
+\bottomrule
+\end{tabular}

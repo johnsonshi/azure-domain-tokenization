@@ -1,0 +1,35 @@
+\section{Limitations}
+\label{sec:limits}
+
+We state limitations plainly and do not minimize them.
+
+\paragraph{Training budget and design.} Corpora are byte-matched at a small
+$32$\,MiB budget, bounded by the available cleaned Azure training text; absolute
+token counts are budget-dependent. The controlled matrix uses a single tokenizer
+algorithm (byte-level BPE). Sources are technical documentation, so results may
+not extend to chat, source-code repositories, prose, or all enterprise text.
+
+\paragraph{The Azure-versus-general-English confound (most important).} Comparing
+Azure documentation with general English changes more than subject domain; it also
+changes technical writing style, markup distribution, identifier density, and
+document structure. The transfer and prose-only analyses narrow this concern but
+do \emph{not} fully isolate Azure-specific vocabulary from general
+technical-documentation specialization. A matched general-technical documentation
+training control is the priority follow-up (Section~\ref{sec:future}).
+
+\paragraph{Scope of measurement.} We train no language model and evaluate no
+downstream task; there is no GPU or serving benchmark. CPU runtime was measured on
+a thermally variable laptop, so small runtime differences are not overinterpreted,
+and CPU tokenizer throughput is not model-serving throughput.
+
+\paragraph{Data and comparison caveats.} Results are tied to pinned public-source
+snapshots that change over time; raw corpora are not redistributed, and
+reproduction downloads the pinned sources. Existing production tokenizers (Track
+B) are observational, not controlled. Any context-window or token-billing figure
+elsewhere is a derived estimate, not a measured GPU or billing outcome. We claim
+no universal domain-tokenizer superiority.
+
+\paragraph{Affiliation.} If the author is affiliated with the vendor of the studied
+documentation, that relationship is disclosed where applicable; this study uses
+only public documentation, is not an official result of that vendor, and implies
+no endorsement.

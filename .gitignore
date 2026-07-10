@@ -58,3 +58,7 @@ dist/
 
 # Any generated training corpus text (licensed source text)
 *.corpus.txt
+
+# LaTeX build caches + staging (keep sources + compiled PDF + manifest)
+/paper/arxiv/build/
+/paper/arxiv/source/

@@ -1,0 +1,10 @@
+\section{Runtime details}
+\label{app:runtime}
+CPU tokenizer throughput was measured with a fixed thread count, one warm-up round,
+five measured rounds, tokenizer order randomized per round, identical documents and
+batches (batch sizes $\{1,8,32,128\}$; short/medium/long buckets), and serialized
+execution on an Apple M3 Pro (12 cores, macOS). Median throughput was
+$5.1$--$5.5$\,MB/s for the controlled tokenizers and $11.6$--$19.8$\,MB/s for the
+\texttt{tiktoken} baselines. Runtime was measured on a thermally variable laptop;
+small differences are not overinterpreted. This is CPU tokenizer throughput, not
+model-serving throughput, and it is reported separately from compression.

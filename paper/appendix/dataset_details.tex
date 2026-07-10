@@ -1,0 +1,11 @@
+\section{Dataset details}
+\label{app:data}
+Table~\ref{tab:datasets} lists sources, roles, retained Markdown file counts, and
+licenses. Each source is pinned by exact commit or dataset revision in
+\texttt{data/manifests/sources.lock.json}; per-source acquisition commands,
+selection method (git sparse checkout, GitHub API blob download, or Hugging Face
+parquet), attribution, and redistribution status are in
+\texttt{docs/datasets-and-licenses.md} and \texttt{licenses/}. Raw source text is
+not redistributed. Microsoft documentation sources are CC-BY-4.0; the Kubernetes
+website is CC-BY-4.0; WikiText-103 is Wikipedia-derived under CC-BY-SA and is used
+local-use-only.

@@ -1,0 +1,12 @@
+\section{Additional results}
+\label{app:additional}
+The repository reports secondary analyses that support the main text:
+identifier-fragmentation distributions (mean tokens per resource-provider
+identifier, URL/path, command flag, and camel/snake identifier), vocabulary
+utilization (fraction of vocabulary used on the principal holdout and occurrence
+concentration), and both micro and macro aggregations of the primary metric. These
+tables are generated from the committed per-document rows
+(\texttt{results/raw/eval\_rows.parquet}) and are listed in
+\texttt{results/DATA\_DICTIONARY.md}. All confidence intervals are 95\%
+paired-bootstrap intervals over documents ($10{,}000$ resamples), paired at the
+document level and stratified by evaluation set, content type, and repository.

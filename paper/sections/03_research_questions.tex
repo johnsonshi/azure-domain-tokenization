@@ -1,0 +1,30 @@
+\section{Research questions and hypotheses}
+\label{sec:rq}
+
+We pre-registered the hypotheses before inspecting the full results (repository
+file \texttt{research/EXPERIMENT\_SPEC.md}).
+
+\begin{itemize}
+  \item \textbf{RQ1.} Under matched conditions, does Azure-domain training reduce
+  token count on unseen Azure services relative to general-English training?
+  \item \textbf{RQ2.} What general-English regression accompanies full
+  specialization?
+  \item \textbf{RQ3.} Does a 50/50 Mixed corpus preserve most of the in-domain
+  gain while limiting the regression?
+  \item \textbf{RQ4.} Does the effect transfer to other technical-documentation
+  domains?
+  \item \textbf{RQ5.} Is the effect stable across 8K, 16K, and 32K vocabularies?
+  \item \textbf{RQ6.} Does the effect persist on prose, rather than being explained
+  only by code and markup?
+  \item \textbf{RQ7.} How do compression and CPU tokenizer throughput relate?
+\end{itemize}
+
+\paragraph{Primary hypothesis.} At a fixed byte-level BPE algorithm, vocabulary
+size, training-byte budget, normalization, sampling, and evaluation set, an
+Azure-trained tokenizer produces fewer tokens per 1{,}000 UTF-8 bytes on the Azure
+cross-service holdout than a byte-matched General tokenizer.
+
+\paragraph{Null hypothesis.} After those controls, the Azure- and General-trained
+tokenizers do not differ in token count on the held-out set, i.e.\ the point
+estimate of the relative reduction is $\le 0$ or its 95\% paired-bootstrap CI is
+compatible with no positive reduction.
