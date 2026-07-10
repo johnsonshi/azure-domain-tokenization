@@ -1,7 +1,7 @@
 # Does Your Tokenizer Speak Cloud?
 ## Measuring domain specialization on Microsoft technical documentation
 
-_Profile: **pilot**. This report is generated from committed result tables; every figure has a source CSV under `results/tables/`._
+_Profile: **full**. This report is generated from committed result tables; every figure has a source CSV under `results/tables/`._
 
 > **Scope.** This study measures **tokenization only** — token counts, compression, fragmentation, vocabulary utilization, and CPU runtime. It makes **no claim** about model output quality, accuracy, reasoning, understanding, GPU latency, or cost (plan.md §4, §26).
 
@@ -28,8 +28,14 @@ Tokens per 1000 UTF-8 bytes on the **Azure cross-service holdout** (principal se
 | Tokenizer | tokens/1000 bytes (micro) | chars/token | round-trip |
 |---|---:|---:|---:|
 | `azure-bytebpe-16384` | 240.13 | 4.162 | 1.000 |
+| `azure-bytebpe-32768` | 232.50 | 4.299 | 1.000 |
+| `azure-bytebpe-8192` | 255.87 | 3.906 | 1.000 |
 | `general-bytebpe-16384` | 379.76 | 2.632 | 1.000 |
+| `general-bytebpe-32768` | 360.71 | 2.771 | 1.000 |
+| `general-bytebpe-8192` | 404.35 | 2.472 | 1.000 |
 | `mixed-bytebpe-16384` | 250.05 | 3.997 | 1.000 |
+| `mixed-bytebpe-32768` | 238.90 | 4.183 | 1.000 |
+| `mixed-bytebpe-8192` | 271.09 | 3.687 | 1.000 |
 
 Source: `results/tables/eval_aggregate.csv`, figure `results/figures/fig02_tokens_per_1k.png`.
 
@@ -37,7 +43,11 @@ Source: `results/tables/eval_aggregate.csv`, figure `results/figures/fig02_token
 | Comparison | reduction % | 95% CI | win rate |
 |---|---:|---|---:|
 | azure_vs_general:16384:azure_cross_service_holdout | 36.77 | [35.83, 37.74] | 1.000 |
+| azure_vs_general:32768:azure_cross_service_holdout | 35.55 | [34.53, 36.59] | 1.000 |
+| azure_vs_general:8192:azure_cross_service_holdout | 36.72 | [35.83, 37.62] | 1.000 |
 | mixed_vs_general:16384:azure_cross_service_holdout | 34.15 | [33.21, 35.12] | 1.000 |
+| mixed_vs_general:32768:azure_cross_service_holdout | 33.77 | [32.76, 34.81] | 1.000 |
+| mixed_vs_general:8192:azure_cross_service_holdout | 32.96 | [32.06, 33.86] | 1.000 |
 
 Paired bootstrap over documents, 10000 resamples, seed fixed. Source: `results/processed/bootstrap.json`.
 
@@ -45,7 +55,16 @@ Paired bootstrap over documents, 10000 resamples, seed fixed. Source: `results/p
 Transfer to other MicrosoftDocs repos, external technical docs (Kubernetes), and the general-English regression are in `results/tables/fig_transfer_by_eval_set.csv`. In-domain gains are reported **alongside** out-of-domain regressions (plan.md §26).
 
 ## 7. Runtime (reported separately from compression)
-_Runtime benchmark pending (`make benchmark-runtime`)._
+| Tokenizer | MB/s median | MB/s p95 |
+|---|---:|---:|
+| `general-bytebpe-16384` | 5.14 | 5.38 |
+| `azure-bytebpe-16384` | 5.45 | 5.70 |
+| `mixed-bytebpe-16384` | 5.39 | 5.65 |
+| `tiktoken-r50k_base` | 18.58 | 19.37 |
+| `tiktoken-cl100k_base` | 19.34 | 21.05 |
+| `tiktoken-o200k_base` | 11.26 | 11.90 |
+
+Source: `results/tables/runtime_throughput.csv`. CPU tokenizer throughput only — **not** inference throughput.
 
 ## 8. Existing tokenizers (Track B — observational, not controlled)
 tiktoken `r50k_base` / `cl100k_base` / `o200k_base` differ in training data, vocab size, normalization, and intended model; they are reported in a **separate** table (`results/tables/eval_aggregate.csv`, rows `tiktoken-*`) and never treated as controlled comparisons (plan.md §5).

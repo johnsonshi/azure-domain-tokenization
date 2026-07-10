@@ -1,0 +1,33 @@
+{
+  "algorithm": "byte_level_bpe",
+  "artifact_bytes": 547451,
+  "artifact_sha256": "ffd7ebd583b2a4a74d8647d70afabf91a38a2ffb042de2bdd8720d825dbed91f",
+  "config_sha256": "9d62e160514d58f3d8a50b7fdcc1bcb75236b1b123d091e1f0c7ecdae1b76018",
+  "cpu_seconds": 5.2935,
+  "created_at": "2026-07-10T01:20:23-0700",
+  "git_commit": "0b08a4185126d4d46134da241bacfcb39b27e04c-dirty",
+  "machine_id": "5b65aebf221355e7",
+  "merge_count": 7934,
+  "package_versions": {
+    "datasketch": "1.10.0",
+    "matplotlib": "3.11.0",
+    "numpy": "2.5.1",
+    "pandas": "2.3.3",
+    "pyarrow": "24.0.0",
+    "pydantic": "2.13.4",
+    "scipy": "1.18.0",
+    "tiktoken": "0.9.0",
+    "tokenizers": "0.21.4"
+  },
+  "peak_rss_bytes": 343048192,
+  "seed": 20260709,
+  "special_tokens_count_in_vocab": true,
+  "tokenizer_id": "azure-bytebpe-8192",
+  "training_bytes": 33554432,
+  "training_corpus": "azure",
+  "training_documents": 3137,
+  "training_manifest_sha256": "f3c0f0f12ca0fcc8ef23a8da839bf860d4cf6fe9f566a30633cd288d7babbc11",
+  "vocab_size_actual": 8192,
+  "vocab_size_requested": 8192,
+  "wall_seconds": 5.2951
+}

@@ -1,7 +1,7 @@
 # Verification report
 
-Profile: `pilot`  
-Generated: 2026-07-10T01:13:29-0700
+Profile: `full`  
+Generated: 2026-07-10T01:26:53-0700
 
 | Check | Result | Detail |
 |---|---|---|

@@ -48,7 +48,7 @@ def _profile_vocabs(profile: str) -> tuple[int, ...]:
 
 def _log(msg: str) -> None:
     line = f"{time.strftime('%Y-%m-%dT%H:%M:%S%z')} {msg}"
-    print(line, flush=True)
+    print(line, file=__import__("sys").stderr, flush=True)
     config.LOGS.mkdir(parents=True, exist_ok=True)
     with open(config.LOGS / "pipeline.log", "a", encoding="utf-8") as f:
         f.write(line + "\n")
