@@ -1,7 +1,7 @@
 # Verification report
 
-Profile: `full`  
-_Deterministic report — regenerate with `uv run msdocs-tok verify --profile full` (or `make verify`)._
+Profile: `pilot`  
+_Deterministic report — regenerate with `uv run msdocs-tok verify --profile pilot` (or `make verify`)._
 
 | Check | Result | Detail |
 |---|---|---|

@@ -42,3 +42,4 @@ RUNTIME_TRACKA_MIN,descriptive,OK,5.13,5.129767927728537,0.2,results/tables/runt
 RUNTIME_TRACKA_MAX,descriptive,OK,5.47,5.469546001618316,0.2,results/tables/runtime_summary.csv
 RUNTIME_TRACKB_MIN,descriptive,OK,11.61,11.60777467773929,0.2,results/tables/runtime_summary.csv
 RUNTIME_TRACKB_MAX,descriptive,OK,19.83,19.834158846208965,0.2,results/tables/runtime_summary.csv
+BOOTSTRAP_RESAMPLES,descriptive,OK,10000,10000,0.0,configs/experiment.yaml

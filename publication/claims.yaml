@@ -828,3 +828,19 @@ claims:
   source_file: results/tables/runtime_summary.csv
   status: registered
   reviewer: pending
+- id: BOOTSTRAP_RESAMPLES
+  text: Paired-bootstrap resamples
+  type: descriptive
+  extractor:
+    kind: yaml_value
+    file: configs/experiment.yaml
+    path:
+    - bootstrap_resamples
+  tolerance: 0
+  figures: []
+  tables: []
+  paper_section: methodology
+  display_value: 10000
+  source_file: configs/experiment.yaml
+  status: registered
+  reviewer: pending
