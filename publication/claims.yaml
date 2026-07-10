@@ -1,0 +1,754 @@
+registry_version: 1
+note: Every public number must be registered here and pass scripts/verify_claims.py. display_value is
+  frozen from the authoritative source_file at registration.
+claims:
+- id: PRIMARY_REDUCTION_16K
+  text: Azure vs General 16K relative token reduction on azure_cross_service_holdout (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - azure_vs_general:16384:azure_cross_service_holdout
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig01_primary
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 36.68
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: PRIMARY_CI_LOW
+  text: Primary 95% paired-bootstrap CI lower bound (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - azure_vs_general:16384:azure_cross_service_holdout
+    - ci_low
+  tolerance: 0.05
+  figures:
+  - fig01_primary
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 35.77
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: PRIMARY_CI_HIGH
+  text: Primary 95% paired-bootstrap CI upper bound (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - azure_vs_general:16384:azure_cross_service_holdout
+    - ci_high
+  tolerance: 0.05
+  figures:
+  - fig01_primary
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 37.62
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: PRIMARY_WIN_RATE
+  text: Primary per-document win rate
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - azure_vs_general:16384:azure_cross_service_holdout
+    - win_rate
+  tolerance: 0.001
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 1.0
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: PRIMARY_N_DOCS
+  text: Principal holdout evaluated document count
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - azure_vs_general:16384:azure_cross_service_holdout
+    - n_documents
+  tolerance: 0
+  figures: []
+  tables:
+  - dataset_summary
+  paper_section: results
+  display_value: 964
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: PRIMARY_AZURE_TPK
+  text: Azure 16K tokens per 1000 UTF-8 bytes on principal holdout
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/processed/eval_aggregate.csv
+    match:
+      tokenizer_id: azure-bytebpe-16384
+      eval_set: azure_cross_service_holdout
+    column: tokens_per_1000_utf8_bytes_micro
+  tolerance: 0.02
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 240.18
+  source_file: results/processed/eval_aggregate.csv
+  status: registered
+  reviewer: pending
+- id: PRIMARY_GENERAL_TPK
+  text: General 16K tokens per 1000 UTF-8 bytes on principal holdout
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/processed/eval_aggregate.csv
+    match:
+      tokenizer_id: general-bytebpe-16384
+      eval_set: azure_cross_service_holdout
+    column: tokens_per_1000_utf8_bytes_micro
+  tolerance: 0.02
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 379.3
+  source_file: results/processed/eval_aggregate.csv
+  status: registered
+  reviewer: pending
+- id: PRIMARY_MIXED_TPK
+  text: Mixed 16K tokens per 1000 UTF-8 bytes on principal holdout
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/processed/eval_aggregate.csv
+    match:
+      tokenizer_id: mixed-bytebpe-16384
+      eval_set: azure_cross_service_holdout
+    column: tokens_per_1000_utf8_bytes_micro
+  tolerance: 0.02
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 249.52
+  source_file: results/processed/eval_aggregate.csv
+  status: registered
+  reviewer: pending
+- id: MIXED_REDUCTION_PRINCIPAL
+  text: Mixed vs General 16K reduction on principal holdout (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - comparisons
+    - mixed_vs_general:16384:azure_cross_service_holdout
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig02_tradeoff
+  tables:
+  - main_results
+  paper_section: results
+  display_value: 34.21
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: GENERAL_REGRESSION_AZURE
+  text: Azure vs General on general_english (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - general_english
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig02_tradeoff
+  tables:
+  - main_results
+  paper_section: results
+  display_value: -34.75
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: GENERAL_REGRESSION_CI_LOW
+  text: General-English regression CI lower (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - general_english
+    - ci_low
+  tolerance: 0.05
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: -35.1
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: GENERAL_REGRESSION_CI_HIGH
+  text: General-English regression CI upper (%)
+  type: primary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - general_english
+    - ci_high
+  tolerance: 0.05
+  figures: []
+  tables:
+  - main_results
+  paper_section: results
+  display_value: -34.4
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: MIXED_REGRESSION
+  text: Mixed vs General on general_english (%)
+  type: primary
+  extractor:
+    kind: csv_reduction
+    file: results/processed/eval_aggregate.csv
+    eval_set: general_english
+    general_id: general-bytebpe-16384
+    specialized_id: mixed-bytebpe-16384
+  tolerance: 0.05
+  figures:
+  - fig02_tradeoff
+  tables:
+  - main_results
+  paper_section: results
+  display_value: -4.39
+  source_file: results/processed/eval_aggregate.csv
+  status: registered
+  reviewer: pending
+- id: TRANSFER_SAME_SERVICE
+  text: Azure vs General 16K reduction on azure_same_service_holdout (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - azure_same_service_holdout
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 35.03
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: TRANSFER_MS_DATA
+  text: Azure vs General 16K reduction on ms_data (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - ms_data
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 32.94
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: TRANSFER_MS_DEVOPS
+  text: Azure vs General 16K reduction on ms_devops (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - ms_devops
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 31.76
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: TRANSFER_KUBERNETES
+  text: Azure vs General 16K reduction on external_technical (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - external_technical
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 31.18
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: TRANSFER_MS_ARCH
+  text: Azure vs General 16K reduction on ms_architecture (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - ms_architecture
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 26.03
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: TRANSFER_MS_BROAD
+  text: Azure vs General 16K reduction on ms_broad_enterprise (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_eval_set
+    - ms_broad_enterprise
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig03_transfer
+  tables:
+  - transfer
+  paper_section: results
+  display_value: 25.89
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: VOCAB_8192
+  text: Azure vs General reduction on principal holdout at vocab 8192 (%)
+  type: secondary
+  extractor:
+    kind: csv_cell
+    file: results/tables/fig_relative_reduction_by_vocab.csv
+    match:
+      vocab: 8192
+    column: relative_token_reduction_pct
+  tolerance: 0.05
+  figures:
+  - fig04_vocab
+  tables:
+  - vocab_ablation
+  paper_section: results
+  display_value: 36.46
+  source_file: results/tables/fig_relative_reduction_by_vocab.csv
+  status: registered
+  reviewer: pending
+- id: VOCAB_16384
+  text: Azure vs General reduction on principal holdout at vocab 16384 (%)
+  type: secondary
+  extractor:
+    kind: csv_cell
+    file: results/tables/fig_relative_reduction_by_vocab.csv
+    match:
+      vocab: 16384
+    column: relative_token_reduction_pct
+  tolerance: 0.05
+  figures:
+  - fig04_vocab
+  tables:
+  - vocab_ablation
+  paper_section: results
+  display_value: 36.68
+  source_file: results/tables/fig_relative_reduction_by_vocab.csv
+  status: registered
+  reviewer: pending
+- id: VOCAB_32768
+  text: Azure vs General reduction on principal holdout at vocab 32768 (%)
+  type: secondary
+  extractor:
+    kind: csv_cell
+    file: results/tables/fig_relative_reduction_by_vocab.csv
+    match:
+      vocab: 32768
+    column: relative_token_reduction_pct
+  tolerance: 0.05
+  figures:
+  - fig04_vocab
+  tables:
+  - vocab_ablation
+  paper_section: results
+  display_value: 35.41
+  source_file: results/tables/fig_relative_reduction_by_vocab.csv
+  status: registered
+  reviewer: pending
+- id: CONTENT_PROSE
+  text: Azure vs General reduction on prose content on principal holdout (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_content_type
+    - prose
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig05_content
+  tables:
+  - content
+  paper_section: results
+  display_value: 36.75
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: CONTENT_HEADING
+  text: Azure vs General reduction on heading content on principal holdout (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_content_type
+    - heading
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig05_content
+  tables:
+  - content
+  paper_section: results
+  display_value: 37.49
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: CONTENT_TABLE
+  text: Azure vs General reduction on table content on principal holdout (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_content_type
+    - table
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig05_content
+  tables:
+  - content
+  paper_section: results
+  display_value: 44.3
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: CONTENT_INLINE_CODE
+  text: Azure vs General reduction on inline_code content on principal holdout (%)
+  type: secondary
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_content_type
+    - inline_code
+    - point_estimate
+  tolerance: 0.05
+  figures:
+  - fig05_content
+  tables:
+  - content
+  paper_section: results
+  display_value: 33.28
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: CONTENT_PROSE_N
+  text: Prose document count on principal holdout
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: results/processed/bootstrap.json
+    path:
+    - by_content_type
+    - prose
+    - n_documents
+  tolerance: 0
+  figures: []
+  tables:
+  - content
+  paper_section: results
+  display_value: 900
+  source_file: results/processed/bootstrap.json
+  status: registered
+  reviewer: pending
+- id: COVERAGE_ROWS
+  text: Total evaluation rows
+  type: descriptive
+  extractor:
+    kind: parquet
+    file: results/raw/eval_rows.parquet
+    op:
+      type: row_count
+  tolerance: 0
+  figures: []
+  tables:
+  - coverage
+  paper_section: results
+  display_value: 59160
+  source_file: results/raw/eval_rows.parquet
+  status: registered
+  reviewer: pending
+- id: COVERAGE_ENCODERS
+  text: Distinct encoders evaluated
+  type: descriptive
+  extractor:
+    kind: parquet
+    file: results/raw/eval_rows.parquet
+    op:
+      type: distinct_count
+      column: tokenizer_id
+  tolerance: 0
+  figures: []
+  tables:
+  - coverage
+  paper_section: results
+  display_value: 12
+  source_file: results/raw/eval_rows.parquet
+  status: registered
+  reviewer: pending
+- id: COVERAGE_EVALSETS
+  text: Distinct evaluation sets
+  type: descriptive
+  extractor:
+    kind: parquet
+    file: results/raw/eval_rows.parquet
+    op:
+      type: distinct_count
+      column: eval_set
+  tolerance: 0
+  figures: []
+  tables:
+  - coverage
+  paper_section: results
+  display_value: 9
+  source_file: results/raw/eval_rows.parquet
+  status: registered
+  reviewer: pending
+- id: COVERAGE_UNK
+  text: Total unknown tokens across all rows
+  type: descriptive
+  extractor:
+    kind: parquet
+    file: results/raw/eval_rows.parquet
+    op:
+      type: sum
+      column: unk_count
+  tolerance: 0
+  figures: []
+  tables:
+  - coverage
+  paper_section: results
+  display_value: 0
+  source_file: results/raw/eval_rows.parquet
+  status: registered
+  reviewer: pending
+- id: COVERAGE_ROUNDTRIP_OK
+  text: All non-empty docs round-trip exactly
+  type: descriptive
+  extractor:
+    kind: parquet
+    file: results/raw/eval_rows.parquet
+    op:
+      type: roundtrip_all_ok
+  tolerance: 0
+  figures: []
+  tables:
+  - coverage
+  paper_section: results
+  display_value: true
+  source_file: results/raw/eval_rows.parquet
+  status: registered
+  reviewer: pending
+- id: CORPUS_BYTES
+  text: Byte-matched corpus size per training corpus (UTF-8 bytes)
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - corpora_content_bytes
+    - azure
+  tolerance: 0
+  figures: []
+  tables:
+  - dataset_summary
+  paper_section: results
+  display_value: 33554432
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: BYTE_MATCH_OK
+  text: Corpora byte-matched within tolerance
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - byte_match_ok
+  tolerance: 0
+  figures: []
+  tables:
+  - dataset_summary
+  paper_section: results
+  display_value: true
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: AZURE_TRAIN_DOCS
+  text: Azure training document count
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - azure_splits
+    - azure_train
+  tolerance: 0
+  figures: []
+  tables:
+  - dataset_summary
+  paper_section: results
+  display_value: 3799
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: CROSS_SERVICE_HOLDOUT_SERVICES
+  text: Number of whole held-out Azure services
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - azure_splits
+    - n_cross_service_holdout_services
+  tolerance: 0
+  figures: []
+  tables:
+  - dataset_summary
+  paper_section: results
+  display_value: 5
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: DEDUP_GENERAL_EXACT
+  text: General exact duplicates removed before split
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - exact_dedup_general
+    - removed_exact
+  tolerance: 0
+  figures: []
+  tables:
+  - methodology
+  paper_section: results
+  display_value: 134
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: CROSS_CORPUS_REMOVED
+  text: Cross-corpus near-duplicate eval items removed
+  type: descriptive
+  extractor:
+    kind: json_path
+    file: data/audit/audit_summary.json
+    path:
+    - cross_corpus_near_dup_eval
+    - removed_near_train
+  tolerance: 0
+  figures: []
+  tables:
+  - methodology
+  paper_section: results
+  display_value: 9
+  source_file: data/audit/audit_summary.json
+  status: registered
+  reviewer: pending
+- id: SEED
+  text: Global determinism seed
+  type: descriptive
+  extractor:
+    kind: yaml_value
+    file: configs/experiment.yaml
+    path:
+    - seed
+  tolerance: 0
+  figures: []
+  tables:
+  - m
+  - e
+  - t
+  - h
+  - o
+  - d
+  - o
+  - l
+  - o
+  - g
+  - y
+  paper_section: results
+  display_value: 20260709
+  source_file: configs/experiment.yaml
+  status: registered
+  reviewer: pending

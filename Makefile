@@ -75,3 +75,24 @@ clean-derived: ## Remove derived data + results (keeps manifests + configs)
 	rm -rf data/raw data/normalized data/segments data/splits data/evaluation data/audit data/.stages
 	rm -rf results/raw results/processed results/tables results/figures
 	@echo "Derived artifacts removed. Sources + manifests + configs preserved."
+
+# ---- Publication + arXiv preparation (plan-2.md) ----
+.PHONY: verify-claims figures paper paper-check arxiv-package publication-audit publication-docs publication-verify
+
+verify-claims: ## Verify every registered numeric claim against its source file
+	$(RUN) python scripts/verify_claims.py
+
+figures: ## Regenerate publication figures (PNG + PDF) from committed source tables
+	$(RUN) python scripts/make_figures.py
+
+paper: ## Compile the arXiv manuscript
+	$(MAKE) -C paper paper
+
+paper-check: ## Citation/reference/link/claim/LaTeX checks on the paper
+	$(MAKE) -C paper check
+
+arxiv-package: ## Build a clean arXiv source archive (does NOT submit)
+	$(MAKE) -C paper arxiv
+
+publication-verify: ## Full publication gate (verify + claims + links + figures + paper)
+	$(RUN) python scripts/publication_verify.py
