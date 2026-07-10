@@ -216,6 +216,34 @@
       "tie_rate": 0.0,
       "win_rate": 1.0
     },
+    "azure_vs_general:32768:azure_cross_service_holdout": {
+      "ci_high": 36.59440223443758,
+      "ci_low": 34.53300540699873,
+      "loss_rate": 0.0,
+      "mean_paired_diff": 1383.0103734439833,
+      "median_paired_diff": 747.5,
+      "metric": "relative_token_reduction_pct",
+      "n_documents": 964,
+      "n_resamples": 10000,
+      "point_estimate": 35.54502268583912,
+      "seed": 20260709,
+      "tie_rate": 0.0,
+      "win_rate": 1.0
+    },
+    "azure_vs_general:8192:azure_cross_service_holdout": {
+      "ci_high": 37.61907682003898,
+      "ci_low": 35.82917461255935,
+      "loss_rate": 0.0,
+      "mean_paired_diff": 1601.6379668049792,
+      "median_paired_diff": 946.5,
+      "metric": "relative_token_reduction_pct",
+      "n_documents": 964,
+      "n_resamples": 10000,
+      "point_estimate": 36.72148326367097,
+      "seed": 20260709,
+      "tie_rate": 0.0,
+      "win_rate": 1.0
+    },
     "mixed_vs_general:16384:azure_cross_service_holdout": {
       "ci_high": 35.120719604224504,
       "ci_low": 33.21484358500893,
@@ -229,9 +257,37 @@
       "seed": 20260709,
       "tie_rate": 0.0,
       "win_rate": 1.0
+    },
+    "mixed_vs_general:32768:azure_cross_service_holdout": {
+      "ci_high": 34.809877225214564,
+      "ci_low": 32.76332903463571,
+      "loss_rate": 0.0,
+      "mean_paired_diff": 1313.929460580913,
+      "median_paired_diff": 703.0,
+      "metric": "relative_token_reduction_pct",
+      "n_documents": 964,
+      "n_resamples": 10000,
+      "point_estimate": 33.769560504191375,
+      "seed": 20260709,
+      "tie_rate": 0.0,
+      "win_rate": 1.0
+    },
+    "mixed_vs_general:8192:azure_cross_service_holdout": {
+      "ci_high": 33.857487827986525,
+      "ci_low": 32.06191760172361,
+      "loss_rate": 0.0,
+      "mean_paired_diff": 1437.3734439834025,
+      "median_paired_diff": 829.0,
+      "metric": "relative_token_reduction_pct",
+      "n_documents": 964,
+      "n_resamples": 10000,
+      "point_estimate": 32.955315721051825,
+      "seed": 20260709,
+      "tie_rate": 0.0,
+      "win_rate": 1.0
     }
   },
   "n_resamples": 10000,
-  "profile": "pilot",
+  "profile": "full",
   "seed": 20260709
 }

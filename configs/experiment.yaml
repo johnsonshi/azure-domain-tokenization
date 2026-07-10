@@ -11,7 +11,10 @@ profiles:
     corpus_bytes: 33554432      # 32 MiB per training corpus
     vocab_sizes: [16384]
   full:
-    corpus_bytes: 268435456     # 256 MiB per training corpus
+    corpus_bytes: 33554432      # 32 MiB — byte-matched cap set by azure_train (38.8 MiB available)
+    vocab_sizes: [8192, 16384, 32768]
+  scale:
+    corpus_bytes: 100663296     # 96 MiB — optional larger run (requires acquiring more Azure services)
     vocab_sizes: [8192, 16384, 32768]
 
 # Track B existing baselines (descriptive only; tiktoken ships ranks locally).

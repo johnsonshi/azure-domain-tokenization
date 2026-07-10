@@ -4,7 +4,7 @@
 > from this file + repository state alone (plan.md §19).
 
 - **Updated:** 2026-07-10T00:45-07:00
-- **Phase:** 1 → 2/3 (research+discovery complete; running the corpus+tokenizer pilot)
+- **Phase:** 5-8 complete (full 9-tokenizer matrix + eval + stats + runtime); Phase 3 red-team gate pending
 - **Profile target:** pilot (32 MiB corpora, 16K vocab) → then full matrix if budget allows
 - **Runtime budget:** 10h. **Disk:** 607 GiB free (32% used) — well above 15% floor.
 - **Workers:** 10 (max(1, 12−2)). **Seed:** 20260709.
@@ -19,8 +19,8 @@
       CC-BY-4.0 except WikiText CC-BY-SA local-only; VETO on artifact redistribution),
       frozen EXPERIMENT_SPEC + DEVIATIONS. Methodologist code gaps all fixed.
       Pipeline validated end-to-end on the smoke profile.
-- [ ] Phase 2 corpus pilot (running)
-- [ ] Phase 3 tokenizer pilot (PILOT_REVIEW.md)
+- [x] Phase 2 corpus pilot (byte-matched, leakage-audited)
+- [~] Phase 3 tokenizer pilot — verified 6/6; red-team PILOT_REVIEW.md running
 - [ ] Phase 4 full corpus + EXPERIMENT_SPEC freeze
 - [ ] Phase 5 full matrix (9 tokenizers)
 - [ ] Phase 6 compression + fragmentation
