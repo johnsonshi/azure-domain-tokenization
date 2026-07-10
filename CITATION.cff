@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: "Does Your Tokenizer Speak Cloud? A Controlled Study of Domain-Specialized Tokenizer Compression on Microsoft Technical Documentation"
+message: "If you use this software or its results, please cite it using these metadata."
+type: software
+# NOTE: author fields are PLACEHOLDERS pending human confirmation
+# (see publication/AUTHOR_INPUTS_REQUIRED.md). Do not treat as final.
+authors:
+  - given-names: "<AUTHOR GIVEN NAME>"
+    family-names: "<AUTHOR FAMILY NAME>"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+    # affiliation: "<AFFILIATION>"
+repository-code: "<https://github.com/<user>/<repo>>"
+abstract: >-
+  A controlled, CPU-only case study measuring how training-corpus specialization
+  changes byte-level BPE tokenizer compression on unseen Azure, other Microsoft,
+  external technical (Kubernetes), and general-English documentation. Under a
+  fixed 32 MiB byte-matched training budget and matched 16K vocabulary, an
+  Azure-trained tokenizer used 36.68% fewer tokens per 1,000 UTF-8 bytes than a
+  general-English tokenizer on a cross-service Azure holdout, with a general-
+  English regression and a mixed-corpus tradeoff. Measures tokenization only; no
+  model-quality, latency, or cost claims.
+keywords:
+  - tokenization
+  - byte-level BPE
+  - domain adaptation
+  - text compression
+  - technical documentation
+  - reproducible research
+license: MIT
+version: "0.1.0"
+date-released: "2026-07-10"
