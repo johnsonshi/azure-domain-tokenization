@@ -1,0 +1,12 @@
+{
+  "content_utf8_bytes": 262144,
+  "corpus": "azure",
+  "file_utf8_bytes": 262629,
+  "n_documents": 243,
+  "n_selected": 243,
+  "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/azure.corpus.txt",
+  "profile": "smoke",
+  "sha256": "308727ac014ad863d085b748992c4c519d7c02f9d6661530eaa62ca8d9d40dbe",
+  "target_bytes": 262144,
+  "training_manifest_sha256": "3f39690e9ae6bac8d3be83454dd9d954c0a07ee97c4ec346bedd7ae4f25b29d2"
+}

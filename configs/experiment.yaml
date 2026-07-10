@@ -4,6 +4,9 @@ near_dup_threshold: 0.8
 bootstrap_resamples: 10000
 
 profiles:
+  smoke:
+    corpus_bytes: 262144        # 256 KiB — fast no-network CI/smoke
+    vocab_sizes: [2048]
   pilot:
     corpus_bytes: 33554432      # 32 MiB per training corpus
     vocab_sizes: [16384]
