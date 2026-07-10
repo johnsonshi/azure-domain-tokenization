@@ -6,28 +6,29 @@
 
 Profile: **pilot** (32 MiB byte-matched General/Azure/Mixed corpora; three 16,384-vocab
 byte-level BPE tokenizers; identical config; merges=16,126 each; training bytes =
-33,554,432 each). Seed 20260709. Sources pinned in `data/manifests/sources.lock.json`.
+33,554,432 each). Leakage-clean: general exact-dedup (134 removed) before split +
+cross-corpus near-dup eval filter (9 removed); verify 8/8. Seed 20260709. Sources pinned in `data/manifests/sources.lock.json`.
 
 ## F-PRIMARY — Azure tokenizer compresses the Azure cross-service holdout
 - **Result:** On `azure_cross_service_holdout` (5 held-out services, n=964 docs), the
-  Azure-trained tokenizer uses **36.77% fewer tokens per 1,000 UTF-8 bytes** than the
-  byte-matched General tokenizer (240.13 vs 379.76). 95% paired-bootstrap CI
-  **[35.83%, 37.74%]**, win rate **1.000**.
+  Azure-trained tokenizer uses **36.68% fewer tokens per 1,000 UTF-8 bytes** than the
+  byte-matched General tokenizer (240.18 vs 379.30). 95% paired-bootstrap CI
+  **[35.77%, 37.62%]**, win rate **1.000**.
 - **Result files:** `results/processed/eval_aggregate.csv`, `results/processed/bootstrap.json`,
   `results/tables/reduction_azure_vs_general_16384.csv`.
 - **Repro:** `make audit-pilot train-pilot evaluate-pilot analyze`
-- **Reviewer:** automated verify 6/6; red-team pending (`research/PILOT_REVIEW.md`).
+- **Reviewer:** automated verify 8/8; red-team re-review: blockers 1&2 RESOLVED, blocker 3 resolved (research/PILOT_REVIEW.md); numbers regenerated on leakage-clean data.
 - **Caveat:** tokenization only; no model-quality/latency/cost implication.
 
 ## F-REGRESSION — Out-of-domain regression on general English
-- **Result:** The Azure tokenizer is **34.83% worse** on held-out general English
-  (307.81 vs 228.29 tokens/1000 bytes; CI [-35.19%, -34.48%]). Reported alongside the
+- **Result:** The Azure tokenizer is **34.75% worse** on held-out general English
+  (CI [-35.10%, -34.40%]). Reported alongside the
   in-domain gain (plan.md §26).
 - **Result file:** `results/processed/bootstrap.json` (`by_eval_set.general_english`).
 
 ## F-MIXED — Mixed 50/50 retains most of the gain with far less regression
-- **Result:** Mixed tokenizer = **+34.15%** on the Azure holdout (vs Azure's +36.77%) but
-  only **-4.42%** regression on general English (vs Azure's -34.83%). Secondary
+- **Result:** Mixed tokenizer = **+34.21%** on the Azure holdout (vs Azure's +36.68%) but
+  only **-4.4%** regression on general English (vs Azure's -34.75%). Secondary
   hypothesis 3 supported at pilot scale.
 - **Result file:** `results/processed/eval_aggregate.csv`.
 
