@@ -19,8 +19,12 @@
 
 # Trained tokenizer artifacts (distributability depends on license review)
 /artifacts/tokenizers/*/
-# But keep provenance json + checksums tracked (small, publishable)
+# Keep provenance JSON for CC-BY-4.0 Azure-only tokenizers (distributable w/ attribution)
 !/artifacts/tokenizers/*.json
+# NEVER track WikiText-derived General/Mixed tokenizers: VETO / local-use-only per
+# licenses/RESTRICTIONS.md. They remain on disk for local verification only.
+/artifacts/tokenizers/general-*.json
+/artifacts/tokenizers/mixed-*.json
 
 # Raw per-run results can be large; keep processed tables + reports
 /results/raw/logs/*.log

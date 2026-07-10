@@ -32,3 +32,8 @@
 - **Decision:** Phase G produces the upload archive + manifest + reference PDF + build log + checklist and verifies a clean-room **pdflatex-only** build using the bundled `.bbl`. Submission itself, author metadata, license, category, employer review, push, release, and DOI are human-only gates and are NOT performed by the agent.
 - **Evidence:** plan-2.md §22, §27, §30; `paper/arxiv/submission-checklist.md` Part C; `publication/AUTHOR_INPUTS_REQUIRED.md`.
 - **Revisit:** on explicit user approval to submit.
+
+### 2026-07-10 · PD-0007 · Only Azure tokenizers are distributable; General/Mixed are local-use-only
+- **Decision:** Only the Azure-only byte-level BPE tokenizers (trained solely on CC-BY-4.0 Azure documentation) are distributable, with attribution. The General and Mixed tokenizers are trained on / mixed with WikiText (Wikipedia-derived, CC-BY-SA/GFDL share-alike ambiguity) and are **local-use-only** per `licenses/RESTRICTIONS.md:25,34`; they are never tracked or published. They remain on local disk (gitignored) so reproduction/verification works, and a fresh clone regenerates all nine via `make train-all`.
+- **Enforcement:** `.gitignore` re-ignores `artifacts/tokenizers/{general,mixed}-*.json` (Azure stays tracked); `publication_verify.py::check_no_raw_or_artifacts` flags any tracked `general-*`/`mixed-*` tokenizer JSON.
+- **Evidence:** `licenses/RESTRICTIONS.md`, `licenses/ATTRIBUTION.md`, `licenses/SOURCE_LICENSES.csv` (wikitext row); plan-2.md hard constraint "Do not publish ... generated artifacts until their licenses have been reviewed."

@@ -126,13 +126,25 @@ def check_links() -> None:
 
 
 def check_no_raw_or_artifacts() -> None:
+    from pathlib import PurePosixPath
     code, out = run(["git", "ls-files"])
     tracked = out.splitlines()
+
+    def is_vetoed_tokenizer(f: str) -> bool:
+        if not (f.startswith("artifacts/tokenizers/") and f.endswith(".json")):
+            return False
+        name = PurePosixPath(f).name.lower()
+        # WikiText-derived General/Mixed tokenizers are VETO / local-use-only
+        # (licenses/RESTRICTIONS.md); the literal HF tokenizer.json is also excluded.
+        # Azure-only tokenizers are CC-BY-4.0 and distributable with attribution.
+        return name == "tokenizer.json" or name.startswith(("general-", "mixed-"))
+
     bad = [f for f in tracked
            if f.startswith(("data/raw/", "external/", "data/normalized/", "data/segments/"))
            or f.endswith(".corpus.txt")
-           or (f.startswith("artifacts/tokenizers/") and f.endswith("tokenizer.json"))]
-    check("no raw corpora / tokenizer.json tracked", not bad, ", ".join(bad[:5]) or "clean")
+           or is_vetoed_tokenizer(f)]
+    check("no raw corpora / WikiText-derived (general|mixed) tokenizer artifacts tracked",
+          not bad, ", ".join(bad[:5]) or "clean")
     big = []
     for f in tracked:
         p = ROOT / f
