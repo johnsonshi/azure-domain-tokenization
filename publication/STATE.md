@@ -3,18 +3,18 @@
 > Canonical publication-prep state (plan-2.md §4.4). A fresh agent resumes from
 > this file + repository state alone. Keep concise.
 
-- **Updated:** 2026-07-10T12:15-07:00
+- **Updated:** 2026-07-10T12:35-07:00
 - **Branch:** `publication/arxiv-prep` (experiment preserved on `main`; snapshot tag `experiment-full-verified-20260709` → commit a7d0301)
-- **Phase:** B (repository IA) — README rewritten; 8 docs/ + results/{README,DATA_DICTIONARY} written; 7 notebooks cleaned+executed; community files + LICENSE + CITATION added; 6 publication figures; claim registry 44/44; `scripts/publication_verify.py` = 9/9 OK.
+- **Phase:** PART I COMPLETE (artifact review GO) -> Part II / Phase E (manuscript). Claim registry 44/44; publication_verify 10/10; literature package 26 verified citations.
 - **Scientific record:** FROZEN. Do not rerun/alter the experiment. Primary = 36.68% (Azure vs General, 16K, azure_cross_service_holdout; CI [35.77,37.62]; win 1.0; n=964).
 
 ## Phase gates (plan-2.md §26)
 
 - [x] **Phase A** preserve + audit: snapshot ✓, branch ✓, claim registry ✓ (43 claims, 43/43 PASS), 5 audits ✓, blockers resolved ✓ (`publication/audits/AUDIT_RESOLUTION.md`), 6 publication figures ✓ (`scripts/make_figures.py`).
 - [~] **Phase B** repository IA: README ✓, docs/ (8) ✓, results/README+DATA_DICTIONARY ✓, notebooks cleaned+executed ✓, community files ✓, LICENSE/CITATION ✓, Make targets ✓, publication_verify 9/9 ✓. Remaining: artifact review (Phase C gate).
-- [ ] **Phase C** public figures + claim verification + artifact review
-- [ ] **Phase D** literature review + citation verification
-- [ ] **Phase E** manuscript draft (LaTeX)
+- [x] **Phase C** figures + claim verification + artifact review (GO). Part I public-artifact quality gate PASSED.
+- [x] **Phase D** literature review: 26 verified citations (0 unresolved), paper/references.bib + paper/literature/*.
+- [~] **Phase E** manuscript draft (LaTeX) — starting.
 - [ ] **Phase F** independent reviews (statistical, method red team, claim red team, citation, reproducibility)
 - [ ] **Phase G** arXiv package (stop before submission)
 
