@@ -4,7 +4,7 @@
   "file_utf8_bytes": 33558275,
   "n_documents": 1922,
   "n_selected": 1922,
-  "path": "/Users/johnsonshi/repos/ai/tokenizer/data/splits/general.corpus.txt",
+  "path": "data/splits/general.corpus.txt",
   "profile": "full",
   "sha256": "b9f665e7a28f1e28f86387ffea8891e75570cbcc75fab338940606d37cb27c3e",
   "target_bytes": 33554432,

@@ -1,0 +1,13 @@
+tokenizer_id,tokens_per_1000_bytes,mb_per_second_median,track
+general-bytebpe-8192,403.2254514816139,5.129767927728537,A (controlled)
+general-bytebpe-16384,379.2954915700655,5.162949043106613,A (controlled)
+general-bytebpe-32768,360.3774290283137,5.186243583749437,A (controlled)
+azure-bytebpe-8192,256.210307863124,5.4387832957890625,A (controlled)
+azure-bytebpe-16384,240.18021302918405,5.466461168808504,A (controlled)
+azure-bytebpe-32768,232.77605967992477,5.469546001618316,A (controlled)
+mixed-bytebpe-8192,270.92145198751285,5.412360667638164,A (controlled)
+mixed-bytebpe-16384,249.52310090655277,5.449517316717173,A (controlled)
+mixed-bytebpe-32768,238.8158044585416,5.428504351084715,A (controlled)
+tiktoken-r50k_base,283.21958136289203,18.66486647433254,"B (tiktoken, observational)"
+tiktoken-cl100k_base,217.39160102106237,19.834158846208965,"B (tiktoken, observational)"
+tiktoken-o200k_base,217.2323543491208,11.60777467773929,"B (tiktoken, observational)"

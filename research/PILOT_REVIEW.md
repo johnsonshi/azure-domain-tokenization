@@ -49,7 +49,7 @@ Role: `red_team_reviewer` publication gate. Scope: pilot Track A 16,384-vocab CP
 
 ## Re-review (blocker resolution) — 2026-07-10
 
-I independently re-ran the requested checks with `uv run --project /Users/johnsonshi/repos/ai/tokenizer python` against the current working tree.
+I independently re-ran the requested checks with `uv run python` against the current working tree.
 
 1. **General-English train/eval exact leakage: RESOLVED.** Rebuilt WikiText processing from `data/raw/wikitext-103.raw.parquet` with `process_documents`, applied `corpus.exact_dedup`, then reran `pipeline._hash_split` with seed `20260709` and `eval_frac=0.15`. The rebuild produced 14,900 processed docs, 14,766 after exact dedup, 12,556 train docs, and 2,210 pre-filter general eval docs. Shared canonical-text hashes between rebuilt general train and rebuilt general eval: **0**. Shared canonical-text hashes between rebuilt general train and the frozen `data/evaluation/eval_docs.parquet` `general_english` rows: **0 of 2,204**. `data/audit/audit_summary.json` records `exact_dedup_general.removed_exact=134` (>0). The code path in `src/msdocs_tokenizer/pipeline.py` exact-dedups `general_all` before `_hash_split` and calls `_assert_no_content_leak(general_train, _general_eval, "general")`.
 

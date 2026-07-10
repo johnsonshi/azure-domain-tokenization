@@ -37,3 +37,11 @@ This study uses the **WikiText** dataset (Salesforce/wikitext, wikitext-103-raw-
 ## huggingface/tokenizers baseline tooling
 
 Hugging Face `tokenizers` is licensed under Apache License 2.0: https://github.com/huggingface/tokenizers/blob/05741122105911e14dbe307c8f640c757fa97779/LICENSE. If redistributing the library or derivative code, include the Apache-2.0 license text and preserve copyright, patent, trademark, and NOTICE obligations if any apply.
+
+## MicrosoftDocs/fabric-docs
+
+This study uses/adapts documentation from **MicrosoftDocs/fabric-docs** by Microsoft and contributors, licensed under the Creative Commons Attribution 4.0 International Public License (CC BY 4.0): https://github.com/MicrosoftDocs/fabric-docs/blob/e8925d869c90b57daf9a41b984f16b3636d227ac/LICENSE and https://creativecommons.org/licenses/by/4.0/. Changes made: text was filtered/extracted for tokenizer-efficiency research and may have been transformed into tokenizer statistics or tokenizer vocabulary/merge artifacts. Microsoft product names and trademarks are not licensed; no endorsement is implied. Third-party notice read: https://github.com/MicrosoftDocs/fabric-docs/blob/e8925d869c90b57daf9a41b984f16b3636d227ac/ThirdPartyNotices.md.
+
+## MicrosoftDocs/microsoft-365-docs
+
+This study uses/adapts documentation from **MicrosoftDocs/microsoft-365-docs** by Microsoft and contributors, licensed under the Creative Commons Attribution 4.0 International Public License (CC BY 4.0): https://github.com/MicrosoftDocs/microsoft-365-docs/blob/eab9d7696cdff87474698b08a1fb328091102a2f/LICENSE and https://creativecommons.org/licenses/by/4.0/. Changes made: text was filtered/extracted for tokenizer-efficiency research and may have been transformed into tokenizer statistics or tokenizer vocabulary/merge artifacts. Microsoft product names and trademarks are not licensed; no endorsement is implied. Third-party notice read: https://github.com/MicrosoftDocs/microsoft-365-docs/blob/eab9d7696cdff87474698b08a1fb328091102a2f/ThirdPartyNotices.md.

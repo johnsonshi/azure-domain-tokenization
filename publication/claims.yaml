@@ -752,3 +752,79 @@ claims:
   source_file: configs/experiment.yaml
   status: registered
   reviewer: pending
+- id: RUNTIME_TRACKA_MIN
+  text: Track A (controlled) min median CPU throughput (MB/s)
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/tables/runtime_summary.csv
+    match:
+      track: A
+    column: min
+  tolerance: 0.2
+  figures:
+  - fig06_runtime
+  tables:
+  - runtime
+  paper_section: results
+  display_value: 5.13
+  source_file: results/tables/runtime_summary.csv
+  status: registered
+  reviewer: pending
+- id: RUNTIME_TRACKA_MAX
+  text: Track A (controlled) max median CPU throughput (MB/s)
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/tables/runtime_summary.csv
+    match:
+      track: A
+    column: max
+  tolerance: 0.2
+  figures:
+  - fig06_runtime
+  tables:
+  - runtime
+  paper_section: results
+  display_value: 5.47
+  source_file: results/tables/runtime_summary.csv
+  status: registered
+  reviewer: pending
+- id: RUNTIME_TRACKB_MIN
+  text: Track B (tiktoken) min median CPU throughput (MB/s)
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/tables/runtime_summary.csv
+    match:
+      track: B
+    column: min
+  tolerance: 0.2
+  figures:
+  - fig06_runtime
+  tables:
+  - runtime
+  paper_section: results
+  display_value: 11.61
+  source_file: results/tables/runtime_summary.csv
+  status: registered
+  reviewer: pending
+- id: RUNTIME_TRACKB_MAX
+  text: Track B (tiktoken) max median CPU throughput (MB/s)
+  type: descriptive
+  extractor:
+    kind: csv_cell
+    file: results/tables/runtime_summary.csv
+    match:
+      track: B
+    column: max
+  tolerance: 0.2
+  figures:
+  - fig06_runtime
+  tables:
+  - runtime
+  paper_section: results
+  display_value: 19.83
+  source_file: results/tables/runtime_summary.csv
+  status: registered
+  reviewer: pending

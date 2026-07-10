@@ -5,11 +5,11 @@
 
 | Date | Review | Agent/role | Artifact | Verdict |
 |---|---|---|---|---|
-| _pending_ | Repository audit | repo-auditor | publication/audits/REPOSITORY_AUDIT.md | — |
-| _pending_ | License audit | license-auditor | publication/audits/LICENSE_AUDIT.md | — |
-| _pending_ | Secret scan | secret-scanner | publication/audits/SECRET_SCAN.md | — |
-| _pending_ | Link check | link-checker | publication/audits/LINK_CHECK.md | — |
-| _pending_ | Reproducibility audit | reproducibility-auditor | publication/audits/REPRODUCIBILITY_AUDIT.md | — |
+| 2026-07-10 | Repository audit | repo-auditor | publication/audits/REPOSITORY_AUDIT.md | 3 blockers (all resolved, see AUDIT_RESOLUTION.md) |
+| 2026-07-10 | License audit | license-auditor | publication/audits/LICENSE_AUDIT.md | 4 blockers (all resolved) |
+| 2026-07-10 | Secret scan | orchestrator (detect-secrets) | publication/audits/SECRET_SCAN.md | PASS |
+| 2026-07-10 | Link check | repo-auditor | publication/audits/LINK_CHECK.md | see file |
+| 2026-07-10 | Reproducibility audit | reproducibility-auditor | publication/audits/REPRODUCIBILITY_AUDIT.md | 1 blocker (resolved) |
 | _pending_ | Artifact review (Part I gate) | artifact-reviewer | publication/reviews/ARTIFACT_REVIEW.md | — |
 | _pending_ | Statistical review | statistician | publication/reviews/STATISTICAL_REVIEW.md | — |
 | _pending_ | Methodological red team | method-redteam | publication/reviews/METHOD_REVIEW.md | — |

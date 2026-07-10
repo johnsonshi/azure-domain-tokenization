@@ -5,7 +5,7 @@
 
 ## Blockers (must resolve before a gate)
 
-- (none yet — audits pending)
+- (none open) — Phase A audit blockers (license ×4, reproducibility ×1, repo ×2) all RESOLVED; see `publication/audits/AUDIT_RESOLUTION.md`.
 
 ## Non-blocking / to-do
 
