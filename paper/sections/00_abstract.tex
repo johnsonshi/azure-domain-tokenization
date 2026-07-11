@@ -1,24 +1,24 @@
 \begin{abstract}
-General-purpose tokenizers may allocate vocabulary inefficiently for specialized
-technical documentation, increasing sequence length. We present a controlled,
-CPU-only case study of how training-corpus composition affects byte-level BPE
-compression on unseen documentation. We hold the tokenizer algorithm,
-pre-tokenizer, decoder, normalization, special tokens, vocabulary size, and
-training-data budget fixed. Using byte-matched 32\,MiB corpora, we train
-General-English, Azure-documentation, and 50/50 Mixed tokenizers with 8K, 16K,
-and 32K vocabularies and evaluate them on nine leakage-controlled held-out
-datasets. On an unseen cross-service Azure holdout containing 964 documents from
-five wholly held-out services, the 16K Azure tokenizer uses \reduc{36.68} fewer
-tokens per 1{,}000 UTF-8 bytes than the matched General tokenizer (95\%
-paired-bootstrap CI $[35.77\%, 37.62\%]$; document win rate $1.000$). However, it
-uses \reduc{34.75} more tokens on held-out general English. The 50/50 Mixed
-tokenizer achieves a \reduc{34.21} reduction on the Azure holdout, retaining
-\reduc{93.3} of the Azure-only tokenizer's in-domain gain, while using only
-\reduc{4.39} more tokens on general English. The in-domain reduction is stable
-across the evaluated vocabulary sizes, persists on prose-dominant content, and
-transfers partially to other Microsoft and external Kubernetes documentation. We
-evaluate tokenizer compression and CPU tokenization throughput only. We make no
-claims about model quality, inference latency, GPU throughput, or realized cost.
-We release code, pinned source manifests, per-document measurements, and a
-machine-verified claim registry; raw source corpora are not redistributed.
+Every input to a language model is first segmented into tokens by a subword
+vocabulary; that vocabulary is trained once and reused across domains, yet the
+corpus it is trained on is rarely matched to the text it must encode. We ask how
+much that mismatch costs when encoding specialized technical documentation. In a
+controlled, CPU-only study, we train byte-level BPE tokenizers that are identical
+in algorithm, settings, vocabulary size, and training-byte budget and differ only
+in their training corpus---General-English, Azure documentation, or a 50/50
+mix---and measure how many tokens each needs to encode unseen documents. Training
+corpus alone produces large, consistent differences. On a set of Azure services
+withheld entirely from training, the Azure tokenizer encodes text with
+\reduc{36.68} fewer tokens than the byte-matched general tokenizer (95\% CI
+$[35.77\%, 37.62\%]$)---and does so on every one of 964 held-out documents. The
+gain is directional: the same tokenizer spends \reduc{34.75} more tokens on
+ordinary English. A single 50/50 mixed tokenizer largely resolves this tension,
+keeping \reduc{93.3} of the in-domain gain while costing only \reduc{4.39} more
+tokens on general English. The advantage is stable across 8K--32K vocabularies,
+persists on prose-dominant pages, and transfers to other Microsoft and external
+(Kubernetes) documentation never seen in training. We study tokenizer
+\emph{compression} only---making no claims about model quality, inference latency,
+GPU throughput, or cost---and release all code, pinned data manifests,
+per-document measurements, and a machine-verified registry that reconciles every
+reported number to its source.
 \end{abstract}
